@@ -3206,7 +3206,7 @@ ice_dun02,120,105,3	script	Man Stuck in Ice#cave	924,5,5,{
 OnTouch:
 	end;
 
-OnTouchNPC: 
+OnTouch//npc: 
 	emotion ET_FRET;
 	emotion ET_KIK, getattachedrid();
 	end;

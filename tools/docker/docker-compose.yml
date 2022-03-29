@@ -31,7 +31,7 @@ services:
             context: .
             dockerfile: Dockerfile
         environment:
-            BUILDER_CONFIGURE: "--enable-packetver=20211103"
+            BUILDER_CONFIGURE: "--enable-packetver=20200401"
     
     login:
         image: "rathena:local"
@@ -52,6 +52,7 @@ services:
             dockerfile: Dockerfile
         depends_on:
             - db
+    
     char:
         image: "rathena:local"
         container_name: "rathena-char"
@@ -71,6 +72,7 @@ services:
             dockerfile: Dockerfile
         depends_on:
             - login
+    
     map:
         image: "rathena:local"
         container_name: "rathena-map"

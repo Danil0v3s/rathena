@@ -484,6 +484,10 @@ int clif_send(const void* buf, int len, struct block_list* bl, enum send_target 
 	int x0 = 0, x1 = 0, y0 = 0, y1 = 0, fd;
 	struct s_mapiterator* iter;
 
+#ifdef LOG_PACKETS
+	ShowDebug("clif_send: Sending 0x%04X (length %d)\n", RBUFW(buf, 0), len);
+#endif // LOG_PACKETS
+
 	if( type != ALL_CLIENT )
 		nullpo_ret(bl);
 
@@ -23136,6 +23140,11 @@ static int clif_parse(int fd)
 
 	// determine real packet length
 	packet_len = packet_db[cmd].len;
+
+#ifdef LOG_PACKETS
+	ShowDebug("clif_parse: Receiving 0x%04X (length %d)\n", cmd, packet_len);
+#endif // LOG_PACKETS
+
 	if (packet_len == -1) { // variable-length packet
 		if (RFIFOREST(fd) < 4)
 			return 0;
