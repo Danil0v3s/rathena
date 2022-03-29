@@ -26,6 +26,7 @@ struct homun_data;
 struct skill_unit;
 struct s_skill_unit_group;
 struct status_change_entry;
+struct status_change;
 
 #define MAX_SKILL_PRODUCE_DB	300 /// Max Produce DB
 #define MAX_PRODUCE_RESOURCE	12 /// Max Produce requirements
@@ -108,6 +109,7 @@ enum e_skill_inf2 : uint8 {
 	INF2_IGNORECICADA, // Skill is not blocked by SC_UTSUSEMI or SC_BUNSINJYUTSU (physical-skill only)
 	INF2_SHOWSCALE, // Skill shows AoE area while casting
 	INF2_IGNOREGTB, // Skill ignores effect of GTB
+	INF2_TOGGLEABLE, // Skill can be toggled on and off (won't consume HP/SP when toggled off)
 	INF2_MAX,
 };
 
@@ -306,6 +308,7 @@ struct s_skill_db {
 	int32 abra_probability[MAX_SKILL_LEVEL];
 	s_skill_spellbook reading_spellbook;
 	uint16 improvisedsong_rate;
+	sc_type sc;									///< Default SC for skill
 };
 
 class SkillDatabase : public TypesafeCachedYamlDatabase <uint16, s_skill_db> {
@@ -611,7 +614,7 @@ bool skill_check_condition_castend(struct map_session_data *sd, uint16 skill_id,
 int skill_check_condition_char_sub (struct block_list *bl, va_list ap);
 void skill_consume_requirement(struct map_session_data *sd, uint16 skill_id, uint16 skill_lv, short type);
 struct s_skill_condition skill_get_requirement(struct map_session_data *sd, uint16 skill_id, uint16 skill_lv);
-int skill_disable_check(struct status_change *sc, uint16 skill_id);
+bool skill_disable_check(status_change &sc, uint16 skill_id);
 bool skill_pos_maxcount_check(struct block_list *src, int16 x, int16 y, uint16 skill_id, uint16 skill_lv, enum bl_type type, bool display_failure);
 
 int skill_check_pc_partner(struct map_session_data *sd, uint16 skill_id, uint16 *skill_lv, int range, int cast_flag);
@@ -2634,6 +2637,7 @@ int skill_is_combo(uint16 skill_id);
 void skill_combo_toggle_inf(struct block_list* bl, uint16 skill_id, int inf);
 void skill_combo(struct block_list* src,struct block_list *dsrc, struct block_list *bl, uint16 skill_id, uint16 skill_lv, t_tick tick);
 
+enum sc_type skill_get_sc(int16 skill_id);
 void skill_reveal_trap_inarea(struct block_list *src, int range, int x, int y);
 int skill_get_time3(struct map_data *mapdata, uint16 skill_id, uint16 skill_lv);
 
