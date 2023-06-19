@@ -3,7 +3,7 @@ version: "3.7"
 services:
     db:
         image: "mariadb:bionic"
-        container_name: "rathena_db"
+        #container_name: "rathena_db"
         ports:
             - "3306:3306" # allow DB connections from host
         volumes:
@@ -17,7 +17,7 @@ services:
 
     builder:
         image: "rathena:local"
-        container_name: "rathena-builder"
+        #container_name: "rathena-builder"
         command: "/rathena/tools/docker/builder.sh"
         volumes:
             - "../..:/rathena" # mount git repo directory inside container
@@ -31,11 +31,11 @@ services:
             context: .
             dockerfile: Dockerfile
         environment:
-            BUILDER_CONFIGURE: "--enable-packetver=20211103"
+            BUILDER_CONFIGURE: "--enable-packetver=20131223"
     
     login:
         image: "rathena:local"
-        container_name: "rathena-login"
+        #container_name: "rathena-login"
         command: sh -c "/bin/wait-for db:3306 -- /rathena/login-server"
         ports:
             - "6900:6900" # login server
@@ -52,9 +52,10 @@ services:
             dockerfile: Dockerfile
         depends_on:
             - db
+
     char:
         image: "rathena:local"
-        container_name: "rathena-char"
+        #container_name: "rathena-char_2"
         command: sh -c "/bin/wait-for db:3306 -- /rathena/char-server"
         ports:
             - "6121:6121" # char server
@@ -71,9 +72,10 @@ services:
             dockerfile: Dockerfile
         depends_on:
             - login
+
     map:
         image: "rathena:local"
-        container_name: "rathena-map"
+        #container_name: "rathena-map"
         command: sh -c "/bin/wait-for db:3306 -- /rathena/map-server"
         ports:
             - "5121:5121" # map server
@@ -93,3 +95,7 @@ services:
 
 volumes:
     rathenadb:
+
+networks:
+  default:
+    name: "rathena"

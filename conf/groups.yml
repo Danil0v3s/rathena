@@ -53,6 +53,10 @@ Body:
       can_trade: true
       can_party: true
       attendance: true
+      all_commands: true
+      all_equipment: false
+      skill_unconditional: false
+      item_unconditional: false
   - Id: 1
     Name: Super Player
     # Can do everything Players can and more
@@ -230,12 +234,12 @@ Body:
       all_skill: false
       all_equipment: false
       skill_unconditional: false
+      item_unconditional: false
       use_check: true
       use_changemaptype: true
       all_commands: true
       channel_admin: true
       can_trade_bounded: true
-      item_unconditional: false
       bypass_stat_onclone: true
       bypass_max_stat: true
       #all_permission: true

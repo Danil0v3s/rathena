@@ -17,5 +17,5 @@ if [ "${runBuild}" -eq "1" ]; then
     ./configure $BUILDER_CONFIGURE
   fi
 
-  make clean server;
+  make clean server -j8;
 fi

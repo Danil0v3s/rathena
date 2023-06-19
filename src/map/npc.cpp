@@ -2317,6 +2317,7 @@ int npc_buysellsel(struct map_session_data* sd, int id, int type)
 	if (type == 0) {
 		clif_buylist(sd,nd);
 	} else {
+		ShowDebug("Reached");
 		clif_selllist(sd);
 	}
 	return 0;

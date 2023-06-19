@@ -2258,6 +2258,7 @@ void clif_selllist(struct map_session_data *sd)
 	}
 	WFIFOW(fd,2)=c*10+4;
 	WFIFOSET(fd,WFIFOW(fd,2));
+	ShowDebug("Sent list");
 }
 
 /// Closes shop (CZ_NPC_TRADE_QUIT).

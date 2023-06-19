@@ -70,7 +70,7 @@
 1007,Fabre@NPC_GROUNDATTACK,attack,185,1,2000,0,5000,yes,target,always,0,,,,,,,
 1007,Fabre@NPC_METAMORPHOSIS,idle,193,1,10,2000,5000,no,self,always,0,1008,,,,,,
 1008,Pupa@NPC_EMOTION,idle,197,1,2000,0,5000,yes,self,always,0,19,,,,,,
-1008,Pupa@NPC_METAMORPHOSIS,idle,193,1,10,2000,5000,no,self,always,0,1018,,,,,,
+1008,Pupa@NPC_METAMORPHOSIS,idle,193,1,1000,2000,5000,no,self,always,0,1018,,,,,,
 1009,Condor@BS_ADRENALINE,attack,111,1,500,1500,300000,yes,self,always,0,,,,,,,
 1009,Condor@NPC_EMOTION,idle,197,1,2000,0,5000,yes,self,always,0,5,,,,,,
 1009,Condor@NPC_WINDATTACK,attack,187,3,500,500,5000,no,target,always,0,,,,,,6,

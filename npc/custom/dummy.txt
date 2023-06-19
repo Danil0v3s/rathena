@@ -1,0 +1,12 @@
+prontera,150,150,4	script	DummySpawner	749,{
+    monster "prontera",151,151,"Poring",1002,1;
+	.GID = $@mobid[0];
+
+	// Save the strong Poring's mob data in the @por_arr[] variable. (@por_arr[1] being level, @por_arr[13] being class, etc.)
+	// With this data we can have the NPC display or manipulate it how we want. This does not have to be ran before 'setunitdata'.
+	getunitdata .GID,@por_arr;
+
+	setunitdata .GID,UMOB_LEVEL,50;
+	setunitdata .GID,UMOB_MAXHP,10000;
+	setunitdata .GID,UMOB_DEX,999;
+}
