@@ -10813,14 +10813,14 @@ ACMD_FUNC(romarket)
 {
 	nullpo_retr(-1, sd);
 
-	const struct item* items;
+	const item* items;
 
 	sd->state.romarket = true;
 	items = sd->inventory.u.items_inventory;
 
 	for (int i = 0; i < MAX_INVENTORY; i++) {
-		const struct item* it = &items[i];
-		struct item_data* itd;
+		const item* it = &items[i];
+		std::shared_ptr<item_data> itd;
 
 		if (it->nameid == 0 || (itd = item_db.find(it->nameid)) == NULL)
 			continue;
