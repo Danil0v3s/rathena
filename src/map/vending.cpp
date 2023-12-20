@@ -301,15 +301,16 @@ int8 vending_openvending(map_session_data* sd, const char* message, const uint8*
 	int vending_skill_lvl;
 	char message_sql[MESSAGE_SIZE*2];
 	StringBuf buf;
-	
+
 	nullpo_retr(false,sd);
 
-	if ( pc_isdead(sd) || !sd->state.prevend || pc_istrading(sd)) {
+	if ( !sd->state.romarket && (pc_isdead(sd) || !sd->state.prevend || pc_istrading(sd)) ){
 		return 1; // can't open vendings lying dead || didn't use via the skill (wpe/hack) || can't have 2 shops at once
 	}
 
 	vending_skill_lvl = pc_checkskill(sd, MC_VENDING);
-	
+
+	// @TODO this might be a point to check for romarket flag
 	// skill level and cart check
 	if( !vending_skill_lvl || !pc_iscarton(sd) ) {
 		clif_skill_fail(sd, MC_VENDING, USESKILL_FAIL_LEVEL, 0);
@@ -361,36 +362,42 @@ int8 vending_openvending(map_session_data* sd, const char* message, const uint8*
 		return 5;
 	}
 
-	sd->state.prevend = 0;
-	sd->state.vending = true;
-	sd->state.workinprogress = WIP_DISABLE_NONE;
-	sd->vender_id = vending_getuid();
-	sd->vend_num = i;
-	safestrncpy(sd->message, message, MESSAGE_SIZE);
-	
-	Sql_EscapeString( mmysql_handle, message_sql, sd->message );
+	if (sd->state.romarket)
+	{
+		return 0;
+	} else
+	{
+		sd->state.prevend = 0;
+		sd->state.vending = true;
+		sd->state.workinprogress = WIP_DISABLE_NONE;
+		sd->vender_id = vending_getuid();
+		sd->vend_num = i;
+		safestrncpy(sd->message, message, MESSAGE_SIZE);
 
-	if( Sql_Query( mmysql_handle, "INSERT INTO `%s`(`id`, `account_id`, `char_id`, `sex`, `map`, `x`, `y`, `title`, `autotrade`, `body_direction`, `head_direction`, `sit`) "
-		"VALUES( %d, %d, %d, '%c', '%s', %d, %d, '%s', %d, '%d', '%d', '%d' );",
-		vendings_table, sd->vender_id, sd->status.account_id, sd->status.char_id, sd->status.sex == SEX_FEMALE ? 'F' : 'M', map_getmapdata(sd->bl.m)->name, sd->bl.x, sd->bl.y, message_sql, sd->state.autotrade, at ? at->dir : sd->ud.dir, at ? at->head_dir : sd->head_dir, at ? at->sit : pc_issit(sd) ) != SQL_SUCCESS ) {
-		Sql_ShowDebug(mmysql_handle);
+		Sql_EscapeString( mmysql_handle, message_sql, sd->message );
+
+		if( Sql_Query( mmysql_handle, "INSERT INTO `%s`(`id`, `account_id`, `char_id`, `sex`, `map`, `x`, `y`, `title`, `autotrade`, `body_direction`, `head_direction`, `sit`) "
+			"VALUES( %d, %d, %d, '%c', '%s', %d, %d, '%s', %d, '%d', '%d', '%d' );",
+			vendings_table, sd->vender_id, sd->status.account_id, sd->status.char_id, sd->status.sex == SEX_FEMALE ? 'F' : 'M', map_getmapdata(sd->bl.m)->name, sd->bl.x, sd->bl.y, message_sql, sd->state.autotrade, at ? at->dir : sd->ud.dir, at ? at->head_dir : sd->head_dir, at ? at->sit : pc_issit(sd) ) != SQL_SUCCESS ) {
+			Sql_ShowDebug(mmysql_handle);
+			}
+
+		StringBuf_Init(&buf);
+		StringBuf_Printf(&buf, "INSERT INTO `%s`(`vending_id`,`index`,`cartinventory_id`,`amount`,`price`) VALUES", vending_items_table);
+		for (j = 0; j < i; j++) {
+			StringBuf_Printf(&buf, "(%d,%d,%d,%d,%d)", sd->vender_id, j, sd->cart.u.items_cart[sd->vending[j].index].id, sd->vending[j].amount, sd->vending[j].value);
+			if (j < i-1)
+				StringBuf_AppendStr(&buf, ",");
+		}
+		if (SQL_ERROR == Sql_QueryStr(mmysql_handle, StringBuf_Value(&buf)))
+			Sql_ShowDebug(mmysql_handle);
+		StringBuf_Destroy(&buf);
+
+		clif_openvending(sd,sd->bl.id,sd->vending);
+		clif_showvendingboard( *sd );
+
+		idb_put(vending_db, sd->status.char_id, sd);
 	}
-
-	StringBuf_Init(&buf);
-	StringBuf_Printf(&buf, "INSERT INTO `%s`(`vending_id`,`index`,`cartinventory_id`,`amount`,`price`) VALUES", vending_items_table);
-	for (j = 0; j < i; j++) {
-		StringBuf_Printf(&buf, "(%d,%d,%d,%d,%d)", sd->vender_id, j, sd->cart.u.items_cart[sd->vending[j].index].id, sd->vending[j].amount, sd->vending[j].value);
-		if (j < i-1)
-			StringBuf_AppendStr(&buf, ",");
-	}
-	if (SQL_ERROR == Sql_QueryStr(mmysql_handle, StringBuf_Value(&buf)))
-		Sql_ShowDebug(mmysql_handle);
-	StringBuf_Destroy(&buf);
-
-	clif_openvending(sd,sd->bl.id,sd->vending);
-	clif_showvendingboard( *sd );
-
-	idb_put(vending_db, sd->status.char_id, sd);
 
 	return 0;
 }
@@ -724,7 +731,7 @@ void vending_update(map_session_data &sd)
 	}
 }
 
-/**	
+/**
  * Initialise the vending module
  * called in map::do_init
  */
