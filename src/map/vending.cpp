@@ -310,9 +310,8 @@ int8 vending_openvending(map_session_data* sd, const char* message, const uint8*
 
 	vending_skill_lvl = pc_checkskill(sd, MC_VENDING);
 
-	// @TODO this might be a point to check for romarket flag
 	// skill level and cart check
-	if( !vending_skill_lvl || !pc_iscarton(sd) ) {
+	if( !sd->state.romarket && (!vending_skill_lvl || !pc_iscarton(sd)) ) {
 		clif_skill_fail(sd, MC_VENDING, USESKILL_FAIL_LEVEL, 0);
 		return 2;
 	}
@@ -364,6 +363,27 @@ int8 vending_openvending(map_session_data* sd, const char* message, const uint8*
 
 	if (sd->state.romarket)
 	{
+		// put items back to inventory
+		for (int i = 0; i < MAX_CART; ++i) {
+			const item* it = &sd->cart.u.items_cart[i];
+			if (it->romarket) {
+				std::shared_ptr<item_data> itd;
+				sd->cart.u.items_cart[i].romarket = false;
+
+				if (it->nameid == 0 || (itd = item_db.find(it->nameid)) == NULL)
+					continue;
+
+				pc_getitemfromcart(sd, i, it->amount);
+			}
+		}
+
+		sd->state.romarket = false;
+
+		if (save_settings&CHARSAVE_VENDING) // Avoid invalid data from saving
+			chrif_save(sd, CSAVE_INVENTORY|CSAVE_CART);
+
+		clif_refresh(sd);
+
 		return 0;
 	} else
 	{
