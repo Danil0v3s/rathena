@@ -106,7 +106,7 @@ int path_blownpos(int16 m,int16 x0,int16 y0,int16 dx,int16 dy,int count)
 				int fy = ( dy != 0 && map_getcellp(mapdata,x0,y0+dy,CELL_CHKPASS) );
 				if( fx && fy )
 				{
-					if(rnd()&1)
+					if(rnd_chance(50, 100))
 						dx=0;
 					else
 						dy=0;
@@ -270,7 +270,7 @@ static int add_path(struct node_heap *heap, struct path_node *tp, int16 x, int16
  *------------------------------------------*/
 bool path_search(struct walkpath_data *wpd, int16 m, int16 x0, int16 y0, int16 x1, int16 y1, int flag, cell_chk cell)
 {
-	register int i, x, y, dx = 0, dy = 0;
+	int i, x, y, dx = 0, dy = 0;
 	struct map_data *mapdata = map_getmapdata(m);
 	struct walkpath_data s_wpd;
 
