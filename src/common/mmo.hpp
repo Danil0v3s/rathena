@@ -89,7 +89,7 @@ typedef uint32 t_itemid;
 #endif
 #define MAX_FAME 1000000000 ///Max fame points
 #define MAX_CART 100 ///Maximum item in cart
-#define MAX_SKILL 1500 ///Maximum skill can be hold by Player, Homunculus, & Mercenary (skill list) AND skill_db limit
+#define MAX_SKILL 1623 ///Maximum skill can be hold by Player, Homunculus, & Mercenary (skill list) AND skill_db limit
 #define DEFAULT_WALK_SPEED 150 ///Default walk speed
 #define MIN_WALK_SPEED 20 ///Min walk speed
 #define MAX_WALK_SPEED 1000 ///Max walk speed
@@ -743,7 +743,7 @@ struct guild_skill {
 };
 
 struct Channel;
-struct guild {
+struct mmo_guild {
 	int guild_id;
 	short guild_lv, connect_member, max_member, average_lv;
 	t_exp exp;
@@ -758,14 +758,7 @@ struct guild {
 	struct guild_alliance alliance[MAX_GUILDALLIANCE];
 	struct guild_expulsion expulsion[MAX_GUILDEXPULSION];
 	struct guild_skill skill[MAX_GUILDSKILL];
-	struct Channel *channel;
-	int instance_id;
 	time_t last_leader_change;
-
-	/* Used by char-server to save events for guilds */
-	unsigned short save_flag;
-
-	int32 chargeshout_flag_id;
 };
 
 enum e_woe_type{
