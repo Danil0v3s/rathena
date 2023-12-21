@@ -22,9 +22,11 @@ DBMap * vending_getdb();
 void do_final_vending(void);
 void do_init_vending(void);
 void do_init_vending_autotrade( void );
- 
+
 void vending_reopen( map_session_data* sd );
 void vending_closevending(map_session_data* sd);
+void check_romarket_vending_items(map_session_data* sd);
+void check_romarket_cart_items(map_session_data* sd);
 int8 vending_openvending(map_session_data* sd, const char* message, const uint8* data, int count, struct s_autotrader *at);
 void vending_vendinglistreq(map_session_data* sd, int id);
 void vending_purchasereq(map_session_data* sd, int aid, int uid, const uint8* data, int count);
