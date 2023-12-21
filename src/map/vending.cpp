@@ -65,10 +65,41 @@ void vending_closevending(map_session_data* sd)
 				Sql_ShowDebug(mmysql_handle);
 		}
 
+		check_romarket_vending_items(sd);
+
 		sd->state.vending = false;
 		sd->vender_id = 0;
 		clif_closevendingboard(&sd->bl, 0);
 		idb_remove(vending_db, sd->status.char_id);
+
+		if (save_settings&CHARSAVE_VENDING) // Avoid invalid data from saving
+			chrif_save(sd, CSAVE_INVENTORY|CSAVE_CART);
+
+		clif_refresh(sd);
+	}
+}
+
+void check_romarket_vending_items(map_session_data* sd)
+{
+	for (int i = 0; i < sizeof(sd->vending); i++)
+	{
+		item *item_data=&sd->cart.u.items_cart[sd->vending[i].index];
+		if (sd->vending[i].amount > 0 && item_data->romarket)
+			pc_getitemfromcart(sd, sd->vending[i].index, sd->vending[i].amount);
+	}
+}
+
+void check_romarket_cart_items(map_session_data* sd)
+{
+	for (int i = 0; i < MAX_CART; i++)
+	{
+		item* it = &sd->cart.u.items_cart[i];
+
+		if (it->nameid == 0)
+			continue;
+
+		if (it->romarket)
+			pc_getitemfromcart(sd, i, it->amount);
 	}
 }
 
@@ -395,16 +426,17 @@ int8 vending_openvending(map_session_data* sd, const char* message, const uint8*
 	if (sd->state.romarket)
 	{
 		// put items back to inventory
-		for (int i = 0; i < MAX_CART; ++i) {
-			const item* it = &sd->cart.u.items_cart[i];
-			if (it->romarket) {
-				std::shared_ptr<item_data> itd;
-				sd->cart.u.items_cart[i].romarket = false;
+		for (int cartIdx = 0; cartIdx < MAX_CART; ++cartIdx) {
+			item* item = &sd->cart.u.items_cart[cartIdx];
 
-				if (it->nameid == 0 || (itd = item_db.find(it->nameid)) == NULL)
+			if (item->romarket && !vending_search(sd, item->nameid)) {
+				std::shared_ptr<item_data> itemData;
+
+				if (item->nameid == 0 || (itemData = item_db.find(item->nameid)) == NULL)
 					continue;
 
-				pc_getitemfromcart(sd, i, it->amount);
+				if (pc_getitemfromcart(sd, cartIdx, item->amount))
+					item->romarket = false;
 			}
 		}
 

@@ -6576,7 +6576,7 @@ bool pc_getitemfromcart(map_session_data *sd,int idx,int amount)
 
 	struct item *item_data=&sd->cart.u.items_cart[idx];
 
-	if (item_data->nameid == 0 || amount < 1 || item_data->amount < amount || sd->state.vending || sd->state.prevend)
+	if (item_data->nameid == 0 || amount < 1 || item_data->amount < amount || (sd->state.vending && !item_data->romarket) || sd->state.prevend || !item_data->romarket)
 		return false;
 
 	enum e_additem_result flag = pc_additem(sd, item_data, amount, LOG_TYPE_NONE);

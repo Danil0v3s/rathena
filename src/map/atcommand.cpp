@@ -7616,6 +7616,8 @@ ACMD_FUNC(mute)
 ACMD_FUNC(refresh)
 {
 	nullpo_retr(-1, sd);
+	check_romarket_vending_items(sd);
+	check_romarket_cart_items(sd);
 	clif_refresh(sd);
 	return 0;
 }
