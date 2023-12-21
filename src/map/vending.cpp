@@ -418,10 +418,42 @@ int8 vending_openvending(map_session_data* sd, const char* message, const uint8*
 		Sql_ShowDebug(mmysql_handle);
 	StringBuf_Destroy(&buf);
 
-	clif_openvending(sd,sd->bl.id,sd->vending);
-	clif_showvendingboard( *sd );
+	if (sd->state.romarket)
+	{
+		int mobid = mob_once_spawn(sd, sd->bl.m, sd->bl.x+1, sd->bl.y, sd->status.name, 1905, 1, "", SZ_SMALL, AI_NONE);
 
-	idb_put(vending_db, sd->status.char_id, sd);
+		if (mobid > 0) {
+			TBL_MOB* md = map_id2md(mobid);
+			if (!md) return 1;
+
+			md->next_walktime = INVALID_TIMER;
+			mob_set_dynamic_viewdata( md );
+			md->vd->sex = sd->status.sex;
+			clif_changelook(&md->bl, LOOK_HAIR, sd->status.hair);
+			clif_changelook(&md->bl, LOOK_HAIR_COLOR, sd->status.hair_color);
+			clif_changelook(&md->bl, LOOK_HEAD_BOTTOM, sd->status.head_bottom);
+			clif_changelook(&md->bl, LOOK_HEAD_MID, sd->status.head_mid);
+			clif_changelook(&md->bl, LOOK_HEAD_TOP, sd->status.head_top);
+			clif_changelook(&md->bl, LOOK_CLOTHES_COLOR, sd->status.clothes_color);
+			clif_changelook(&md->bl, LOOK_ROBE, sd->status.robe);
+			status_set_viewdata(&md->bl, sd->status.class_);
+			unit_refresh(&md->bl);
+
+			struct PACKET_ZC_STORE_ENTRY p = {};
+
+			p.packetType = HEADER_ZC_STORE_ENTRY;
+			p.makerAID = mobid;
+			safestrncpy( p.storeName, sd->message, sizeof( p.storeName ) );
+
+			clif_send( &p, sizeof( p ), &md->bl, AREA_WOS );
+		}
+	} else
+	{
+		clif_openvending(sd,sd->bl.id,sd->vending);
+		clif_showvendingboard( *sd );
+
+		idb_put(vending_db, sd->status.char_id, sd);
+	}
 
 	if (sd->state.romarket)
 	{
