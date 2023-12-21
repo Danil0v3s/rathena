@@ -10961,28 +10961,39 @@ ACMD_FUNC(romarket)
 {
 	nullpo_retr(-1, sd);
 
-	const item* items;
+	item* items;
 
 	sd->state.romarket = true;
 	items = sd->inventory.u.items_inventory;
+	if (sd->cart_weight_max == 0)
+		sd->cart_weight_max = battle_config.max_cart_weight;
 
-	for (int i = 0; i < MAX_INVENTORY; i++) {
-		const item* it = &items[i];
-		std::shared_ptr<item_data> itd;
+	for (int i = 0; i < MAX_INVENTORY; i++)
+	{
+		item* it = &items[i];
+		std::shared_ptr<item_data> data;
 
-		if (it->nameid == 0 || (itd = item_db.find(it->nameid)) == NULL)
+		if (it->nameid == 0 || (data = item_db.find(it->nameid)) == NULL)
 			continue;
 
-		if (sd->inventory.u.items_inventory[i].equip == 0) {
-			sd->inventory.u.items_inventory[i].romarket = true;
-			pc_putitemtocart(sd, i, sd->inventory.u.items_inventory[i].amount);
-		}
+		if (data->stack.cart && it->amount > data->stack.amount)
+			continue;
+
+		if (!itemdb_cancartstore(it, pc_get_group_level(sd)) || (it->bound > BOUND_ACCOUNT && !pc_can_give_bounded_items(sd)))
+			continue;
+
+		if (data->weight * it->amount + sd->cart_weight > sd->cart_weight_max)
+			continue;
+
+		if (it->equip != 0)
+			continue;
+
+		it->romarket = true;
+		pc_putitemtocart(sd, i, it->amount);
 	}
 
-	WFIFOHEAD(sd->fd, packet_len(0x12d));
-	WFIFOW(sd->fd, 0) = 0x12d;
-	WFIFOW(sd->fd, 2) = 4;
-	WFIFOSET(sd->fd, packet_len(0x12d));
+	intif_storage_save(sd, &sd->cart);
+	clif_openvendingreq(sd,12);
 
 	return 0;
 }
