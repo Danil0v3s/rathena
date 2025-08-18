@@ -1,0 +1,10 @@
+#pragma once
+
+#include "../skill_impl.hpp"
+
+#include "../../battle.hpp"
+
+class SkillHell_Power : public SkillImpl {
+public:
+	SkillHell_Power();
+};
