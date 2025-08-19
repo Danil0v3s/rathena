@@ -4,7 +4,7 @@
 
 #include "../../battle.hpp"
 
-class SkillGM_Sandman : public SkillImpl {
+class SkillGM_SANDMAN : public SkillImpl {
 public:
-	SkillGM_Sandman();
+	SkillGM_SANDMAN();
 };

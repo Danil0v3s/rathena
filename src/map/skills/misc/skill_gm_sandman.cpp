@@ -1,4 +1,4 @@
 #include "skill_gm_sandman.hpp"
 
-SkillGM_Sandman::SkillGM_Sandman() : SkillImpl(GM_SANDMAN) {
+SkillGM_SANDMAN::SkillGM_SANDMAN() : SkillImpl(GM_SANDMAN) {
 }

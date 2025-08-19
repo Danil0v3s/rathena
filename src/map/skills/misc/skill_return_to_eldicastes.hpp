@@ -4,7 +4,7 @@
 
 #include "../../battle.hpp"
 
-class SkillReturn_To_Eldicastes : public SkillImpl {
+class SkillRETURN_TO_ELDICASTES : public SkillImpl {
 public:
-	SkillReturn_To_Eldicastes();
+	SkillRETURN_TO_ELDICASTES();
 };

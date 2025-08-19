@@ -4,7 +4,7 @@
 
 #include "../../battle.hpp"
 
-class SkillNPC_Magma_Eruption : public WeaponSkillImpl {
+class SkillNPC_MAGMA_ERUPTION : public WeaponSkillImpl {
 public:
-	SkillNPC_Magma_Eruption();
+	SkillNPC_MAGMA_ERUPTION();
 };
