@@ -7,4 +7,5 @@
 class SkillAM_DEMONSTRATION : public WeaponSkillImpl {
 public:
 	SkillAM_DEMONSTRATION();
+	void calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio) const override;
 };

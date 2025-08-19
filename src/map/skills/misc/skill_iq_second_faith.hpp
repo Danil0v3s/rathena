@@ -7,4 +7,5 @@
 class SkillIQ_SECOND_FAITH : public WeaponSkillImpl {
 public:
 	SkillIQ_SECOND_FAITH();
+	void calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio) const override;
 };

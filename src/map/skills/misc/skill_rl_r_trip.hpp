@@ -7,4 +7,5 @@
 class SkillRL_R_TRIP : public WeaponSkillImpl {
 public:
 	SkillRL_R_TRIP();
+	void calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio) const override;
 };
