@@ -1,0 +1,4 @@
+#include "skill_soa_circle_of_directions_and_elementals.hpp"
+
+SkillSOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS::SkillSOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS() : SkillImpl(SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS) {
+}
