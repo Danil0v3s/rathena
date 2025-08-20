@@ -1,18 +1,20 @@
 #include "provoke.hpp"
+
 #include "../../clif.hpp"
 #include "../../status.hpp"
 #include "../../mob.hpp"
 #include "../../battle.hpp"
+#include "../../pc.hpp"
 
 SkillProvoke::SkillProvoke() : SkillImpl(SM_PROVOKE)
 {
 }
 
-void SkillProvoke::castendNoDamageId(struct block_list *src, struct block_list *bl, uint16 skill_id, uint16 skill_lv, t_tick tick, int32 flag) const
+void SkillProvoke::castendNoDamageId(block_list *src, block_list *bl, uint16 skill_id, uint16 skill_lv, t_tick tick, int32 flag) const
 {
 	status_data *tstatus = status_get_status_data(*bl);
 	map_session_data *sd = BL_CAST(BL_PC, src);
-	struct mob_data *dstmd = BL_CAST(BL_MOB, bl);
+	mob_data *dstmd = BL_CAST(BL_MOB, bl);
 
 	if (status_has_mode(tstatus, MD_STATUSIMMUNE) || battle_check_undead(tstatus->race, tstatus->def_ele))
 	{
