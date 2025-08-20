@@ -1,0 +1,40 @@
+#include "selfprovoke.hpp"
+#include "../../clif.hpp"
+#include "../../status.hpp"
+#include "../../mob.hpp"
+#include "../../battle.hpp"
+
+SkillProvokeSelf::SkillProvokeSelf() : SkillImpl(SM_SELFPROVOKE)
+{
+}
+
+void SkillProvokeSelf::castendNoDamageId(struct block_list *src, struct block_list *bl, uint16 skill_id, uint16 skill_lv, t_tick tick, int32 flag) const
+{
+	status_data *tstatus = status_get_status_data(*bl);
+	map_session_data *sd = BL_CAST(BL_PC, src);
+	struct mob_data *dstmd = BL_CAST(BL_MOB, bl);
+
+	if (status_has_mode(tstatus, MD_STATUSIMMUNE) || battle_check_undead(tstatus->race, tstatus->def_ele))
+	{
+		return;
+	}
+	// Official chance is 70% + 3%*skill_lv + srcBaseLevel% - tarBaseLevel%
+	int32 i = sc_start(src, bl, skill_get_sc(getSkillId()), skill_id == SM_SELFPROVOKE ? 100 : (70 + 3 * skill_lv + status_get_lv(src) - status_get_lv(bl)), skill_lv, skill_get_time(skill_id, skill_lv));
+	if (!i)
+	{
+		if (sd)
+			clif_skill_fail(*sd, skill_id);
+		return;
+	}
+	clif_skill_nodamage(src, *bl, skill_id == SM_SELFPROVOKE ? SM_PROVOKE : skill_id, skill_lv, i != 0);
+	unit_skillcastcancel(bl, 2);
+
+	if (dstmd)
+	{
+		dstmd->state.provoke_flag = src->id;
+		mob_target(dstmd, src, skill_get_range2(src, skill_id, skill_lv, true));
+	}
+	// Provoke can cause Coma even though it's a nodamage skill
+	if (sd && battle_check_coma(*sd, *bl, BF_MISC))
+		status_change_start(src, bl, SC_COMA, 10000, skill_lv, 0, src->id, 0, 0, SCSTART_NONE);
+}
