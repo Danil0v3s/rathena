@@ -10,6 +10,10 @@ e_skill SkillImpl::getSkillId() const {
 	return skill_id_;
 }
 
+int32 SkillImpl::castendNoDamageId(struct block_list *src, struct block_list *bl, uint16 skill_id, uint16 skill_lv, t_tick tick, int32 flag) const {
+	return 0;
+}
+
 void SkillImpl::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 flag) const {
 	// no-op
 }

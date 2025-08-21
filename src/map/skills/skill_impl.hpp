@@ -5,7 +5,8 @@
 
 #include "../battle.hpp"
 
-class SkillImpl {
+class SkillImpl
+{
 public:
 	explicit SkillImpl(e_skill skill_id);
 	virtual ~SkillImpl() = default;
@@ -13,24 +14,29 @@ public:
 	e_skill getSkillId() const;
 
 	/**
+	 *
+	 */
+	virtual int32 castendNoDamageId(struct block_list *src, struct block_list *bl, uint16 skill_id, uint16 skill_lv, t_tick tick, int32 flag) const;
+
+	/**
 	 * Effect of the skill - replaces switch statements in skill_castend_damage_id
 	 */
-	virtual void castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 flag) const;
+	virtual void castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 flag) const;
 
 	/**
 	 * Calculate skill damage ratio - replaces battle_calc_attack_skill_ratio() switch
 	 */
-	virtual void calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio) const;
+	virtual void calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio) const;
 
 	/**
 	 * Modify hit rate for this skill - replaces hit rate switch statements
 	 */
-	virtual void modifyHitRate(int16& hit_rate, const block_list* src, const block_list* target, uint16 skill_lv) const;
+	virtual void modifyHitRate(int16 &hit_rate, const block_list *src, const block_list *target, uint16 skill_lv) const;
 
 	/**
 	 * Apply additional effects after damage - called from skill_additional_effect
 	 */
-	virtual void applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const;
+	virtual void applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const;
 
 protected:
 	e_skill skill_id_;
