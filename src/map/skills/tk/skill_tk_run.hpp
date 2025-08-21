@@ -7,4 +7,6 @@
 class SkillTK_RUN : public SkillImpl {
 public:
 	SkillTK_RUN();
+
+	void castendNoDamageId(struct block_list *src, struct block_list *bl, uint16 skill_lv, t_tick tick, int32 flag) const override;
 };
