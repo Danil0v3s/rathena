@@ -37,13 +37,17 @@ public:
 	// Should NOT send client messages - caller handles that.
 
 	/**
-	 * [STUB] Check if player can create a party with given name.
+	 * [MIGRATED] Check if player can create a party with given name.
 	 * Called before party creation request is sent to char-server.
-	 * 
+	 *
+	 * Delegates to party_internal::check_create() which validates:
+	 * - Party name is not empty
+	 * - Player is not already in a party/joining/creating
+	 *
 	 * @param sd      Player attempting to create party
-	 * @param name    Proposed party name
-	 * @param item    Item sharing option
-	 * @param item2   Item sharing option 2
+	 * @param name    Proposed party name (should be trimmed)
+	 * @param item    Item sharing option (reserved for future use)
+	 * @param item2   Item sharing option 2 (reserved for future use)
 	 * @return true if creation should proceed, false to deny
 	 */
 	virtual bool canCreate(map_session_data& sd, const char* name, int32 item, int32 item2) const;

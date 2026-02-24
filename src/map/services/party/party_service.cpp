@@ -4,16 +4,21 @@
 #include "party_service.hpp"
 
 // ============================================================================
+// Internal function declarations (defined in party.cpp)
+// ============================================================================
+namespace party_internal {
+	bool check_create(map_session_data& sd, const char* name);
+}
+
+// ============================================================================
 // Default Implementations
 // ============================================================================
-// These are STUB implementations that preserve existing behavior.
-// They will delegate to party_internal::* functions once those are extracted.
-// For now, they return permissive defaults to allow gradual migration.
+// These delegate to party_internal::* functions extracted from party.cpp.
+// Override in PartyServiceCustom for custom behavior.
 
 bool PartyService::canCreate(map_session_data& sd, const char* name, int32 item, int32 item2) const {
-	// [STUB] Default: allow (actual validation still in party_create)
-	// TODO: Delegate to party_internal::check_create once extracted
-	return true;
+	// Delegate to extracted validation logic in party.cpp
+	return party_internal::check_create(sd, name);
 }
 
 bool PartyService::canInvite(map_session_data& sd, map_session_data& target) const {

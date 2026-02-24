@@ -29,6 +29,8 @@
 #include "pc_groups.hpp"
 #include "trade.hpp"
 
+#include "services/service_locator.hpp"
+
 static DBMap* party_db; // int32 party_id -> struct party_data* (releases data)
 static DBMap* party_booking_db; // uint32 char_id -> struct party_booking_ad_info* (releases data) // Party Booking [Spiria]
 static unsigned long party_booking_nextid = 1;
@@ -141,6 +143,37 @@ struct party_data* party_searchname(const char* str)
 	return p;
 }
 
+// ============================================================================
+// Internal namespace for service delegation
+// ============================================================================
+namespace party_internal {
+
+/**
+ * Check if a player can create a party.
+ * Extracted from party_create() for service layer delegation.
+ *
+ * @param sd    Player attempting to create party
+ * @param name  Proposed party name (will be trimmed)
+ * @return true if creation should proceed, false otherwise
+ */
+bool check_create(map_session_data& sd, const char* name) {
+	// Validate name
+	char tname[NAME_LENGTH];
+	safestrncpy(tname, name, NAME_LENGTH);
+	trim(tname);
+
+	if (!tname[0]) // empty name
+		return false;
+
+	// Already associated with a party
+	if (sd.status.party_id > 0 || sd.party_joining || sd.party_creating)
+		return false;
+
+	return true;
+}
+
+} // namespace party_internal
+
 int32 party_create( map_session_data& sd, char *name, int32 item, int32 item2 ){
 	struct party_member leader = {};
 	char tname[NAME_LENGTH];
@@ -148,12 +181,14 @@ int32 party_create( map_session_data& sd, char *name, int32 item, int32 item2 ){
 	safestrncpy(tname, name, NAME_LENGTH);
 	trim(tname);
 
-	if( !tname[0] ) // empty name
-		return 0;
-
-	// already associated with a party
-	if( sd.status.party_id > 0 || sd.party_joining || sd.party_creating ){
-		clif_party_created( sd, 2 );
+	// Service validation hook - allows customization
+	if (!partyService().canCreate(sd, tname, item, item2)) {
+		// Determine failure reason for client message
+		if (!tname[0]) {
+			return 0; // empty name - silent fail
+		}
+		// already in party/joining/creating
+		clif_party_created(sd, 2);
 		return -2;
 	}
 
