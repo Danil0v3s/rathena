@@ -194,26 +194,22 @@ make clean && make server
 
 Each service method is in one of three states:
 
-| State | Description | Service Method | Rollback |
-|-------|-------------|----------------|----------|
-| **STUB** | Delegates to original code in `*_internal` namespace | Calls internal function | Remove service call from caller |
-| **PARTIAL** | Some logic migrated, some delegates | Mixed | Revert to full delegation |
-| **COMPLETE** | All logic in service | Self-contained | Revert to STUB |
+| State | Description | Rollback |
+|-------|-------------|----------|
+| **STUB** | Returns permissive default (e.g., `return true`) | Remove service call from caller |
+| **MIGRATED** | Contains actual validation/logic | Inline logic back into caller |
 
-Methods are marked with their status in comments:
+Example documentation:
 
 ```cpp
 /**
- * [STUB] Check if player can create a party.
- * Delegates to party_internal::check_create()
+ * Check if player can create a party.
+ *
+ * Validates:
+ * - Party name is not empty
+ * - Player is not already in a party/joining/creating
  */
 virtual bool canCreate(...) const;
-
-/**
- * [COMPLETE] Modify EXP distribution.
- * Fully migrated from party_exp_share().
- */
-virtual void modifyExpShare(...) const;
 ```
 
 ## Adding a New Service
@@ -256,24 +252,36 @@ public:
 // src/map/services/guild/guild_service.cpp
 #include "guild_service.hpp"
 
-// Forward declare internal functions (in guild.cpp)
-namespace guild_internal {
-    bool check_create(map_session_data& sd, const char* name);
-    bool check_invite(map_session_data& sd, map_session_data& target);
-}
-
 bool GuildService::canCreate(map_session_data& sd, const char* name) const {
-    // [STUB] Delegate to existing logic
-    return guild_internal::check_create(sd, name);
+    // Validate name
+    if (name == nullptr || name[0] == '\0') {
+        return false;
+    }
+
+    // Check if already in a guild
+    if (sd.status.guild_id > 0) {
+        return false;
+    }
+
+    return true;
 }
 
 bool GuildService::canInvite(map_session_data& sd, map_session_data& target) const {
-    // [STUB] Delegate to existing logic
-    return guild_internal::check_invite(sd, target);
+    // Check if inviter is in a guild with invite permissions
+    if (sd.status.guild_id == 0) {
+        return false;
+    }
+
+    // Check if target is already in a guild
+    if (target.status.guild_id > 0) {
+        return false;
+    }
+
+    return true;
 }
 
 void GuildService::modifyExpContribution(map_session_data& sd, t_exp& exp) const {
-    // [STUB] No modification - uses existing battle_config settings
+    // Default: no modification - uses existing battle_config settings
 }
 ```
 
@@ -352,104 +360,79 @@ This section shows how to migrate logic from existing code into a service method
 
 ### Example: Migrating `canCreate` for Party
 
-#### Phase 1: STUB (No behavior change)
+#### Step 1: Implement validation in the service
 
-**1a. Extract validation to internal namespace (party.cpp)**
+Move the validation logic directly into `PartyService::canCreate()`:
 
 ```cpp
-// party.cpp - near top of file
-namespace party_internal {
-
-bool check_create(map_session_data& sd, const char* name, int item, int item2) {
-    // Move existing validation from party_create() here
-    char tname[NAME_LENGTH];
-    safestrncpy(tname, name, NAME_LENGTH);
-    trim(tname);
-
-    if (!tname[0]) {
-        clif_party_created(sd, 1);  // Empty name
+// party_service.cpp
+bool PartyService::canCreate(map_session_data& sd, const char* name,
+                              int32 item, int32 item2) const {
+    // Validate name is not empty (caller should trim before calling)
+    if (name == nullptr || name[0] == '\0') {
         return false;
     }
-    if (sd.status.party_id > 0) {
-        clif_party_created(sd, 2);  // Already in party
-        return false;
-    }
-    if (battle_config.basic_skill_check &&
-        pc_checkskill(&sd, NV_BASIC) < 7 &&
-        !party_create_byscript) {
-        clif_party_created(sd, 1);  // Skill check
+
+    // Check if already associated with a party
+    if (sd.status.party_id > 0 || sd.party_joining || sd.party_creating) {
         return false;
     }
 
     return true;
 }
-
-} // namespace party_internal
 ```
 
-**1b. Update party_create to use internal function**
+#### Step 2: Wire service into the caller
 
-```cpp
-// party.cpp
-int32 party_create(map_session_data& sd, char* name, int item, int item2) {
-    if (!party_internal::check_create(sd, name, item, item2)) {
-        return 0;  // Already sent error message
-    }
-
-    // ... rest of function unchanged ...
-}
-```
-
-**1c. Service delegates to internal**
-
-```cpp
-// party_service.cpp
-namespace party_internal {
-    bool check_create(map_session_data& sd, const char* name, int item, int item2);
-}
-
-bool PartyService::canCreate(map_session_data& sd, const char* name,
-                              int item, int item2) const {
-    // [STUB] Pure delegation - no behavior change
-    return party_internal::check_create(sd, name, item, item2);
-}
-```
-
-#### Phase 2: Wire Service Into Caller
+Update the original function to call the service:
 
 ```cpp
 // party.cpp
 #include "services/service_locator.hpp"
 
 int32 party_create(map_session_data& sd, char* name, int item, int item2) {
-    // Now uses service (which still delegates to internal)
-    if (!partyService().canCreate(sd, name, item, item2)) {
-        return 0;
-    }
-    // ... rest unchanged ...
-}
-```
-
-At this point, behavior is **identical** to before. Custom services can now override.
-
-#### Phase 3: Migrate Logic Into Service (Optional)
-
-Only do this when you want the service to be self-contained.
-
-```cpp
-// party_service.cpp
-bool PartyService::canCreate(map_session_data& sd, const char* name,
-                              int item, int item2) const {
-    // [COMPLETE] - Logic moved from party_internal
     char tname[NAME_LENGTH];
     safestrncpy(tname, name, NAME_LENGTH);
     trim(tname);
 
-    if (!tname[0]) return false;
-    if (sd.status.party_id > 0) return false;
-    if (battle_config.basic_skill_check &&
-        pc_checkskill(&sd, NV_BASIC) < 7 &&
-        !party_create_byscript) {
+    // Service validation hook - allows customization
+    if (!partyService().canCreate(sd, tname, item, item2)) {
+        // Determine failure reason for client message
+        if (!tname[0]) {
+            return 0;  // empty name - silent fail
+        }
+        // already in party/joining/creating
+        clif_party_created(sd, 2);
+        return -2;
+    }
+
+    sd.party_creating = true;
+    party_fill_member(leader, sd, 1);
+    intif_create_party(&leader, name, item, item2);
+    return 1;
+}
+```
+
+**Key points:**
+- The service method returns `bool` only - no side effects
+- The caller handles error messages (`clif_party_created`)
+- The caller prepares data (trimming name) before calling the service
+
+#### Step 3: Customize (optional)
+
+Override in `PartyServiceCustom` for server-specific behavior:
+
+```cpp
+// party_service_custom.cpp
+bool PartyServiceCustom::canCreate(map_session_data& sd, const char* name,
+                                    int32 item, int32 item2) const {
+    // Run default validation first
+    if (!PartyService::canCreate(sd, name, item, item2)) {
+        return false;
+    }
+
+    // Custom: minimum level requirement
+    if (sd.status.base_level < 10) {
         return false;
     }
 
@@ -457,39 +440,31 @@ bool PartyService::canCreate(map_session_data& sd, const char* name,
 }
 ```
 
-Note: Error messages (`clif_party_created`) should be sent by the caller, not the service.
-
 ## Rollback Procedures
 
-### Rollback a Single Method
+### Rollback to Original Code
 
-To rollback a migrated method to STUB state:
-
-```cpp
-// party_service.cpp
-bool PartyService::canCreate(...) const {
-    // Revert to delegation
-    return party_internal::check_create(sd, name, item, item2);
-}
-```
-
-### Rollback Service Integration
-
-To completely remove service from a function:
+To completely remove service integration from a function, inline the validation:
 
 ```cpp
 // party.cpp - Before (with service)
 int32 party_create(map_session_data& sd, char* name, int item, int item2) {
-    if (!partyService().canCreate(sd, name, item, item2)) {
-        return 0;
+    // ... trim name ...
+    if (!partyService().canCreate(sd, tname, item, item2)) {
+        // handle error
     }
     // ...
 }
 
 // party.cpp - After (rollback)
 int32 party_create(map_session_data& sd, char* name, int item, int item2) {
-    if (!party_internal::check_create(sd, name, item, item2)) {
+    // ... trim name ...
+    if (!tname[0]) {
         return 0;
+    }
+    if (sd.status.party_id > 0 || sd.party_joining || sd.party_creating) {
+        clif_party_created(sd, 2);
+        return -2;
     }
     // ...
 }
@@ -513,7 +488,7 @@ int32 party_create(map_session_data& sd, char* name, int item, int item2) {
 - **Keep services stateless** - Don't store mutable state in services
 - **Use `const` methods** - Service methods should not modify the service itself
 - **Respect battle_config** - Check existing config settings before adding new behavior
-- **Document migration status** - Mark methods as `[STUB]`, `[PARTIAL]`, or `[COMPLETE]`
+- **Document what the method validates** - List the checks performed in the docstring
 
 ### DON'T
 

@@ -3,22 +3,25 @@
 
 #include "party_service.hpp"
 
-// ============================================================================
-// Internal function declarations (defined in party.cpp)
-// ============================================================================
-namespace party_internal {
-	bool check_create(map_session_data& sd, const char* name);
-}
+#include "../../pc.hpp"  // map_session_data definition
 
 // ============================================================================
 // Default Implementations
 // ============================================================================
-// These delegate to party_internal::* functions extracted from party.cpp.
 // Override in PartyServiceCustom for custom behavior.
 
 bool PartyService::canCreate(map_session_data& sd, const char* name, int32 item, int32 item2) const {
-	// Delegate to extracted validation logic in party.cpp
-	return party_internal::check_create(sd, name);
+	// empty name
+	if (!name[0]) {
+		return false;
+	}
+
+	// already associated with a party
+	if (sd.status.party_id > 0 || sd.party_joining || sd.party_creating) {
+		return false;
+	}
+
+	return true;
 }
 
 bool PartyService::canInvite(map_session_data& sd, map_session_data& target) const {

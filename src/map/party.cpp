@@ -143,37 +143,6 @@ struct party_data* party_searchname(const char* str)
 	return p;
 }
 
-// ============================================================================
-// Internal namespace for service delegation
-// ============================================================================
-namespace party_internal {
-
-/**
- * Check if a player can create a party.
- * Extracted from party_create() for service layer delegation.
- *
- * @param sd    Player attempting to create party
- * @param name  Proposed party name (will be trimmed)
- * @return true if creation should proceed, false otherwise
- */
-bool check_create(map_session_data& sd, const char* name) {
-	// Validate name
-	char tname[NAME_LENGTH];
-	safestrncpy(tname, name, NAME_LENGTH);
-	trim(tname);
-
-	if (!tname[0]) // empty name
-		return false;
-
-	// Already associated with a party
-	if (sd.status.party_id > 0 || sd.party_joining || sd.party_creating)
-		return false;
-
-	return true;
-}
-
-} // namespace party_internal
-
 int32 party_create( map_session_data& sd, char *name, int32 item, int32 item2 ){
 	struct party_member leader = {};
 	char tname[NAME_LENGTH];

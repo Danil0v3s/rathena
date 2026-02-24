@@ -37,15 +37,15 @@ public:
 	// Should NOT send client messages - caller handles that.
 
 	/**
-	 * [MIGRATED] Check if player can create a party with given name.
+	 * Check if player can create a party with given name.
 	 * Called before party creation request is sent to char-server.
 	 *
-	 * Delegates to party_internal::check_create() which validates:
+	 * Validates:
 	 * - Party name is not empty
 	 * - Player is not already in a party/joining/creating
 	 *
 	 * @param sd      Player attempting to create party
-	 * @param name    Proposed party name (should be trimmed)
+	 * @param name    Proposed party name (should be trimmed by caller)
 	 * @param item    Item sharing option (reserved for future use)
 	 * @param item2   Item sharing option 2 (reserved for future use)
 	 * @return true if creation should proceed, false to deny
