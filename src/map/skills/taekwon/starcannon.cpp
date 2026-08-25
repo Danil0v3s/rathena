@@ -21,31 +21,31 @@ void SkillStarCannon::castendDamageId(block_list* src, block_list* target, uint1
 }
 
 void SkillStarCannon::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
-	unit_data* ud = unit_bl2ud( src );
+	unit_data* ud = unit_bl2ud(src);
 
-	if( ud == nullptr ){
+	if (ud == nullptr) {
 		return;
 	}
 
-	for( const std::shared_ptr<s_skill_unit_group>& sug : ud->skillunits ){
-		if( sug->skill_id != SKE_TWINKLING_GALAXY ){
+	for (const std::shared_ptr<s_skill_unit_group>& sug : ud->skillunits) {
+		if (sug->skill_id != SKE_TWINKLING_GALAXY) {
 			continue;
 		}
 
 		skill_unit* su = sug->unit;
 
-		if( distance_xy( x, y, su->x, su->y ) > skill_get_unit_range( sug->skill_id, sug->skill_lv ) ){
+		if (distance_xy(x, y, su->x, su->y) > skill_get_unit_range(sug->skill_id, sug->skill_lv)) {
 			continue;
 		}
 
 		std::shared_ptr<s_skill_unit_group> sg = su->group;
 
-		for( int32 i = 0; i< MAX_SKILLTIMERSKILL; i++ ){
-			if( ud->skilltimerskill[i] == nullptr ){
+		for (int32 i = 0; i < MAX_SKILLTIMERSKILL; i++) {
+			if (ud->skilltimerskill[i] == nullptr) {
 				continue;
 			}
 
-			if( ud->skilltimerskill[i]->skill_id != SKE_TWINKLING_GALAXY ){
+			if (ud->skilltimerskill[i]->skill_id != SKE_TWINKLING_GALAXY) {
 				continue;
 			}
 
@@ -57,7 +57,7 @@ void SkillStarCannon::castendPos2(block_list* src, int32 x, int32 y, uint16 skil
 		skill_delunitgroup(sg);
 
 		for (int32 i = 0; i < skill_get_time(getSkillId(), skill_lv) / skill_get_unit_interval(getSkillId()); i++)
-			skill_addtimerskill(src, tick + (t_tick)i*skill_get_unit_interval(getSkillId()), 0, x, y, getSkillId(), skill_lv, 0, flag);
+			skill_addtimerskill(src, tick + (t_tick)i * skill_get_unit_interval(getSkillId()), 0, x, y, getSkillId(), skill_lv, 0, flag);
 		flag |= 1;
 		skill_unitsetting(src, getSkillId(), skill_lv, x, y, 0);
 	}

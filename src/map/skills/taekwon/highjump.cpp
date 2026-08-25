@@ -9,9 +9,9 @@
 SkillHighJump::SkillHighJump() : SkillImpl(TK_HIGHJUMP) {
 }
 
-void SkillHighJump::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 &flag) const {
+void SkillHighJump::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	int32 x, y, dir = unit_getdir(src);
-	map_data *mapdata = map_getmapdata(src->m);
+	map_data* mapdata = map_getmapdata(src->m);
 
 	// Fails on noteleport maps, except for GvG and BG maps [Skotlex]
 	if (mapdata->getMapFlag(MF_NOTELEPORT) && !(mapdata->getMapFlag(MF_BATTLEGROUND) || mapdata_flag_gvg(mapdata))) {

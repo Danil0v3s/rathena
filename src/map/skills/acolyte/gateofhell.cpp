@@ -10,8 +10,8 @@
 SkillGateOfHell::SkillGateOfHell() : WeaponSkillImpl(SR_GATEOFHELL) {
 }
 
-void SkillGateOfHell::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
-	const status_change *sc = status_get_sc(src);
+void SkillGateOfHell::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
+	const status_change* sc = status_get_sc(src);
 
 	if (sc && sc->getSCE(SC_COMBO) && sc->getSCE(SC_COMBO)->val1 == SR_FALLENEMPIRE)
 		skillratio += -100 + 800 * skill_lv;

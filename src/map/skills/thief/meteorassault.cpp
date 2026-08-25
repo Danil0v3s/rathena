@@ -11,7 +11,7 @@
 SkillMeteorAssault::SkillMeteorAssault() : SkillImplRecursiveDamageSplash(ASC_METEORASSAULT) {
 }
 
-void SkillMeteorAssault::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillMeteorAssault::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 #ifdef RENEWAL
 	skillratio += 100 + 120 * skill_lv;
 	RE_LVL_DMOD(100);
@@ -20,21 +20,21 @@ void SkillMeteorAssault::calculateSkillRatio(const Damage *wd, const block_list 
 #endif
 }
 
-void SkillMeteorAssault::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+void SkillMeteorAssault::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }
-	
-void SkillMeteorAssault::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+
+void SkillMeteorAssault::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	//Any enemies hit by this skill will receive Stun, Darkness, or external bleeding status ailment with a 5%+5*skill_lv% chance.
-	switch(rnd()%3) {
+	switch (rnd() % 3) {
 		case 0:
-			sc_start(src,target,SC_BLIND,(5+skill_lv*5),skill_lv,skill_get_time2(getSkillId(),1));
+			sc_start(src, target, SC_BLIND, (5 + skill_lv * 5), skill_lv, skill_get_time2(getSkillId(), 1));
 			break;
 		case 1:
-			sc_start(src,target,SC_STUN,(5+skill_lv*5),skill_lv,skill_get_time2(getSkillId(),2));
+			sc_start(src, target, SC_STUN, (5 + skill_lv * 5), skill_lv, skill_get_time2(getSkillId(), 2));
 			break;
 		default:
-			sc_start2(src,target,SC_BLEEDING,(5+skill_lv*5),skill_lv,src->id,skill_get_time2(getSkillId(),3));
+			sc_start2(src, target, SC_BLEEDING, (5 + skill_lv * 5), skill_lv, src->id, skill_get_time2(getSkillId(), 3));
 	}
 }

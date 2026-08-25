@@ -35,18 +35,18 @@ void SkillGrenadesDropping::modifyElement(const Damage& dmg, const block_list& s
 	const status_change* sc = status_get_sc(&src);
 
 	// Night Watch Grenade Fragment elementals
-	if( sc != nullptr ){
-		if( sc->hasSCE( SC_GRENADE_FRAGMENT_1 ) ){
+	if (sc != nullptr) {
+		if (sc->hasSCE(SC_GRENADE_FRAGMENT_1)) {
 			element = ELE_WATER;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_2 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_2)) {
 			element = ELE_WIND;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_3 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_3)) {
 			element = ELE_EARTH;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_4 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_4)) {
 			element = ELE_FIRE;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_5 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_5)) {
 			element = ELE_DARK;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_6 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_6)) {
 			element = ELE_HOLY;
 		}
 	}

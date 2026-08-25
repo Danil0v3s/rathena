@@ -17,29 +17,27 @@ SkillBenedictionOfChaos::SkillBenedictionOfChaos() : SkillImpl(HVAN_CHAOTIC) {
 void SkillBenedictionOfChaos::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	// Chance per skill level
 	static const std::array<uint8, 5> chance_homunculus = {
-		20,
-		50,
-		25,
-		50,
-		34
-	};
+	    20,
+	    50,
+	    25,
+	    50,
+	    34};
 	static const std::array<uint8, 5> chance_master = {
-		static_cast<uint8>(chance_homunculus[0] + 30),
-		static_cast<uint8>(chance_homunculus[1] + 10),
-		static_cast<uint8>(chance_homunculus[2] + 50),
-		static_cast<uint8>(chance_homunculus[3] + 4),
-		static_cast<uint8>(chance_homunculus[4] + 33)
-	};
+	    static_cast<uint8>(chance_homunculus[0] + 30),
+	    static_cast<uint8>(chance_homunculus[1] + 10),
+	    static_cast<uint8>(chance_homunculus[2] + 50),
+	    static_cast<uint8>(chance_homunculus[3] + 4),
+	    static_cast<uint8>(chance_homunculus[4] + 33)};
 
 	uint8 chance = rnd_value(1, 100);
 
 	// Homunculus
 	if (chance <= chance_homunculus[skill_lv - 1]) {
 		target = src;
-	// Master
+		// Master
 	} else if (chance <= chance_master[skill_lv - 1]) {
 		target = battle_get_master(src);
-	// Enemy (A random enemy targeting the master)
+		// Enemy (A random enemy targeting the master)
 	} else {
 		target = battle_gettargeted(battle_get_master(src));
 	}

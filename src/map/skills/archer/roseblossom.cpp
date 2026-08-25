@@ -29,7 +29,7 @@ void SkillRoseBlossom::calculateSkillRatio(const Damage* wd, const block_list* s
 	if (sd && pc_checkskill(sd, TR_STAGE_MANNER) > 0)
 		skillratio += 3 * sstatus->con;
 
-	if( tsc != nullptr && tsc->getSCE( SC_SOUNDBLEND ) ){
+	if (tsc != nullptr && tsc->getSCE(SC_SOUNDBLEND)) {
 		skillratio += 200 * skill_lv;
 	}
 

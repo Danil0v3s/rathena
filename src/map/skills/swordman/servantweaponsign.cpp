@@ -26,21 +26,20 @@ void SkillServantWeaponSign::castendNoDamageId(block_list* src, block_list* targ
 	// Lets only allow players and monsters to use this skill for safety reasons.
 	if ((!dstsd && !dstmd) || !sd && !md) {
 		if (sd)
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 		return;
 	}
 
 	// Check if the target is already marked by another source.
 	if (tsc && tsc->getSCE(type) && tsc->getSCE(type)->val1 != src->id) {
 		if (sd)
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 		flag |= SKILL_NOCONSUME_REQ;
 		return;
 	}
 
-		
 	// Mark the target.
-	if( sd ){
+	if (sd) {
 		int8 i;
 		int8 count = MAX_SERVANT_SIGN;
 
@@ -48,7 +47,7 @@ void SkillServantWeaponSign::castendNoDamageId(block_list* src, block_list* targ
 		if (i == count) {
 			ARR_FIND(0, count, i, sd->servant_sign[i] == 0);
 			if (i == count) { // Max number of targets marked. Fail the skill.
-				clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+				clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 				flag |= SKILL_NOCONSUME_REQ;
 				return;
 			}

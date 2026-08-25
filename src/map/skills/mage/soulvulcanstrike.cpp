@@ -10,7 +10,7 @@
 SkillSoulVulcanStrike::SkillSoulVulcanStrike() : SkillImplRecursiveDamageSplash(AG_SOUL_VC_STRIKE) {
 }
 
-void SkillSoulVulcanStrike::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillSoulVulcanStrike::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 50 + 330 * skill_lv;

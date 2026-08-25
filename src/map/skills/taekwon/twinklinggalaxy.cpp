@@ -18,7 +18,7 @@ void SkillTwinklingGalaxy::castendDamageId(block_list* src, block_list* target, 
 
 void SkillTwinklingGalaxy::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
 	for (int32 i = 0; i < skill_get_time(getSkillId(), skill_lv) / skill_get_unit_interval(getSkillId()); i++)
-		skill_addtimerskill(src, tick + (t_tick)i*skill_get_unit_interval(getSkillId()), 0, x, y, getSkillId(), skill_lv, 0, flag);
+		skill_addtimerskill(src, tick + (t_tick)i * skill_get_unit_interval(getSkillId()), 0, x, y, getSkillId(), skill_lv, 0, flag);
 	flag |= 1;
 	skill_unitsetting(src, getSkillId(), skill_lv, x, y, 0);
 }

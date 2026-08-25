@@ -10,7 +10,7 @@
 SkillMercenarySpiralPierce::SkillMercenarySpiralPierce() : WeaponSkillImpl(ML_SPIRALPIERCE) {
 }
 
-void SkillMercenarySpiralPierce::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillMercenarySpiralPierce::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 #ifdef RENEWAL
 	skillratio += 50 + 50 * skill_lv;
 	RE_LVL_DMOD(100);

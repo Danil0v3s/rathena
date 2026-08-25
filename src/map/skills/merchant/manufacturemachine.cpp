@@ -16,7 +16,7 @@ void SkillManufactureMachine::castendNoDamageId(block_list* src, block_list* tar
 		sd->skill_id_old = getSkillId();
 		sd->skill_lv_old = skill_lv;
 
-		clif_cooking_list( *sd, 31, getSkillId(), 1, 7 );
+		clif_cooking_list(*sd, 31, getSkillId(), 1, 7);
 		clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	}
 }

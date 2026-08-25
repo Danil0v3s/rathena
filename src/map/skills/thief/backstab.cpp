@@ -20,17 +20,17 @@ void SkillBackStab::modifyDamageData(Damage& dmg, const block_list& src, const b
 #endif
 }
 
-void SkillBackStab::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
-	const map_session_data* sd = BL_CAST( BL_PC, src );
+void SkillBackStab::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
+	const map_session_data* sd = BL_CAST(BL_PC, src);
 
-	if(sd && sd->status.weapon == W_BOW && battle_config.backstab_bow_penalty)
+	if (sd && sd->status.weapon == W_BOW && battle_config.backstab_bow_penalty)
 		base_skillratio += (200 + 40 * skill_lv) / 2;
 	else
 		base_skillratio += 200 + 40 * skill_lv;
 }
 
-void SkillBackStab::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	map_session_data* sd = BL_CAST( BL_PC, src );
+void SkillBackStab::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	map_session_data* sd = BL_CAST(BL_PC, src);
 
 #ifdef RENEWAL
 	uint8 dir = map_calc_dir(src, target->x, target->y);
@@ -60,20 +60,19 @@ void SkillBackStab::castendDamageId(block_list *src, block_list *target, uint16 
 	if (!map_check_dir(dir, t_dir) || target->type == BL_SKILL) {
 #endif
 		status_change_end(src, SC_HIDING);
-		dir = dir < 4 ? dir+4 : dir-4; // change direction [Celest]
-		unit_setdir(target,dir);
+		dir = dir < 4 ? dir + 4 : dir - 4; // change direction [Celest]
+		unit_setdir(target, dir);
 #ifdef RENEWAL
 		clif_blown(src);
 #endif
 		skill_attack(BF_WEAPON, src, src, target, getSkillId(), skill_lv, tick, flag);
-	}
-	else if (sd)
-		clif_skill_fail( *sd, getSkillId() );
+	} else if (sd)
+		clif_skill_fail(*sd, getSkillId());
 }
 
-void SkillBackStab::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillBackStab::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 #ifdef RENEWAL
-	sc_start(src,target,SC_STUN,(5+2*skill_lv),skill_lv,skill_get_time(getSkillId(),skill_lv));
+	sc_start(src, target, SC_STUN, (5 + 2 * skill_lv), skill_lv, skill_get_time(getSkillId(), skill_lv));
 #endif
 }
 

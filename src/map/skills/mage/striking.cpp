@@ -11,12 +11,12 @@
 SkillStriking::SkillStriking() : SkillImpl(SO_STRIKING) {
 }
 
-void SkillStriking::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillStriking::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	sc_type type = skill_get_sc(getSkillId());
 	map_session_data* sd = BL_CAST(BL_PC, src);
 	map_session_data* dstsd = BL_CAST(BL_PC, target);
 
-	if (battle_check_target(src, target, BCT_SELF|BCT_PARTY) > 0) {
+	if (battle_check_target(src, target, BCT_SELF | BCT_PARTY) > 0) {
 		int32 bonus = 0;
 
 		if (dstsd) {
@@ -26,7 +26,7 @@ void SkillStriking::castendNoDamageId(block_list *src, block_list *target, uint1
 				bonus = (20 * skill_lv) * dstsd->inventory_data[index]->weapon_level;
 		}
 
-		clif_skill_nodamage(src, *target, getSkillId(), skill_lv, sc_start2(src,target, type, 100, skill_lv, bonus, skill_get_time(getSkillId(), skill_lv)));
+		clif_skill_nodamage(src, *target, getSkillId(), skill_lv, sc_start2(src, target, type, 100, skill_lv, bonus, skill_get_time(getSkillId(), skill_lv)));
 	} else if (sd)
-		clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL_TOTARGET );
+		clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL_TOTARGET);
 }

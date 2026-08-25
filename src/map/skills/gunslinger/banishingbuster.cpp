@@ -57,9 +57,14 @@ void SkillBanishingBuster::applyAdditionalEffects(block_list* src, block_list* t
 		}
 
 		switch (status) {
-			case SC_WHISTLE: case SC_ASSNCROS: case SC_POEMBRAGI:
-			case SC_APPLEIDUN: case SC_HUMMING: case SC_DONTFORGETME:
-			case SC_FORTUNE: case SC_SERVICE4U:
+			case SC_WHISTLE:
+			case SC_ASSNCROS:
+			case SC_POEMBRAGI:
+			case SC_APPLEIDUN:
+			case SC_HUMMING:
+			case SC_DONTFORGETME:
+			case SC_FORTUNE:
+			case SC_SERVICE4U:
 				if (!battle_config.dispel_song || sce->val4 == 0) {
 					//If in song area don't end it, even if config enabled
 					continue;

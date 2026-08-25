@@ -21,7 +21,7 @@ void SkillRhythmicalWave::castendDamageId(block_list* src, block_list* target, u
 		skill_attack(skill_get_type(getSkillId()), src, src, target, getSkillId(), skill_lv, tick, flag);
 	else {
 		clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
-		map_foreachinallrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), BL_CHAR|BL_SKILL, src, getSkillId(), skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+		map_foreachinallrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), BL_CHAR | BL_SKILL, src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | SD_SPLASH | 1, skill_castend_damage_id);
 		battle_consume_ammo(sd, getSkillId(), skill_lv); // Consume here since Magic/Misc attacks reset arrow_atk
 	}
 }
@@ -33,7 +33,7 @@ void SkillRhythmicalWave::calculateSkillRatio(const Damage* wd, const block_list
 
 	skillratio += -100 + 250 + 3650 * skill_lv;
 	skillratio += pc_checkskill(sd, TR_STAGE_MANNER) * 25; // !TODO: check Stage Manner ratio
-	skillratio += 5 * sstatus->spl;	// !TODO: check SPL ratio
+	skillratio += 5 * sstatus->spl;                        // !TODO: check SPL ratio
 
 	if (sc != nullptr && sc->hasSCE(SC_MYSTIC_SYMPHONY))
 		skillratio += 200 + 1000 * skill_lv;

@@ -14,7 +14,7 @@ SkillBlazingAndFurious::SkillBlazingAndFurious() : SkillImplRecursiveDamageSplas
 }
 
 void SkillBlazingAndFurious::modifyDamageData(Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv) const {
-	const homun_data *hd = BL_CAST(BL_HOM, &src);
+	const homun_data* hd = BL_CAST(BL_HOM, &src);
 
 	if (hd != nullptr) {
 		dmg.div_ = hd->homunculus.spiritball;
@@ -25,13 +25,13 @@ void SkillBlazingAndFurious::castendNoDamageId(block_list* src, block_list* targ
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	/* Check if the target is an enemy; if not, skill should fail so the character doesn't unit_movepos (exploitable) */
-	if( battle_check_target(src, target, BCT_ENEMY) > 0 ) {
-		if( unit_movepos(src, target->x, target->y, 2, 1) ) {
-			skill_attack(BF_WEAPON,src,src,target,getSkillId(),skill_lv,tick,flag);
+	if (battle_check_target(src, target, BCT_ENEMY) > 0) {
+		if (unit_movepos(src, target->x, target->y, 2, 1)) {
+			skill_attack(BF_WEAPON, src, src, target, getSkillId(), skill_lv, tick, flag);
 			clif_blown(src);
 		}
-	}else if( sd ){
-		clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+	} else if (sd) {
+		clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 	}
 }
 

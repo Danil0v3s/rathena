@@ -26,7 +26,7 @@ void SkillHowlingMine::castendDamageId(block_list* src, block_list* target, uint
 
 		// Triggered by RL_FLICKER
 		map_foreachinrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), BL_CHAR | BL_SKILL,
-			src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
+		    src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
 		flag |= 1; // Don't consume requirement
 
 		if (tsc && tsc->getSCE(SC_H_MINE) && tsc->getSCE(SC_H_MINE)->val2 == src->id) {

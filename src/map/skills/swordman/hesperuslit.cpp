@@ -47,8 +47,8 @@ void SkillHesperusLit::applyAdditionalEffects(block_list* src, block_list* targe
 	map_session_data* sd = BL_CAST(BL_PC, src);
 	status_change* sc = status_get_sc(src);
 
-	if( pc_checkskill(sd,LG_PINPOINTATTACK) > 0 && sc && sc->getSCE(SC_BANDING) && sc->getSCE(SC_BANDING)->val2 > 5 )
-		skill_castend_damage_id(src,target,LG_PINPOINTATTACK, rnd_value<uint16>(1, pc_checkskill(sd,LG_PINPOINTATTACK)),tick,0);
+	if (pc_checkskill(sd, LG_PINPOINTATTACK) > 0 && sc && sc->getSCE(SC_BANDING) && sc->getSCE(SC_BANDING)->val2 > 5)
+		skill_castend_damage_id(src, target, LG_PINPOINTATTACK, rnd_value<uint16>(1, pc_checkskill(sd, LG_PINPOINTATTACK)), tick, 0);
 }
 
 void SkillHesperusLit::modifyElement(const Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv, int32& element, int32 flag) const {

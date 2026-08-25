@@ -9,33 +9,34 @@
 #include <common/timer.hpp>
 
 #include "status.hpp" // struct status_data, struct status_change
-#include "unit.hpp" // struct unit_data
+#include "unit.hpp"   // struct unit_data
 
 const t_tick MIN_ELETHINKTIME = 100;
 #define MIN_ELEDISTANCE 2
 #define MAX_ELEDISTANCE 5
 
-#define EL_MODE_AGGRESSIVE (MD_CANMOVE|MD_AGGRESSIVE|MD_CANATTACK)
-#define EL_MODE_ASSIST (MD_CANMOVE|MD_ASSIST)
+#define EL_MODE_AGGRESSIVE (MD_CANMOVE | MD_AGGRESSIVE | MD_CANATTACK)
+#define EL_MODE_ASSIST (MD_CANMOVE | MD_ASSIST)
 #define EL_MODE_PASSIVE MD_CANMOVE
 
 ///Enum of Elemental Skill Mode
 enum e_elemental_skillmode : uint8 {
-	EL_SKILLMODE_PASSIVE    = 0x1,
-	EL_SKILLMODE_ASSIST     = 0x2,
+	EL_SKILLMODE_PASSIVE = 0x1,
+	EL_SKILLMODE_ASSIST = 0x2,
 	EL_SKILLMODE_AGGRESSIVE = 0x4,
 };
 
 #if __cplusplus < 201402L
 namespace std {
-	template <> struct hash<e_elemental_skillmode> {
-		size_t operator() (const e_elemental_skillmode& t) const { return size_t(t); }
+	template <>
+	struct hash<e_elemental_skillmode> {
+		size_t operator()(const e_elemental_skillmode& t) const { return size_t(t); }
 	};
-}
+} // namespace std
 #endif
 
 ///Enum of Elemental ID
-enum elemental_elementalid  : uint16 {
+enum elemental_elementalid : uint16 {
 	// Sorcerer's Elementals
 	ELEMENTALID_AGNI_S = 2114,
 	ELEMENTALID_AGNI_M,
@@ -70,12 +71,12 @@ struct s_elemental_db {
 	status_data status;
 	view_data vd;
 	uint16 damagetaken;
-	std::unordered_map<e_elemental_skillmode, std::shared_ptr<s_elemental_skill>> skill;	/// mode, skill
+	std::unordered_map<e_elemental_skillmode, std::shared_ptr<s_elemental_skill>> skill; /// mode, skill
 };
 
 struct s_elemental_data : public block_list {
 	unit_data ud;
-	view_data *vd;
+	view_data* vd;
 	status_data base_status, battle_status;
 	status_change sc;
 	regen_data regen;
@@ -84,7 +85,7 @@ struct s_elemental_data : public block_list {
 	s_elemental elemental;
 
 	int32 masterteleport_timer;
-	map_session_data *master;
+	map_session_data* master;
 	int32 summon_timer;
 	int32 skill_timer;
 
@@ -96,7 +97,6 @@ struct s_elemental_data : public block_list {
 class ElementalDatabase : public TypesafeYamlDatabase<int32, s_elemental_db> {
 public:
 	ElementalDatabase() : TypesafeYamlDatabase("ELEMENTAL_DB", 2, 1) {
-
 	}
 
 	const std::string getDefaultLocation() override;
@@ -105,28 +105,28 @@ public:
 
 extern ElementalDatabase elemental_db;
 
-struct view_data * elemental_get_viewdata(int32 class_);
+struct view_data* elemental_get_viewdata(int32 class_);
 
-int32 elemental_create(map_session_data *sd, int32 class_, uint32 lifetime);
-int32 elemental_data_received(s_elemental *ele, bool flag);
-int32 elemental_save(s_elemental_data *ed);
+int32 elemental_create(map_session_data* sd, int32 class_, uint32 lifetime);
+int32 elemental_data_received(s_elemental* ele, bool flag);
+int32 elemental_save(s_elemental_data* ed);
 
-int32 elemental_change_mode_ack(s_elemental_data *ed, e_elemental_skillmode skill_mode);
-int32 elemental_change_mode(s_elemental_data *ed, int32 mode);
+int32 elemental_change_mode_ack(s_elemental_data* ed, e_elemental_skillmode skill_mode);
+int32 elemental_change_mode(s_elemental_data* ed, int32 mode);
 
-void elemental_heal(s_elemental_data *ed, int32 hp, int32 sp);
-int32 elemental_dead(s_elemental_data *ed);
+void elemental_heal(s_elemental_data* ed, int32 hp, int32 sp);
+int32 elemental_dead(s_elemental_data* ed);
 
-int32 elemental_delete(s_elemental_data *ed);
-void elemental_summon_stop(s_elemental_data *ed);
+int32 elemental_delete(s_elemental_data* ed);
+void elemental_summon_stop(s_elemental_data* ed);
 
-t_tick elemental_get_lifetime(s_elemental_data *ed);
+t_tick elemental_get_lifetime(s_elemental_data* ed);
 
-int32 elemental_unlocktarget(s_elemental_data *ed);
-bool elemental_skillnotok( uint16 skill_id, s_elemental_data& ed );
-int32 elemental_set_target( map_session_data *sd, const block_list* bl );
-int32 elemental_clean_effect(s_elemental_data *ed);
-int32 elemental_action(s_elemental_data *ed, block_list *bl, t_tick tick);
+int32 elemental_unlocktarget(s_elemental_data* ed);
+bool elemental_skillnotok(uint16 skill_id, s_elemental_data& ed);
+int32 elemental_set_target(map_session_data* sd, const block_list* bl);
+int32 elemental_clean_effect(s_elemental_data* ed);
+int32 elemental_action(s_elemental_data* ed, block_list* bl, t_tick tick);
 struct s_skill_condition elemental_skill_get_requirements(uint16 skill_id, uint16 skill_lv);
 
 void do_init_elemental(void);

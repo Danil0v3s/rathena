@@ -23,11 +23,11 @@ void SkillRushStrike::calculateSkillRatio(const Damage* wd, const block_list* sr
 
 void SkillRushStrike::splashSearch(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 flag) const {
 	// Jump to the target before attacking.
-	if( skill_check_unit_movepos( 5, src, target->x, target->y, 0, 1 ) ){
-		skill_blown( src, src, 1, direction_opposite( static_cast<enum directions>( map_calc_dir( target, src->x, src->y ) ) ), BLOWN_NONE);
+	if (skill_check_unit_movepos(5, src, target->x, target->y, 0, 1)) {
+		skill_blown(src, src, 1, direction_opposite(static_cast<enum directions>(map_calc_dir(target, src->x, src->y))), BLOWN_NONE);
 	}
-	clif_skill_nodamage( src, *target, getSkillId(), skill_lv); // Trigger animation
-	clif_blown( src );
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv); // Trigger animation
+	clif_blown(src);
 
 	SkillImplRecursiveDamageSplash::splashSearch(src, target, skill_lv, tick, flag);
 }

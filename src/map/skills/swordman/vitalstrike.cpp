@@ -8,8 +8,8 @@
 SkillVitalStrike::SkillVitalStrike() : SkillImpl(LK_JOINTBEAT) {
 }
 
-void SkillVitalStrike::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
-	const status_change *tsc = status_get_sc(target);
+void SkillVitalStrike::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
+	const status_change* tsc = status_get_sc(target);
 
 	base_skillratio += 10 * skill_lv - 50;
 
@@ -18,9 +18,9 @@ void SkillVitalStrike::calculateSkillRatio(const Damage *wd, const block_list *s
 		base_skillratio *= 2;
 }
 
-void SkillVitalStrike::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillVitalStrike::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	status_data* tstatus = status_get_status_data(*target);
-	status_change *tsc = status_get_sc(target);
+	status_change* tsc = status_get_sc(target);
 
 	flag = 1 << rnd() % 6;
 	if (flag != BREAK_NECK && tsc && tsc->getSCE(SC_JOINTBEAT) && tsc->getSCE(SC_JOINTBEAT)->val2 & BREAK_NECK)

@@ -17,12 +17,12 @@ void SkillRideInLightening::modifyDamageData(Damage& dmg, const block_list& src,
 
 	if (sd != nullptr) {
 		dmg.div_ = max(1, skill_lv);
-	}else {
+	} else {
 		dmg.div_ = 1;
 	}
 }
 
-void SkillRideInLightening::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillRideInLightening::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const map_session_data* sd = BL_CAST(BL_PC, src);
 
 	skillratio += -100 + 40 * skill_lv;
@@ -33,6 +33,6 @@ void SkillRideInLightening::calculateSkillRatio(const Damage *wd, const block_li
 
 void SkillRideInLightening::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
 	int32 i = skill_get_splash(getSkillId(), skill_lv);
-	map_foreachinallarea(skill_area_sub, src->m, x-i, y-i, x+i, y+i, BL_CHAR,
-		src, getSkillId(), skill_lv, tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
+	map_foreachinallarea(skill_area_sub, src->m, x - i, y - i, x + i, y + i, BL_CHAR,
+	    src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
 }

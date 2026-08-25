@@ -11,7 +11,7 @@
 SkillPangVoice::SkillPangVoice() : SkillImpl(BA_PANGVOICE) {
 }
 
-void SkillPangVoice::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillPangVoice::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 #ifdef RENEWAL
 	// In Renewal it causes Confusion and Bleeding to 100% base chance
 	sc_start(src, target, SC_CONFUSION, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));

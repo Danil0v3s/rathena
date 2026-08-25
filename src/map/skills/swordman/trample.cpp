@@ -16,9 +16,8 @@ SkillTrample::SkillTrample() : SkillImpl(LG_TRAMPLE) {
 /**
  * For Royal Guard's LG_TRAMPLE
  */
-static int32 skill_destroy_trap(block_list *bl, va_list ap)
-{
-	skill_unit *su = (skill_unit *)bl;
+static int32 skill_destroy_trap(block_list* bl, va_list ap) {
+	skill_unit* su = (skill_unit*)bl;
 
 	nullpo_ret(su);
 
@@ -26,11 +25,11 @@ static int32 skill_destroy_trap(block_list *bl, va_list ap)
 	t_tick tick = va_arg(ap, t_tick);
 
 	if (su->alive && (sg = su->group) && skill_get_inf2(sg->skill_id, INF2_ISTRAP)) {
-		switch( sg->unit_id ) {
+		switch (sg->unit_id) {
 			case UNT_CLAYMORETRAP:
 			case UNT_FIRINGTRAP:
 			case UNT_ICEBOUNDTRAP:
-				map_foreachinrange(skill_trap_splash,su, skill_get_splash(sg->skill_id, sg->skill_lv), sg->bl_flag|BL_SKILL|~BCT_SELF, su,tick);
+				map_foreachinrange(skill_trap_splash, su, skill_get_splash(sg->skill_id, sg->skill_lv), sg->bl_flag | BL_SKILL | ~BCT_SELF, su, tick);
 				break;
 			case UNT_LANDMINE:
 			case UNT_BLASTMINE:
@@ -40,9 +39,9 @@ static int32 skill_destroy_trap(block_list *bl, va_list ap)
 			case UNT_FREEZINGTRAP:
 			case UNT_CLUSTERBOMB:
 				if (battle_config.skill_wall_check && !skill_get_nk(sg->skill_id, NK_NODAMAGE))
-					map_foreachinshootrange(skill_trap_splash,su, skill_get_splash(sg->skill_id, sg->skill_lv), sg->bl_flag, su,tick);
+					map_foreachinshootrange(skill_trap_splash, su, skill_get_splash(sg->skill_id, sg->skill_lv), sg->bl_flag, su, tick);
 				else
-					map_foreachinallrange(skill_trap_splash,su, skill_get_splash(sg->skill_id, sg->skill_lv), sg->bl_flag, su,tick);
+					map_foreachinallrange(skill_trap_splash, su, skill_get_splash(sg->skill_id, sg->skill_lv), sg->bl_flag, su, tick);
 				break;
 		}
 		// Traps aren't recovered.

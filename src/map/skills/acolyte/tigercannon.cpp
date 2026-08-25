@@ -13,13 +13,13 @@
 SkillTigerCannon::SkillTigerCannon() : WeaponSkillImpl(SR_TIGERCANNON) {
 }
 
-void SkillTigerCannon::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillTigerCannon::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 	uint32 hp = sstatus->max_hp * (10 + (skill_lv * 2)) / 100;
 	uint32 sp = sstatus->max_sp * (5 + skill_lv) / 100;
 
-	if (wd->miscflag&8)
+	if (wd->miscflag & 8)
 		// Base_Damage = [((Caster consumed HP + SP) / 2) x Caster Base Level / 100] %
 		skillratio += -100 + (hp + sp) / 2;
 	else
@@ -31,12 +31,12 @@ void SkillTigerCannon::calculateSkillRatio(const Damage *wd, const block_list *s
 		skillratio += skillratio * 30 / 100;
 }
 
-void SkillTigerCannon::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *sc = status_get_sc(src);
+void SkillTigerCannon::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* sc = status_get_sc(src);
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (flag & 1) {
-		int32 sflag = flag|SD_ANIMATION;
+		int32 sflag = flag | SD_ANIMATION;
 		WeaponSkillImpl::castendDamageId(src, target, skill_lv, tick, sflag);
 	} else if (sd) {
 		if (sc && sc->getSCE(SC_COMBO) && sc->getSCE(SC_COMBO)->val1 == SR_FALLENEMPIRE && !sc->getSCE(SC_FLASHCOMBO))
@@ -45,7 +45,7 @@ void SkillTigerCannon::castendDamageId(block_list *src, block_list *target, uint
 	}
 }
 
-void SkillTigerCannon::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+void SkillTigerCannon::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, src, getSkillId(), skill_lv, tick, flag);
 }

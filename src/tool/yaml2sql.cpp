@@ -9,11 +9,11 @@
 #include <vector>
 
 #ifdef WIN32
-	#include <conio.h>
+#include <conio.h>
 #else
-	#include <termios.h>
-	#include <unistd.h>
-	#include <cstdio>
+#include <termios.h>
+#include <unistd.h>
+#include <cstdio>
 #endif
 
 #include <yaml-cpp/yaml.h>
@@ -61,64 +61,63 @@
 #include <map/storage.hpp>
 
 #if defined(BUILDBOT)
-	// Force buildbot to always convert all files
-	#define CONVERT_ALL
+// Force buildbot to always convert all files
+#define CONVERT_ALL
 #endif
 
 using namespace rathena;
 using namespace rathena::server_core;
 
 namespace rathena::tool_yaml2sql {
-class Yaml2SqlTool : public Core{
+	class Yaml2SqlTool : public Core {
 	protected:
-		bool initialize( int32 argc, char* argv[] ) override;
+		bool initialize(int32 argc, char* argv[]) override;
 
 	public:
-		Yaml2SqlTool() : Core( e_core_type::TOOL ){
-
+		Yaml2SqlTool() : Core(e_core_type::TOOL) {
 		}
-};
-}
+	};
+} // namespace rathena::tool_yaml2sql
 
 using namespace rathena::tool_yaml2sql;
 
 #ifndef WIN32
-int32 getch( void ){
-    struct termios oldattr, newattr;
-    int32 ch;
-    tcgetattr( STDIN_FILENO, &oldattr );
-    newattr = oldattr;
-    newattr.c_lflag &= ~( ICANON | ECHO );
-    tcsetattr( STDIN_FILENO, TCSANOW, &newattr );
-    ch = getchar();
-    tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
-    return ch;
+int32 getch(void) {
+	struct termios oldattr, newattr;
+	int32 ch;
+	tcgetattr(STDIN_FILENO, &oldattr);
+	newattr = oldattr;
+	newattr.c_lflag &= ~(ICANON | ECHO);
+	tcsetattr(STDIN_FILENO, TCSANOW, &newattr);
+	ch = getchar();
+	tcsetattr(STDIN_FILENO, TCSANOW, &oldattr);
+	return ch;
 }
 #endif
 
 // Constants for conversion
-std::unordered_map<const char *, int64> constants;
+std::unordered_map<const char*, int64> constants;
 
 // Forward declaration of conversion functions
-static bool item_db_yaml2sql(const std::string &file, const std::string &table);
-static bool mob_db_yaml2sql(const std::string &file, const std::string &table);
+static bool item_db_yaml2sql(const std::string& file, const std::string& table);
+static bool mob_db_yaml2sql(const std::string& file, const std::string& table);
 
-bool fileExists( const std::string& path );
-bool askConfirmation( const char* fmt, ... );
+bool fileExists(const std::string& path);
+bool askConfirmation(const char* fmt, ...);
 
 YAML::Node inNode;
 std::ofstream outFile;
 
 // Implement the function instead of including the original version by linking
-void script_set_constant_(const char *name, int64 value, const char *constant_name, bool isparameter, bool deprecated) {
+void script_set_constant_(const char* name, int64 value, const char* constant_name, bool isparameter, bool deprecated) {
 	constants[name] = value;
 }
 
-const char *constant_lookup(int32 value, const char *prefix) {
+const char* constant_lookup(int32 value, const char* prefix) {
 	if (prefix == nullptr)
 		return nullptr;
 
-	for (auto const &pair : constants) {
+	for (auto const& pair : constants) {
 		// Same prefix group and same value
 		if (strncasecmp(pair.first, prefix, strlen(prefix)) == 0 && pair.second == value) {
 			return pair.first;
@@ -128,11 +127,11 @@ const char *constant_lookup(int32 value, const char *prefix) {
 	return nullptr;
 }
 
-int64 constant_lookup_int(const char *constant) {
+int64 constant_lookup_int(const char* constant) {
 	if (constant == nullptr)
 		return -100;
 
-	for (auto const &pair : constants) {
+	for (auto const& pair : constants) {
 		if (strlen(pair.first) == strlen(constant) && strncasecmp(pair.first, constant, strlen(constant)) == 0) {
 			return pair.second;
 		}
@@ -141,37 +140,37 @@ int64 constant_lookup_int(const char *constant) {
 	return -100;
 }
 
-void copyFileIfExists( std::ofstream& file,const std::string& name ){
+void copyFileIfExists(std::ofstream& file, const std::string& name) {
 	std::string path = "doc/yaml/sql/" + name + ".sql";
 
-	if( fileExists( path ) ){
-		std::ifstream source( path, std::ios::binary );
+	if (fileExists(path)) {
+		std::ifstream source(path, std::ios::binary);
 
 		std::istreambuf_iterator<char> begin_source(source);
 		std::istreambuf_iterator<char> end_source;
-		std::ostreambuf_iterator<char> begin_dest( file );
-		copy( begin_source, end_source, begin_dest );
+		std::ostreambuf_iterator<char> begin_dest(file);
+		copy(begin_source, end_source, begin_dest);
 
 		source.close();
 	}
 }
 
-void prepareHeader(std::ofstream &file, const std::string& name) {
-	copyFileIfExists( file, name );
+void prepareHeader(std::ofstream& file, const std::string& name) {
+	copyFileIfExists(file, name);
 
 	file << "\n";
 }
 
-template<typename Func>
-bool process( const std::string& type, uint32 version, const std::vector<std::string>& paths, const std::string& name, const std::string& to_table, const std::string& table, Func lambda ){
-	for( const std::string& path : paths ){
+template <typename Func>
+bool process(const std::string& type, uint32 version, const std::vector<std::string>& paths, const std::string& name, const std::string& to_table, const std::string& table, Func lambda) {
+	for (const std::string& path : paths) {
 		const std::string name_ext = name + ".yml";
 		const std::string from = path + name_ext;
 		const std::string to = "sql-files/" + to_table + ".sql";
 
-		if( fileExists( from ) ){
+		if (fileExists(from)) {
 #ifndef CONVERT_ALL
-			if( !askConfirmation( "Found the file \"%s\", which can be converted to sql.\nDo you want to convert it now? (Y/N)\n", from.c_str() ) ){
+			if (!askConfirmation("Found the file \"%s\", which can be converted to sql.\nDo you want to convert it now? (Y/N)\n", from.c_str())) {
 				continue;
 			}
 #else
@@ -182,7 +181,7 @@ bool process( const std::string& type, uint32 version, const std::vector<std::st
 
 			try {
 				inNode = YAML::LoadFile(from);
-			} catch (YAML::Exception &e) {
+			} catch (YAML::Exception& e) {
 				ShowError("%s (Line %d: Column %d)\n", e.msg.c_str(), e.mark.line, e.mark.column);
 				if (!askConfirmation("Error found in \"%s\" while attempting to load.\nPress any key to continue.\n", from.c_str()))
 					continue;
@@ -208,7 +207,7 @@ bool process( const std::string& type, uint32 version, const std::vector<std::st
 
 			prepareHeader(outFile, table.compare(to_table) == 0 ? table : to_table);
 
-			if( !lambda( path, name_ext, table ) ){
+			if (!lambda(path, name_ext, table)) {
 				outFile.close();
 				return false;
 			}
@@ -220,8 +219,8 @@ bool process( const std::string& type, uint32 version, const std::vector<std::st
 	return true;
 }
 
-bool Yaml2SqlTool::initialize( int32 argc, char* argv[] ){
-	const std::string path_db = std::string( db_path );
+bool Yaml2SqlTool::initialize(int32 argc, char* argv[]) {
+	const std::string path_db = std::string(db_path);
 	const std::string path_db_mode = path_db + "/" + DBPATH;
 	const std::string path_db_import = path_db + "/" + DBIMPORT + "/";
 #ifdef RENEWAL
@@ -236,37 +235,36 @@ bool Yaml2SqlTool::initialize( int32 argc, char* argv[] ){
 	const std::string mob_import_table_name = "mob_db2";
 #endif
 	std::vector<std::string> item_table_suffixes = {
-		"usable",
-		"equip",
-		"etc"
-	};
+	    "usable",
+	    "equip",
+	    "etc"};
 
-	// Load constants
-	#include <map/script_constants.hpp>
+// Load constants
+#include <map/script_constants.hpp>
 
-	for( const std::string& suffix : item_table_suffixes ){
-		if (!process("ITEM_DB", 1, { path_db_mode }, "item_db_" + suffix, item_table_name + "_" + suffix, item_table_name, [](const std::string& path, const std::string& name_ext, const std::string& table) -> bool {
-			return item_db_yaml2sql(path + name_ext, table);
-		})) {
+	for (const std::string& suffix : item_table_suffixes) {
+		if (!process("ITEM_DB", 1, {path_db_mode}, "item_db_" + suffix, item_table_name + "_" + suffix, item_table_name, [](const std::string& path, const std::string& name_ext, const std::string& table) -> bool {
+			    return item_db_yaml2sql(path + name_ext, table);
+		    })) {
 			return false;
 		}
 	}
 
-	if (!process("ITEM_DB", 1, { path_db_import }, "item_db", item_import_table_name, item_import_table_name, [](const std::string& path, const std::string& name_ext, const std::string& table) -> bool {
-		return item_db_yaml2sql(path + name_ext, table);
-	})) {
+	if (!process("ITEM_DB", 1, {path_db_import}, "item_db", item_import_table_name, item_import_table_name, [](const std::string& path, const std::string& name_ext, const std::string& table) -> bool {
+		    return item_db_yaml2sql(path + name_ext, table);
+	    })) {
 		return false;
 	}
 
-	if (!process("MOB_DB", 1, { path_db_mode }, "mob_db", mob_table_name, mob_table_name, [](const std::string &path, const std::string &name_ext, const std::string &table) -> bool {
-		return mob_db_yaml2sql(path + name_ext, table);
-	})) {
+	if (!process("MOB_DB", 1, {path_db_mode}, "mob_db", mob_table_name, mob_table_name, [](const std::string& path, const std::string& name_ext, const std::string& table) -> bool {
+		    return mob_db_yaml2sql(path + name_ext, table);
+	    })) {
 		return false;
 	}
 
-	if (!process("MOB_DB", 1, { path_db_import }, "mob_db", mob_import_table_name, mob_import_table_name, [](const std::string &path, const std::string &name_ext, const std::string &table) -> bool {
-		return mob_db_yaml2sql(path + name_ext, table);
-	})) {
+	if (!process("MOB_DB", 1, {path_db_import}, "mob_db", mob_import_table_name, mob_import_table_name, [](const std::string& path, const std::string& name_ext, const std::string& table) -> bool {
+		    return mob_db_yaml2sql(path + name_ext, table);
+	    })) {
 		return false;
 	}
 
@@ -275,34 +273,34 @@ bool Yaml2SqlTool::initialize( int32 argc, char* argv[] ){
 	return true;
 }
 
-bool fileExists( const std::string& path ){
+bool fileExists(const std::string& path) {
 	std::ifstream in;
 
-	in.open( path );
+	in.open(path);
 
-	if( in.is_open() ){
+	if (in.is_open()) {
 		in.close();
 
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
 
-bool askConfirmation( const char* fmt, ... ){
+bool askConfirmation(const char* fmt, ...) {
 	va_list ap;
 
-	va_start( ap, fmt );
+	va_start(ap, fmt);
 
-	_vShowMessage( MSG_NONE, fmt, ap );
+	_vShowMessage(MSG_NONE, fmt, ap);
 
-	va_end( ap );
+	va_end(ap);
 
 	char c = getch();
 
-	if( c == 'Y' || c == 'y' ){
+	if (c == 'Y' || c == 'y') {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
@@ -321,23 +319,23 @@ std::string name2Upper(std::string name) {
 
 const std::string WHITESPACE = " \n\r\t\f\v";
 
-std::string ltrim(const std::string &s) {
+std::string ltrim(const std::string& s) {
 	size_t start = s.find_first_not_of(WHITESPACE);
 
 	return (start == std::string::npos) ? "" : s.substr(start);
 }
 
-std::string rtrim(const std::string &s) {
+std::string rtrim(const std::string& s) {
 	size_t end = s.find_last_not_of(WHITESPACE);
 
 	return (end == std::string::npos) ? "" : s.substr(0, end + 1);
 }
 
-std::string string_trim(const std::string &s) {
+std::string string_trim(const std::string& s) {
 	return rtrim(ltrim(s));
 }
 
-std::string string_escape(const std::string &s) {
+std::string string_escape(const std::string& s) {
 	size_t n = s.length();
 	std::string escaped;
 
@@ -364,7 +362,7 @@ std::string string_escape(const std::string &s) {
  * @param value: String to store node value to
  * @param string: If value is a string or not
  */
-static bool appendEntry(const YAML::Node &node, std::string &value, bool string = false) {
+static bool appendEntry(const YAML::Node& node, std::string& value, bool string = false) {
 	if (node.IsDefined()) {
 		if (string) {
 			value.append("'");
@@ -384,10 +382,10 @@ static bool appendEntry(const YAML::Node &node, std::string &value, bool string 
 // Implementation of the conversion functions
 
 // Copied and adjusted from itemdb.cpp
-static bool item_db_yaml2sql(const std::string &file, const std::string &table) {
+static bool item_db_yaml2sql(const std::string& file, const std::string& table) {
 	size_t entries = 0;
 
-	for (const YAML::Node &input : inNode["Body"]) {
+	for (const YAML::Node& input : inNode["Body"]) {
 		std::string column = "", value = "";
 
 		if (appendEntry(input["Id"], value))
@@ -419,7 +417,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 		if (appendEntry(input["Slots"], value))
 			column.append("`slots`,");
 
-		const YAML::Node &jobs = input["Jobs"];
+		const YAML::Node& jobs = input["Jobs"];
 
 		if (jobs) {
 			if (appendEntry(jobs["All"], value))
@@ -492,7 +490,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 				column.append("`job_wizard`,");
 		}
 
-		const YAML::Node &classes = input["Classes"];
+		const YAML::Node& classes = input["Classes"];
 
 		if (classes) {
 			std::string str_all_upper;
@@ -562,7 +560,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 		if (appendEntry(input["Gender"], value, true))
 			column.append("`gender`,");
 
-		const YAML::Node &locations = input["Locations"];
+		const YAML::Node& locations = input["Locations"];
 
 		if (locations) {
 			if (appendEntry(locations["Head_Top"], value))
@@ -586,8 +584,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 				column.append("`location_left_hand`,");
 				column.append("`location_right_hand`,");
 
-			}
-			else {
+			} else {
 				if (appendEntry(locations["Left_Hand"], value))
 					column.append("`location_left_hand`,");
 				if (appendEntry(locations["Right_Hand"], value))
@@ -610,8 +607,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 				column.append("`location_right_accessory`,");
 				column.append("`location_left_accessory`,");
 
-			}
-			else {
+			} else {
 				if (appendEntry(locations["Right_Accessory"], value))
 					column.append("`location_right_accessory`,");
 				if (appendEntry(locations["Left_Accessory"], value))
@@ -658,7 +654,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 		if (appendEntry(input["AliasName"], value, true))
 			column.append("`alias_name`,");
 
-		const YAML::Node &flags = input["Flags"];
+		const YAML::Node& flags = input["Flags"];
 
 		if (flags) {
 			if (appendEntry(flags["BuyingStore"], value))
@@ -679,7 +675,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 				column.append("`flag_dropeffect`,");
 		}
 
-		const YAML::Node &delay = input["Delay"];
+		const YAML::Node& delay = input["Delay"];
 
 		if (delay) {
 			if (appendEntry(delay["Duration"], value))
@@ -688,7 +684,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 				column.append("`delay_status`,");
 		}
 
-		const YAML::Node &stack = input["Stack"];
+		const YAML::Node& stack = input["Stack"];
 
 		if (stack) {
 			if (appendEntry(stack["Amount"], value))
@@ -703,7 +699,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 				column.append("`stack_guildstorage`,");
 		}
 
-		const YAML::Node &nouse = input["NoUse"];
+		const YAML::Node& nouse = input["NoUse"];
 
 		if (nouse) {
 			if (appendEntry(nouse["Override"], value))
@@ -712,7 +708,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 				column.append("`nouse_sitting`,");
 		}
 
-		const YAML::Node &trade = input["Trade"];
+		const YAML::Node& trade = input["Trade"];
 
 		if (trade) {
 			if (appendEntry(trade["Override"], value))
@@ -745,7 +741,7 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 			column.append("`unequip_script`,");
 
 		column.pop_back(); // Remove last ','
-		value.pop_back(); // Remove last ','
+		value.pop_back();  // Remove last ','
 
 		outFile << "REPLACE INTO `" + table + "` (" + column + ") VALUES (" + value + ");\n";
 		entries++;
@@ -757,10 +753,10 @@ static bool item_db_yaml2sql(const std::string &file, const std::string &table) 
 }
 
 // Copied and adjusted from mob.cpp
-static bool mob_db_yaml2sql(const std::string &file, const std::string &table) {
+static bool mob_db_yaml2sql(const std::string& file, const std::string& table) {
 	size_t entries = 0;
 
-	for (const YAML::Node &input : inNode["Body"]) {
+	for (const YAML::Node& input : inNode["Body"]) {
 		std::string column = "", value = "";
 
 		if (appendEntry(input["Id"], value))
@@ -820,17 +816,17 @@ static bool mob_db_yaml2sql(const std::string &file, const std::string &table) {
 		if (appendEntry(input["Race"], value, true))
 			column.append("`race`,");
 
-		const YAML::Node &racegroups = input["RaceGroups"];
+		const YAML::Node& racegroups = input["RaceGroups"];
 
 		if (racegroups) {
 			for (uint16 i = 1; i < RC2_MAX; i++) {
 				const char* constant_ptr = constant_lookup(i, "RC2_");
 
-				if( constant_ptr == nullptr ){
+				if (constant_ptr == nullptr) {
 					continue;
 				}
 
-				std::string constant( constant_ptr );
+				std::string constant(constant_ptr);
 
 				constant.erase(0, 4);
 
@@ -864,7 +860,7 @@ static bool mob_db_yaml2sql(const std::string &file, const std::string &table) {
 		if (appendEntry(input["Class"], value, true))
 			column.append("`class`,");
 
-		const YAML::Node &modes = input["Modes"];
+		const YAML::Node& modes = input["Modes"];
 
 		if (modes) {
 			if (appendEntry(modes["CanMove"], value))
@@ -925,7 +921,7 @@ static bool mob_db_yaml2sql(const std::string &file, const std::string &table) {
 			if (!input["MvpDrops"].IsDefined())
 				continue;
 
-			const YAML::Node &mvpdrops = input["MvpDrops"][i];
+			const YAML::Node& mvpdrops = input["MvpDrops"][i];
 
 			if (mvpdrops) {
 				if (appendEntry(mvpdrops["Item"], value, true))
@@ -943,7 +939,7 @@ static bool mob_db_yaml2sql(const std::string &file, const std::string &table) {
 			if (!input["Drops"].IsDefined())
 				continue;
 
-			const YAML::Node &drops = input["Drops"][i];
+			const YAML::Node& drops = input["Drops"][i];
 
 			if (drops) {
 				if (appendEntry(drops["Item"], value, true))
@@ -960,7 +956,7 @@ static bool mob_db_yaml2sql(const std::string &file, const std::string &table) {
 		}
 
 		column.pop_back(); // Remove last ','
-		value.pop_back(); // Remove last ','
+		value.pop_back();  // Remove last ','
 
 		outFile << "REPLACE INTO `" + table + "` (" + column + ") VALUES (" + value + ");\n";
 		entries++;
@@ -971,6 +967,6 @@ static bool mob_db_yaml2sql(const std::string &file, const std::string &table) {
 	return true;
 }
 
-int32 main( int32 argc, char *argv[] ){
-	return main_core<Yaml2SqlTool>( argc, argv );
+int32 main(int32 argc, char* argv[]) {
+	return main_core<Yaml2SqlTool>(argc, argv);
 }

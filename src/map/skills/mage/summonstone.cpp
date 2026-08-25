@@ -13,8 +13,8 @@
 SkillSummonStone::SkillSummonStone() : SkillImpl(WL_SUMMONSTONE) {
 }
 
-void SkillSummonStone::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *sc = status_get_sc(src);
+void SkillSummonStone::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* sc = status_get_sc(src);
 	map_session_data* sd = BL_CAST(BL_PC, src);
 	int32 i = 0;
 
@@ -36,7 +36,7 @@ void SkillSummonStone::castendNoDamageId(block_list *src, block_list *target, ui
 
 		if (sphere == SC_NONE) {
 			if (sd) // No free slots to put SC
-				clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL_SUMMON );
+				clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL_SUMMON);
 			return;
 		}
 
@@ -51,12 +51,11 @@ void SkillSummonStone::castendNoDamageId(block_list *src, block_list *target, ui
 	clif_skill_nodamage(src, *target, getSkillId(), 0, false);
 }
 
-
 // WL_SUMMON_ATK_GROUND
 SkillSummonAttackEarth::SkillSummonAttackEarth() : SkillImpl(WL_SUMMON_ATK_GROUND) {
 }
 
-void SkillSummonAttackEarth::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillSummonAttackEarth::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	skillratio += 200;
 	RE_LVL_DMOD(100);
 }

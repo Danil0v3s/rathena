@@ -35,9 +35,9 @@
 #define MAP_VEINS "veins"
 #define MAP_JAIL "sec_pri"
 #ifdef RENEWAL
-	#define MAP_NOVICE "iz_int"
+#define MAP_NOVICE "iz_int"
 #else
-	#define MAP_NOVICE "new_1-1"
+#define MAP_NOVICE "new_1-1"
 #endif
 #define MAP_MOSCOVIA "moscovia"
 #define MAP_MIDCAMP "mid_camp"
@@ -58,16 +58,16 @@
 const char* mapindex_getmapname(const char* string, char* output);
 const char* mapindex_getmapname_ext(const char* string, char* output);
 
-uint16 mapindex_name2idx(const char* name, const char *func);
+uint16 mapindex_name2idx(const char* name, const char* func);
 #define mapindex_name2id(mapname) mapindex_name2idx((mapname), __FUNCTION__)
 
-const char* mapindex_idx2name(uint16 id, const char *func);
+const char* mapindex_idx2name(uint16 id, const char* func);
 #define mapindex_id2name(mapindex) mapindex_idx2name((mapindex), __FUNCTION__)
 
 int32 mapindex_addmap(int32 index, const char* name);
 int32 mapindex_removemap(int32 index);
 
-void mapindex_check_mapdefault(const char *mapname);
+void mapindex_check_mapdefault(const char* mapname);
 
 void mapindex_init(void);
 void mapindex_final(void);

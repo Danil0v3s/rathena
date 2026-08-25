@@ -6,7 +6,7 @@
 #include "map/clif.hpp"
 #include "map/status.hpp"
 
-SkillImpl::SkillImpl(e_skill skill_id){
+SkillImpl::SkillImpl(e_skill skill_id) {
 	this->skill_id_ = skill_id;
 }
 
@@ -54,8 +54,7 @@ StatusSkillImpl::StatusSkillImpl(e_skill skillId, bool end_if_running) : SkillIm
 	this->end_if_running = end_if_running;
 };
 
-void StatusSkillImpl::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const
-{
+void StatusSkillImpl::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	sc_type type = skill_get_sc(getSkillId());
 
 	if (type == SC_NONE) {
@@ -81,13 +80,13 @@ void WeaponSkillImpl::castendDamageId(block_list* src, block_list* target, uint1
 	skill_attack(BF_WEAPON, src, src, target, getSkillId(), skill_lv, tick, flag);
 }
 
-SkillImplRecursiveDamageSplash::SkillImplRecursiveDamageSplash(e_skill skill_id) : SkillImpl(skill_id){
+SkillImplRecursiveDamageSplash::SkillImplRecursiveDamageSplash(e_skill skill_id) : SkillImpl(skill_id) {
 }
 
 void SkillImplRecursiveDamageSplash::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	status_change* tsc = status_get_sc(target);
 
-	if (flag & 1){
+	if (flag & 1) {
 		// Recursive invocation
 		int32 sflag = skill_area_temp[0] & 0xFFF;
 		std::bitset<INF2_MAX> inf2 = skill_db.find(getSkillId())->inf2;
@@ -101,7 +100,7 @@ void SkillImplRecursiveDamageSplash::castendDamageId(block_list* src, block_list
 			sflag |= SD_ANIMATION; // original target gets no animation (as well as all NPC skills)
 
 		this->splashDamage(src, target, skill_lv, tick, sflag);
-	}else{
+	} else {
 		skill_area_temp[0] = 0;
 		skill_area_temp[1] = target->id;
 		skill_area_temp[2] = 0;
@@ -121,21 +120,21 @@ void SkillImplRecursiveDamageSplash::castendPos2(block_list* src, int32 x, int32
 }
 
 int16 SkillImplRecursiveDamageSplash::getSearchSize(block_list* src, uint16 skill_lv) const {
-	return skill_get_splash( this->getSkillId(), skill_lv );
+	return skill_get_splash(this->getSkillId(), skill_lv);
 }
 
 int16 SkillImplRecursiveDamageSplash::getSplashSearchSize(block_list* src, uint16 skill_lv) const {
-	return skill_get_splash( this->getSkillId(), skill_lv );
+	return skill_get_splash(this->getSkillId(), skill_lv);
 }
 
 int32 SkillImplRecursiveDamageSplash::getSplashTarget(block_list* src) const {
-	return BL_CHAR|BL_SKILL;
+	return BL_CHAR | BL_SKILL;
 }
 
 void SkillImplRecursiveDamageSplash::splashSearch(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 flag) const {
 	// if skill damage should be split among targets, count them
 	// SD_LEVEL -> Forced splash damage -> count targets
-	if (flag & SD_LEVEL || skill_get_nk(getSkillId(), NK_SPLASHSPLIT)){
+	if (flag & SD_LEVEL || skill_get_nk(getSkillId(), NK_SPLASHSPLIT)) {
 		skill_area_temp[0] = map_foreachinallrange(skill_area_sub, target, this->getSearchSize(src, skill_lv), BL_CHAR, src, getSkillId(), skill_lv, tick, BCT_ENEMY, skill_area_sub_count);
 		// If there are no characters in the area, then it always counts as if there was one target
 		// This happens when targetting skill units such as icewall

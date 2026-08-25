@@ -10,18 +10,18 @@
 SkillVenomSwamp::SkillVenomSwamp() : SkillImpl(EM_VENOM_SWAMP) {
 }
 
-void SkillVenomSwamp::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillVenomSwamp::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	sc_start(src, target, SC_HANDICAPSTATE_DEADLYPOISON, 3, skill_lv, skill_get_time2(getSkillId(), skill_lv));
 }
 
-void SkillVenomSwamp::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillVenomSwamp::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 
 	skillratio += -100 + 700 + 1100 * skill_lv;
 	skillratio += 5 * sstatus->spl;
 
-	if( sc && sc->getSCE( SC_SUMMON_ELEMENTAL_SERPENS ) ){
+	if (sc && sc->getSCE(SC_SUMMON_ELEMENTAL_SERPENS)) {
 		skillratio += 200 * skill_lv;
 		skillratio += 2 * sstatus->spl;
 	}
@@ -30,6 +30,6 @@ void SkillVenomSwamp::calculateSkillRatio(const Damage *wd, const block_list *sr
 }
 
 void SkillVenomSwamp::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
-	flag|=1;//Set flag to 1 to prevent deleting ammo (it will be deleted on group-delete).
-	skill_unitsetting(src,getSkillId(),skill_lv,x,y,0);
+	flag |= 1; //Set flag to 1 to prevent deleting ammo (it will be deleted on group-delete).
+	skill_unitsetting(src, getSkillId(), skill_lv, x, y, 0);
 }

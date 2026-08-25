@@ -12,10 +12,10 @@
 SkillTalismanOfRedPhoenix::SkillTalismanOfRedPhoenix() : SkillImplRecursiveDamageSplash(SOA_TALISMAN_OF_RED_PHOENIX) {
 }
 
-void SkillTalismanOfRedPhoenix::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillTalismanOfRedPhoenix::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
-	const map_session_data* sd = BL_CAST( BL_PC, src );
+	const status_change* sc = status_get_sc(src);
+	const map_session_data* sd = BL_CAST(BL_PC, src);
 
 	skillratio += -100 + 1650 + 2150 * skill_lv;
 	skillratio += pc_checkskill(sd, SOA_TALISMAN_MASTERY) * 15 * skill_lv;
@@ -26,11 +26,11 @@ void SkillTalismanOfRedPhoenix::calculateSkillRatio(const Damage *wd, const bloc
 }
 
 void SkillTalismanOfRedPhoenix::splashSearch(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 flag) const {
-	status_change *sc = status_get_sc(src);
+	status_change* sc = status_get_sc(src);
 
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_area_temp[0] = map_foreachinallrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), BL_CHAR, src, getSkillId(), skill_lv, tick, BCT_ENEMY, skill_area_sub_count);
-	if (sc != nullptr && sc->getSCE(SC_T_SECOND_GOD) != nullptr){
+	if (sc != nullptr && sc->getSCE(SC_T_SECOND_GOD) != nullptr) {
 		sc_start(src, src, skill_get_sc(getSkillId()), 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
 	}
 

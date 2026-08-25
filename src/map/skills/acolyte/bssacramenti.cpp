@@ -28,11 +28,11 @@ void SkillBenedictioSanctissimiSacramenti::castendPos2(block_list* src, int32 x,
 	skill_area_temp[1] = src->id;
 	int32 i = skill_get_splash(getSkillId(), skill_lv);
 	map_foreachinallarea(skill_area_sub,
-		src->m, x-i, y-i, x+i, y+i, BL_PC,
-		src, getSkillId(), skill_lv, tick, flag|BCT_ALL|1,
-		skill_castend_nodamage_id);
+	    src->m, x - i, y - i, x + i, y + i, BL_PC,
+	    src, getSkillId(), skill_lv, tick, flag | BCT_ALL | 1,
+	    skill_castend_nodamage_id);
 	map_foreachinallarea(skill_area_sub,
-		src->m, x-i, y-i, x+i, y+i, BL_CHAR,
-		src, getSkillId(), skill_lv, tick, flag|BCT_ENEMY|1,
-		skill_castend_damage_id);
+	    src->m, x - i, y - i, x + i, y + i, BL_CHAR,
+	    src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1,
+	    skill_castend_damage_id);
 }

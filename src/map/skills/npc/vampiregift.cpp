@@ -9,11 +9,11 @@
 SkillVampireGift::SkillVampireGift() : SkillImplRecursiveDamageSplash(NPC_VAMPIRE_GIFT) {
 }
 
-void SkillVampireGift::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillVampireGift::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += ((skill_lv - 1) % 5 + 1) * 100;
 }
 
-void SkillVampireGift::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillVampireGift::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_castend_damage_id(src, src, getSkillId(), skill_lv, tick, flag);
 }
 

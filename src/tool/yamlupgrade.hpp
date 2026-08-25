@@ -11,16 +11,15 @@
 using rathena::server_core::Core;
 using rathena::server_core::e_core_type;
 
-namespace rathena::tool_yamlupgrade{
-class YamlUpgradeTool : public Core{
+namespace rathena::tool_yamlupgrade {
+	class YamlUpgradeTool : public Core {
 	protected:
-		bool initialize( int32 argc, char* argv[] ) override;
+		bool initialize(int32 argc, char* argv[]) override;
 
 	public:
-		YamlUpgradeTool() : Core( e_core_type::TOOL ){
-
+		YamlUpgradeTool() : Core(e_core_type::TOOL) {
 		}
-};
-}
+	};
+} // namespace rathena::tool_yamlupgrade
 
 #endif /* YAMLUPGRADE_HPP */

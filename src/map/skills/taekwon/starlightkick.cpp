@@ -28,14 +28,14 @@ void SkillStarLightKick::splashSearch(block_list* src, block_list* target, uint1
 
 	uint8 dir = DIR_NORTHEAST;
 	if (target->x != src->x || target->y != src->y)
-		dir = map_calc_dir(target, src->x, src->y);	// dir based on target as we move player based on target location
+		dir = map_calc_dir(target, src->x, src->y); // dir based on target as we move player based on target location
 	if (skill_check_unit_movepos(0, src, target->x + dirx[dir], target->y + diry[dir], 1, 1)) {
-		clif_skill_nodamage(src,*target,getSkillId(),skill_lv,1);
+		clif_skill_nodamage(src, *target, getSkillId(), skill_lv, 1);
 		clif_blown(src);
 		skill_attack(BF_WEAPON, src, src, target, getSkillId(), skill_lv, tick, flag);
 	} else {
 		if (sd != nullptr)
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 
 		// TODO: Should we return here?
 	}

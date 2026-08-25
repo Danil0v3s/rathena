@@ -25,7 +25,6 @@ void SkillWildShot::castendDamageId(block_list* src, block_list* target, uint16 
 			splash += 1;
 		clif_skill_nodamage(src, *target, getSkillId(), skill_lv, 1);
 		map_foreachinrange(skill_area_sub, target, splash, BL_CHAR, src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | SD_SPLASH | 1, skill_castend_damage_id);
-
 	}
 }
 

@@ -13,13 +13,13 @@ SkillDestructiveHurricane::SkillDestructiveHurricane() : SkillImplRecursiveDamag
 }
 
 void SkillDestructiveHurricane::modifyDamageData(Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv) const {
-	const status_change *sc = status_get_sc(&src);
+	const status_change* sc = status_get_sc(&src);
 
 	if (sc != nullptr && sc->hasSCE(SC_CLIMAX) && sc->getSCE(SC_CLIMAX)->val1 == 2)
 		dmg.blewcount = 2;
 }
 
-void SkillDestructiveHurricane::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillDestructiveHurricane::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 600 + 3250 * skill_lv;
@@ -29,11 +29,11 @@ void SkillDestructiveHurricane::calculateSkillRatio(const Damage *wd, const bloc
 	RE_LVL_DMOD(100);
 }
 
-void SkillDestructiveHurricane::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *sc = status_get_sc(src);
+void SkillDestructiveHurricane::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* sc = status_get_sc(src);
 	sc_type type = skill_get_sc(getSkillId());
 
-	if (flag&1) { // Buff from Crystal Impact with level 1 Climax.
+	if (flag & 1) { // Buff from Crystal Impact with level 1 Climax.
 		sc_start(src, target, type, 100, skill_lv, skill_get_time2(getSkillId(), skill_lv));
 	} else {
 		uint16 climax_lv = 0, splash_size = skill_get_splash(getSkillId(), skill_lv);
@@ -42,7 +42,7 @@ void SkillDestructiveHurricane::castendNoDamageId(block_list *src, block_list *t
 			climax_lv = sc->getSCE(SC_CLIMAX)->val1;
 
 		if (climax_lv == 5) { // Adjusts splash AoE size depending on skill.
-			splash_size = 9; // 19x19
+			splash_size = 9;  // 19x19
 		}
 
 		skill_area_temp[1] = 0;
@@ -59,24 +59,23 @@ void SkillDestructiveHurricane::castendNoDamageId(block_list *src, block_list *t
 	}
 }
 
-void SkillDestructiveHurricane::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
-	status_change *sc = status_get_sc(src);
+void SkillDestructiveHurricane::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+	status_change* sc = status_get_sc(src);
 
 	// Targets hit are dealt a additional hit through Climax.
 	if (sc && sc->getSCE(SC_CLIMAX) && sc->getSCE(SC_CLIMAX)->val1 == 1)
-		skill_castend_damage_id(src, target, AG_DESTRUCTIVE_HURRICANE_CLIMAX, skill_lv, tick, SD_LEVEL|SD_ANIMATION);
+		skill_castend_damage_id(src, target, AG_DESTRUCTIVE_HURRICANE_CLIMAX, skill_lv, tick, SD_LEVEL | SD_ANIMATION);
 }
-
 
 // AG_DESTRUCTIVE_HURRICANE_CLIMAX
 SkillDestructiveHurricaneClimax::SkillDestructiveHurricaneClimax() : SkillImpl(AG_DESTRUCTIVE_HURRICANE_CLIMAX) {
 }
 
-void SkillDestructiveHurricaneClimax::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillDestructiveHurricaneClimax::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += -100 + 12500;
 	// Skill not affected by Baselevel and SPL
 }
 
-void SkillDestructiveHurricaneClimax::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	skill_attack(BF_MAGIC,src,src,target,getSkillId(),skill_lv,tick,flag);
+void SkillDestructiveHurricaneClimax::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	skill_attack(BF_MAGIC, src, src, target, getSkillId(), skill_lv, tick, flag);
 }

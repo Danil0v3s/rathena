@@ -44,7 +44,7 @@
 #include "tunaparty.cpp"
 
 std::unique_ptr<const SkillImpl> SkillFactorySummoner::create(const e_skill skill_id) const {
-	switch( skill_id ){
+	switch (skill_id) {
 		case SH_BLESSING_OF_MYSTICAL_CREATURES:
 			return std::make_unique<SkillBlessingofMysticalCreatures>();
 		case SH_CHUL_HO_BATTERING:
@@ -80,7 +80,7 @@ std::unique_ptr<const SkillImpl> SkillFactorySummoner::create(const e_skill skil
 		case SU_BUNCHOFSHRIMP:
 			return std::make_unique<SkillBunchofShrimp>();
 		case SU_CHATTERING:
-			return std::make_unique<SkillChattering>();	// FIX ME: this skill seems to be StatusSkillImpl
+			return std::make_unique<SkillChattering>(); // FIX ME: this skill seems to be StatusSkillImpl
 		case SU_CN_METEOR:
 			return std::make_unique<SkillCatnipMeteor>();
 		case SU_CN_METEOR2:
@@ -90,7 +90,7 @@ std::unique_ptr<const SkillImpl> SkillFactorySummoner::create(const e_skill skil
 		case SU_FRESHSHRIMP:
 			return std::make_unique<StatusSkillImpl>(skill_id);
 		case SU_GROOMING:
-			return std::make_unique<SkillGrooming>();	// FIX ME: this skill seems to be StatusSkillImpl
+			return std::make_unique<SkillGrooming>(); // FIX ME: this skill seems to be StatusSkillImpl
 		case SU_HIDE:
 			return std::make_unique<StatusSkillImpl>(skill_id, true);
 		case SU_HISS:

@@ -20,7 +20,7 @@ void SkillWarmthoftheSun::castendPos2(block_list* src, int32 x, int32 y, uint16 
 	std::shared_ptr<s_skill_unit_group> sg;
 
 	skill_clear_unitgroup(src);
-	if ((sg = skill_unitsetting(src,getSkillId(),skill_lv,src->x,src->y,0)))
-		sc_start4(src,src,type,100,skill_lv,0,0,sg->group_id,skill_get_time(getSkillId(),skill_lv));
-	flag|=1;
+	if ((sg = skill_unitsetting(src, getSkillId(), skill_lv, src->x, src->y, 0)))
+		sc_start4(src, src, type, 100, skill_lv, 0, 0, sg->group_id, skill_get_time(getSkillId(), skill_lv));
+	flag |= 1;
 }

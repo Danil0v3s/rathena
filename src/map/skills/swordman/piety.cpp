@@ -16,7 +16,7 @@ void SkillPiety::castendNoDamageId(block_list* src, block_list* target, uint16 s
 	} else {
 		skill_area_temp[2] = 0;
 		map_foreachinallrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), BL_PC,
-			src, getSkillId(), skill_lv, tick, flag | SD_PREAMBLE | BCT_PARTY | BCT_SELF | 1, skill_castend_nodamage_id);
+		    src, getSkillId(), skill_lv, tick, flag | SD_PREAMBLE | BCT_PARTY | BCT_SELF | 1, skill_castend_nodamage_id);
 		clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	}
 }

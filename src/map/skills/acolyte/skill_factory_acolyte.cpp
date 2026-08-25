@@ -112,7 +112,7 @@
 #include "zen.cpp"
 
 std::unique_ptr<const SkillImpl> SkillFactoryAcolyte::create(const e_skill skill_id) const {
-	switch( skill_id ){
+	switch (skill_id) {
 		case AB_ADORAMUS:
 			return std::make_unique<SkillAdoramus>();
 		case AB_ANCILLA:

@@ -6,6 +6,6 @@
 SkillSnatch::SkillSnatch() : WeaponSkillImpl(RG_INTIMIDATE) {
 }
 
-void SkillSnatch::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillSnatch::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += 30 * skill_lv;
 }

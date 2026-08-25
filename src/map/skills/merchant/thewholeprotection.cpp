@@ -11,12 +11,12 @@
 SkillTheWholeProtection::SkillTheWholeProtection() : SkillImpl(BO_THE_WHOLE_PROTECTION) {
 }
 
-void SkillTheWholeProtection::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillTheWholeProtection::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	map_session_data* sd = BL_CAST(BL_PC, src);
 	map_session_data* dstsd = BL_CAST(BL_PC, target);
 
 	if (sd == nullptr || sd->status.party_id == 0 || (flag & 1)) {
-		uint32 equip[] = { EQP_WEAPON, EQP_SHIELD, EQP_ARMOR, EQP_HEAD_TOP };
+		uint32 equip[] = {EQP_WEAPON, EQP_SHIELD, EQP_ARMOR, EQP_HEAD_TOP};
 
 		for (uint8 i_eqp = 0; i_eqp < 4; i_eqp++) {
 			if (target->type != BL_PC || (dstsd && pc_checkequip(dstsd, equip[i_eqp]) < 0))

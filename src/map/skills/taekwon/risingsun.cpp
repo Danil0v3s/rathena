@@ -18,11 +18,11 @@ void SkillRisingSun::castendDamageId(block_list* src, block_list* target, uint16
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_attack(skill_get_type(getSkillId()), src, src, target, getSkillId(), skill_lv, tick, flag);
 
-	if ( sc == nullptr || ( sc->getSCE( SC_RISING_SUN ) == nullptr && sc->getSCE( SC_NOON_SUN ) == nullptr && sc->getSCE( SC_SUNSET_SUN ) == nullptr ) ){
+	if (sc == nullptr || (sc->getSCE(SC_RISING_SUN) == nullptr && sc->getSCE(SC_NOON_SUN) == nullptr && sc->getSCE(SC_SUNSET_SUN) == nullptr)) {
 		sc_start(src, src, SC_RISING_SUN, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
-	}else if( sc->getSCE( SC_NOON_SUN ) == nullptr && sc->getSCE( SC_SUNSET_SUN ) == nullptr ){
+	} else if (sc->getSCE(SC_NOON_SUN) == nullptr && sc->getSCE(SC_SUNSET_SUN) == nullptr) {
 		sc_start(src, src, SC_NOON_SUN, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
-	}else if( sc->getSCE( SC_SUNSET_SUN ) == nullptr ){
+	} else if (sc->getSCE(SC_SUNSET_SUN) == nullptr) {
 		sc_start(src, src, SC_SUNSET_SUN, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
 	}
 }

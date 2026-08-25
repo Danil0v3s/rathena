@@ -7,7 +7,7 @@ SkillRagingTrifectaBlow::SkillRagingTrifectaBlow() : WeaponSkillImpl(MO_TRIPLEAT
 }
 
 void SkillRagingTrifectaBlow::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	int32 sflag = flag|SD_ANIMATION;
+	int32 sflag = flag | SD_ANIMATION;
 
 	WeaponSkillImpl::castendDamageId(src, target, skill_lv, tick, sflag);
 }

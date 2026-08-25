@@ -11,7 +11,7 @@
 SkillAxeTornado::SkillAxeTornado() : SkillImplRecursiveDamageSplash(NC_AXETORNADO) {
 }
 
-void SkillAxeTornado::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillAxeTornado::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 	const status_change* sc = status_get_sc(src);
 
@@ -22,11 +22,11 @@ void SkillAxeTornado::calculateSkillRatio(const Damage *wd, const block_list *sr
 	RE_LVL_DMOD(100);
 }
 
-void SkillAxeTornado::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+void SkillAxeTornado::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 
 	if (skill_area_temp[2] == 0) {
-		clif_skill_damage( *src, *src, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE );
+		clif_skill_damage(*src, *src, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE);
 	}
 }

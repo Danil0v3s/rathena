@@ -20,7 +20,7 @@ void SkillInfraredScan::castendDamageId(block_list* src, block_list* target, uin
 		status_change_end(target, SC_CLOAKINGEXCEED);
 		status_change_end(target, SC_CAMOUFLAGE);
 		status_change_end(target, SC_NEWMOON);
-		if (tsc && tsc->getSCE(SC__SHADOWFORM) && rnd() % 100 < 100 - tsc->getSCE(SC__SHADOWFORM)->val1 * 10) {// [100 - (Skill Level x 10)] %
+		if (tsc && tsc->getSCE(SC__SHADOWFORM) && rnd() % 100 < 100 - tsc->getSCE(SC__SHADOWFORM)->val1 * 10) { // [100 - (Skill Level x 10)] %
 			status_change_end(target, SC__SHADOWFORM);
 		}
 		sc_start(src, target, SC_INFRAREDSCAN, 10000, skill_lv, skill_get_time(getSkillId(), skill_lv));
@@ -30,6 +30,6 @@ void SkillInfraredScan::castendDamageId(block_list* src, block_list* target, uin
 	}
 }
 
-void SkillInfraredScan::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillInfraredScan::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_castend_damage_id(src, src, getSkillId(), skill_lv, tick, flag);
 }

@@ -22,7 +22,7 @@ void SkillBlazingFlameBlast::calculateSkillRatio(const Damage* wd, const block_l
 	const status_change* sc = status_get_sc(src);
 
 	skillratio += -100 + 2000 + 3800 * skill_lv;
-	skillratio += 10 * sstatus->pow;	// !TODO: unknown ratio
+	skillratio += 10 * sstatus->pow; // !TODO: unknown ratio
 	if (sc != nullptr && sc->hasSCE(SC_MASSIVE_F_BLASTER))
 		skillratio += 1500 + 400 * skill_lv;
 	RE_LVL_DMOD(100);

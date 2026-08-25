@@ -11,7 +11,7 @@
 SkillImprovisedSong::SkillImprovisedSong() : SkillImpl(WM_RANDOMIZESPELL) {
 }
 
-void SkillImprovisedSong::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillImprovisedSong::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	if (rnd() % 100 < 30 + (10 * skill_lv)) {
 		status_change_end(target, SC_SONGOFMANA);
 		status_change_end(target, SC_DANCEWITHWUG);

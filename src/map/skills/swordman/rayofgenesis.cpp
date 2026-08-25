@@ -13,7 +13,7 @@ SkillRayOfGenesis::SkillRayOfGenesis() : SkillImplRecursiveDamageSplash(LG_RAYOF
 }
 
 void SkillRayOfGenesis::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }
 
@@ -29,8 +29,8 @@ void SkillRayOfGenesis::applyAdditionalEffects(block_list* src, block_list* targ
 	status_data* tstatus = status_get_status_data(*target);
 
 	// 50% chance to cause Blind on Undead and Demon monsters.
-	if ( battle_check_undead(tstatus->race, tstatus->def_ele) || tstatus->race == RC_DEMON )
-		sc_start(src,target, SC_BLIND, 50, skill_lv, skill_get_time(getSkillId(),skill_lv));
+	if (battle_check_undead(tstatus->race, tstatus->def_ele) || tstatus->race == RC_DEMON)
+		sc_start(src, target, SC_BLIND, 50, skill_lv, skill_get_time(getSkillId(), skill_lv));
 }
 
 void SkillRayOfGenesis::modifyElement(const Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv, int32& element, int32 flag) const {
