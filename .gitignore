@@ -112,3 +112,7 @@ Thumbs.db
 generated
 
 /build-*
+
+# python
+__pycache__/
+*.pyc
