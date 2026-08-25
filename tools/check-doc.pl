@@ -137,7 +137,7 @@ sub Script_Chk { my ($raDef_sct) = @_;
 		my $sInFence = 0;
 		while(<FILE_DOC>){
 			my @aNames = ();
-			if($_ =~ /^### ([A-Za-z_][A-Za-z0-9_]*)\s*$/){
+			if($_ =~ /^### ([A-Za-z_][A-Za-z0-9_]*)(?: \/ [A-Za-z_][A-Za-z0-9_]*)*\s*$/){
 				push(@aNames,$1);
 				$sInEntry = 1; $sInFence = 0;
 			}
@@ -223,7 +223,7 @@ sub Atc_Chk {  my ($raDef_act) = @_;
 		my $sInEntry = 0;
 		my $sInFence = 0;
 		while(<FILE_DOC>){
-			if($_ =~ /^### \@([A-Za-z0-9_]+)\s*$/){
+			if($_ =~ /^### \@([A-Za-z0-9_]+)(?: \/ \@[A-Za-z0-9_]+)*\s*$/){
 				push(@aDoc_act,$1);
 				$sInEntry = 1; $sInFence = 0;
 			}

@@ -39,6 +39,11 @@ DOC_REF_RE = re.compile(r"doc/([A-Za-z0-9_]+)\.txt")
 ENTRY_NAME_RE = re.compile(r"^[*@#]([A-Za-z_][A-Za-z0-9_]*)")
 
 
+def is_code(line):
+    """Tab-indented, tab-separated or deeply space-indented lines are examples/tables."""
+    return line.startswith("\t") or "\t" in line or line.startswith("    ")
+
+
 def is_dashes(line):
     return len(line) >= 3 and set(line) == {"-"}
 
@@ -84,7 +89,11 @@ ENTRY_STYLES = {
     "status_change.txt": (re.compile(r"^SC_[A-Z0-9_]+\t"), True, False),
     "packet_interserv.txt": (re.compile(r"^0x[0-9A-Fa-f]+:"), True, False),
 }
-DEFAULT_STYLE = (re.compile(r"^\*(?!\*)"), False, True)
+DEFAULT_STYLE = (re.compile(r"^\*(?![*\s])"), False, True)
+SUBSECTION_RE = re.compile(r"^\*{1,2}\s+(\S.*)$")
+# 'nothing  - A permanent variable ...', '"#"  - ...', 'BaseClass - ...': hand-made definition lists
+DEFINITION_RE = re.compile(r"^(\S[^\s\t]{0,19})\s+-\s+(\S.*)$")
+OPERATOR_LINE_RE = re.compile(r"^([-+*])\s+-\s")
 
 
 def convert(text, entry_style, converted_names):
@@ -140,13 +149,19 @@ def convert(text, entry_style, converted_names):
             i += 3
             continue
 
+        # continuation of a definition item: indented lines right after it (no blank line)
+        if line.startswith(("    ", "\t")) and out and (out[-1].startswith("- `") or out[-1].startswith("  ")) and lines[i - 1].strip() != "":
+            out.append("  " + prose(line.strip(), converted_names))
+            i += 1
+            continue
+
         # tab-indented block -> code
-        if line.startswith("\t") or ("\t" in line and not entry_re.match(line)):
+        if is_code(line) and not entry_re.match(line):
             block = []
             j = i
             while j < n:
                 l = lines[j].rstrip("\r")
-                if l.startswith("\t") or ("\t" in l and not entry_re.match(l)):
+                if is_code(l) and not entry_re.match(l):
                     block.append(l.rstrip())
                     j += 1
                 elif l.strip() == "":
@@ -154,7 +169,7 @@ def convert(text, entry_style, converted_names):
                     k = j
                     while k < n and lines[k].strip() == "":
                         k += 1
-                    if k < n and (lines[k].startswith("\t") or ("\t" in lines[k] and not entry_re.match(lines[k]))):
+                    if k < n and is_code(lines[k]) and not entry_re.match(lines[k]):
                         block.extend([""] * (k - j))
                         j = k
                     else:
@@ -173,6 +188,13 @@ def convert(text, entry_style, converted_names):
             continue
 
         # entries: one or more consecutive *signature lines
+        if entry_re.match(line) and re.match(r"^\*[A-Za-z]+:\s*$", line):
+            blank()
+            out.append("### " + line[1:].strip().rstrip(":"))
+            out.append("")
+            i += 1
+            continue
+
         if entry_re.match(line):
             sigs = []
             j = i
@@ -187,10 +209,17 @@ def convert(text, entry_style, converted_names):
                 efst = re.search(r"\((.*?)\)", sigs[0])
                 if efst and efst.group(1).strip():
                     name = f"{name} ({efst.group(1).strip()})"
-            blank()
-            out.append(f"### {name}")
-            out.append("")
             signatures = [s[1:] if not keep_prefix else s for s in sigs]
+            names = [name]
+            for sig in signatures:
+                m2 = re.match(r"^(@?[A-Za-z_][A-Za-z0-9_]*)", sig)
+                if m2 and m2.group(1) not in names and with_block:
+                    names.append(m2.group(1))
+            blank()
+            for extra in names[1:]:
+                out.append(f'<a name="{extra.lstrip("@")}"></a>')
+            out.append("### " + " / ".join(names))
+            out.append("")
             # a bare name carries no information beyond the heading
             if with_block and signatures != [name]:
                 out.append("```")
@@ -200,10 +229,17 @@ def convert(text, entry_style, converted_names):
             i = j
             continue
 
-        # ** Subsection
-        if line.startswith("**"):
+        # '+ - adds', '- - subtracts', '* - multiplies': prose, not a list
+        if OPERATOR_LINE_RE.match(line):
+            out.append("\\" + prose(line, converted_names))
+            i += 1
+            continue
+
+        # ** Subsection / * Subsection
+        m = SUBSECTION_RE.match(line)
+        if m:
             blank()
-            out.append("### " + line[2:].strip())
+            out.append("### " + m.group(1).strip().rstrip(":.").strip())
             out.append("")
             i += 1
             continue
@@ -224,6 +260,14 @@ def convert(text, entry_style, converted_names):
 
         if line.strip() == "":
             blank()
+            i += 1
+            continue
+
+        # definition list item
+        m = DEFINITION_RE.match(line)
+        if m and not line.startswith(("- ", "\\")):
+            key = m.group(1)
+            out.append(f"- `{key}` - {prose(m.group(2), converted_names)}")
             i += 1
             continue
 
