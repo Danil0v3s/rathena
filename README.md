@@ -85,6 +85,35 @@ Common configure options, passed as `-D<option>=<value>` after the preset:
 
 If vcpkg is already installed on your machine, set `VCPKG_ROOT` and it is used instead of a local clone in `.vcpkg/`.
 
+#### TypeScript scripting host (optional)
+
+The map server can load NPC scripts written in TypeScript and run them on V8 (see
+[`src/map/scripting/README.md`](src/map/scripting/README.md)). It is **off by default**; the regular
+build has no V8 dependency. Turning it on needs, in addition to the requirements above:
+
+| Requirement | How |
+|---|---|
+| V8 library + headers (`libv8`, `libv8_libplatform`) | macOS: `brew install v8` · Arch: `paru -S v8` (AUR) · Debian/Ubuntu: `apt install libv8-dev` (often too old; a recent V8 is required) · anywhere: point CMake at an install with `-DV8_ROOT=/path` |
+| [v8pp](https://github.com/pmed/v8pp) headers | `git submodule update --init 3rdparty/v8pp/src` (or `-DV8PP_INCLUDE_DIR=/path`) |
+| Node.js 18+ and npm | to compile the TypeScript bundle in `npc-ts/` |
+| Python 3 + libclang | the binding generator (`tools/scripting/gen_bindings.py`) runs during the build |
+
+```bash
+git submodule update --init 3rdparty/v8pp/src
+cmake --preset dev -DENABLE_TS_SCRIPTING=ON        # add -DV8_ROOT=... if V8 is not in a standard location
+cmake --build --preset dev --target map-server
+
+cd npc-ts && npm install && npm run build            # -> npc-ts/dist/main.js, loaded by map-server at startup
+```
+
+V8 must have been built with the same pointer-compression / sandbox / SMI settings the embedder assumes
+(`V8_COMPRESS_POINTERS`, `V8_ENABLE_SANDBOX`, `V8_31BIT_SMIS_ON_64BIT_ARCH` CMake options; defaults match
+Homebrew). A mismatch aborts at startup with "Embedder-vs-V8 build configuration mismatch". Enabling the
+host also switches the whole project to C++20, which recent V8 headers require.
+
+The dependency is deliberately not in `vcpkg.json`: vcpkg's `v8` port is years old and unsupported on
+Linux/macOS, so a system V8 is used instead.
+
 #### Visual Studio
 
 Visual Studio 2022 and 2026 (with the "Desktop development with C++" workload) build CMake projects

@@ -26,38 +26,23 @@ generalizes cleanly.
 
 ## Build
 
-The host is **off by default**. To turn it on:
+The host is **off by default**; see the *TypeScript scripting host* section of the
+repository [README](../../../README.md#typescript-scripting-host-optional) for the
+requirements (system V8, the v8pp submodule, Node.js, Python 3 + libclang). In short:
 
-1.  Install V8 + the v8pp headers (see [`3rdparty/v8pp/README.md`](../../../3rdparty/v8pp/README.md)):
+    git submodule update --init 3rdparty/v8pp/src
+    cmake --preset dev -DENABLE_TS_SCRIPTING=ON     # -DV8_ROOT=/path if V8 is not where FindV8.cmake looks
+    cmake --build --preset dev --target map-server
+    cd npc-ts && npm install && npm run build       # -> npc-ts/dist/main.js
 
-        brew install v8                                            # macOS
-        git submodule add https://github.com/pmed/v8pp.git 3rdparty/v8pp/src
-        git submodule update --init --recursive
+`3rdparty/cmake/FindV8.cmake` looks at Homebrew prefixes, `/usr/include/v8`, `/usr/local` and
+`$V8_ROOT`. Start the map-server; on boot you should see:
 
-2.  Reconfigure with the option on:
+    [Status]: [ts-scripting] V8 engine ready.
+    [Status]: [ts-scripting] loaded bundle 'npc-ts/dist/main.js' (N NPCs registered).
 
-        cd build
-        cmake -DENABLE_TS_SCRIPTING=ON ..
-        make map-server
-
-    CMake's `FindV8.cmake` looks at Homebrew prefixes and `$V8_ROOT`.
-    Point it manually if needed: `cmake -DV8_ROOT=/path/to/v8 ...`.
-
-3.  Build the TS bundle:
-
-        cd npc-ts
-        npm install
-        npm run build      # → npc-ts/dist/main.js
-
-4.  Start the map-server. On boot you should see:
-
-        [Status]: [ts-scripting] V8 engine ready.
-        [Status]: [ts-scripting] loaded bundle 'npc-ts/dist/main.js' (1 NPCs registered).
-
-    The sample `Kafra#prt01` should be clickable in Prontera at (155, 183).
-    The legacy script engine still runs alongside — TS just gets first
-    refusal on click. Any NPC without a TS registration falls through
-    to the existing `run_script()` path.
+The legacy script engine still runs alongside — TS gets first refusal on click. Any NPC
+without a TS registration falls through to the existing `run_script()` path.
 
 ## Architecture
 
