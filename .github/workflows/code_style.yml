@@ -11,6 +11,11 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/**'
+      - '.clang-format'
+      - 'tools/format.sh'
+      - 'src/**'
   pull_request:
     paths:
       - '.github/**'
