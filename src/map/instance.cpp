@@ -497,7 +497,7 @@ bool instance_startidletimer(std::shared_ptr<s_instance_data> idata, int32 insta
 
 /**
  * Remove the idle timer from an instance
- * @param idata: Instace data
+ * @param idata: Instance data
  * @param instance_id: Instance ID to notify
  * @return True on success or false on failure
  */
@@ -541,12 +541,12 @@ bool instance_stopidletimer(std::shared_ptr<s_instance_data> idata, int32 instan
 /**
  * Run the OnInstanceInit events for duplicated NPCs
  */
-static int32 instance_npcinit(struct block_list *bl, va_list ap)
+static int32 instance_npcinit(block_list *bl, va_list ap)
 {
-	struct npc_data* nd;
+	npc_data* nd;
 
 	nullpo_retr(0, bl);
-	nullpo_retr(0, nd = (struct npc_data *)bl);
+	nullpo_retr(0, nd = (npc_data *)bl);
 
 	return npc_instanceinit(nd);
 }
@@ -554,12 +554,12 @@ static int32 instance_npcinit(struct block_list *bl, va_list ap)
 /**
  * Run the OnInstanceDestroy events for duplicated NPCs
  */
-static int32 instance_npcdestroy(struct block_list *bl, va_list ap)
+static int32 instance_npcdestroy(block_list *bl, va_list ap)
 {
-	struct npc_data* nd;
+	npc_data* nd;
 
 	nullpo_retr(0, bl);
-	nullpo_retr(0, nd = (struct npc_data *)bl);
+	nullpo_retr(0, nd = (npc_data *)bl);
 
 	return npc_instancedestroy(nd);
 }
@@ -567,12 +567,12 @@ static int32 instance_npcdestroy(struct block_list *bl, va_list ap)
 /**
  * Update instance with new NPC
  */
-static int32 instance_addnpc_sub(struct block_list *bl, va_list ap)
+static int32 instance_addnpc_sub(block_list *bl, va_list ap)
 {
-	struct npc_data* nd;
+	npc_data* nd;
 
 	nullpo_retr(0, bl);
-	nullpo_retr(0, nd = (struct npc_data *)bl);
+	nullpo_retr(0, nd = (npc_data *)bl);
 
 	return npc_duplicate4instance(nd, va_arg(ap, int32));
 }
@@ -752,7 +752,7 @@ size_t instance_addmap( int32 instance_id ){
 
 	// Add extra maps (if any)
 	for (const auto &it : db->maplist) {
-		if ((m = map_addinstancemap(it, instance_id, db->nomapflag)) < 0) { // An error occured adding a map
+		if ((m = map_addinstancemap(it, instance_id, db->nomapflag)) < 0) { // An error occurred adding a map
 			ShowError("instance_addmap: No maps added to instance '%s' (%d).\n", db->name.c_str(), instance_id);
 			return 0;
 		} else {
@@ -805,7 +805,7 @@ void instance_generate_mapname(int32 map_id, int32 instance_id, char outname[MAP
 #endif
 	// Safe up to 9999 maps per map-server
 	static const int32 prefix_length = 4;
-	// Full map name length - prefix length - seperator character - zero termination
+	// Full map name length - prefix length - separator character - zero termination
 	static const int32 suffix_length = MAP_NAME_LENGTH - prefix_length - 1 - 1;
 	static const int32 prefix_limit = static_cast<int32>(pow(10, prefix_length));
 	static const int32 suffix_limit = static_cast<int32>(pow(10, suffix_length));
@@ -929,7 +929,7 @@ void instance_destroy_command(map_session_data *sd) {
 /**
  * Removes an instance, all its maps, and NPCs.
  * @param instance_id: Instance to remove
- * @return True on sucess or false on failure
+ * @return True on success or false on failure
  */
 bool instance_destroy(int32 instance_id)
 {
@@ -1162,7 +1162,7 @@ bool instance_reqinfo(map_session_data *sd, int32 instance_id)
 			}
 		}
 	} else if (idata->state == INSTANCE_BUSY) { // Give info on the instance if busy
-		int32 map_instance_id = map_getmapdata(sd->bl.m)->instance_id;
+		int32 map_instance_id = map_getmapdata(sd->m)->instance_id;
 		if (map_instance_id == 0 || map_instance_id == instance_id) {
 			clif_instance_status(instance_id, static_cast<uint32>(idata->keep_limit), static_cast<uint32>(idata->idle_limit));
 			sd->instance_mode = idata->mode;
@@ -1235,10 +1235,15 @@ void do_reload_instance(void)
 				instance_addnpc(idata);
 
 			// Create new keep timer
-			std::shared_ptr<s_instance_db> db = instance_db.find(idata->id);
-
-			if (db)
+			if (std::shared_ptr<s_instance_db> db = instance_db.find(idata->id); db != nullptr) {
+				// Save the expire time
 				idata->keep_limit = time(nullptr) + db->limit;
+
+				// Recreate a timer and save the associated timer ID
+				if (idata->keep_timer != INVALID_TIMER)
+					delete_timer(idata->keep_timer, instance_delete_timer);
+				idata->keep_timer = add_timer(gettick() + db->limit * 1000, instance_delete_timer, it.first, 0);
+			}
 		}
 	}
 
@@ -1247,14 +1252,14 @@ void do_reload_instance(void)
 	map_session_data *sd;
 
 	for (sd = (TBL_PC *)mapit_first(iter); mapit_exists(iter); sd = (TBL_PC *)mapit_next(iter)) {
-		struct map_data *mapdata = map_getmapdata(sd->bl.m);
+		struct map_data *mapdata = map_getmapdata(sd->m);
 
 		if (sd && mapdata->instance_id > 0) {
 			struct party_data *pd;
 			std::shared_ptr<MapGuild> gd;
 			struct clan *cd;
 			int32 instance_id;
-			std::shared_ptr<s_instance_data> idata = util::umap_find(instances, map[sd->bl.m].instance_id);
+			std::shared_ptr<s_instance_data> idata = util::umap_find(instances, map[sd->m].instance_id);
 			std::shared_ptr<s_instance_db> db = instance_db.find(idata->id);
 
 			switch (idata->mode) {

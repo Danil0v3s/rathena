@@ -204,7 +204,7 @@ static bool chrif_auth_logout(TBL_PC* sd, enum sd_state state) {
 	return chrif_sd_to_auth(sd, state);
 }
 
-bool chrif_auth_finished(map_session_data* sd) {
+bool chrif_auth_finished( const map_session_data* sd ) {
 	struct auth_node *node= chrif_search(sd->status.account_id);
 
 	if ( node && node->sd == sd && node->state == ST_LOGIN ) {
@@ -432,14 +432,14 @@ int32 chrif_changemapserver(map_session_data* sd, uint32 ip, uint16 port) {
 
 	WFIFOHEAD( char_fd, 37 + MAP_NAME_LENGTH_EXT );
 	WFIFOW(char_fd, 0) = 0x2b05;
-	WFIFOL(char_fd, 2) = sd->bl.id;
+	WFIFOL(char_fd, 2) = sd->id;
 	WFIFOL(char_fd, 6) = sd->login_id1;
 	WFIFOL(char_fd,10) = sd->login_id2;
 	WFIFOL(char_fd,14) = sd->status.char_id;
 	safestrncpy( WFIFOCP( char_fd, 18 ), mapindex_id2name( sd->mapindex ), MAP_NAME_LENGTH_EXT );
 	int32 offset = 18 + MAP_NAME_LENGTH_EXT;
-	WFIFOW( char_fd, offset + 0 ) = sd->bl.x;
-	WFIFOW( char_fd, offset + 2 ) = sd->bl.y;
+	WFIFOW( char_fd, offset + 0 ) = sd->x;
+	WFIFOW( char_fd, offset + 2 ) = sd->y;
 	WFIFOL( char_fd, offset + 4 ) = htonl( ip );
 	WFIFOW( char_fd, offset + 8 ) = htons( port );
 	WFIFOB( char_fd, offset + 10 ) = sd->status.sex;
@@ -625,7 +625,7 @@ int32 chrif_skillcooldown_request(uint32 account_id, uint32 char_id) {
  * Request auth confirmation
  *------------------------------------------*/
 void chrif_authreq(map_session_data *sd, bool autotrade) {
-	struct auth_node *node= chrif_search(sd->bl.id);
+	struct auth_node *node= chrif_search(sd->id);
 
 	if( node != nullptr || !chrif_isconnected() ) {
 		set_eof(sd->fd);
@@ -775,14 +775,14 @@ TIMER_FUNC(auth_db_cleanup){
 int32 chrif_charselectreq(map_session_data* sd, uint32 s_ip) {
 	nullpo_retr(-1, sd);
 
-	if( !sd || !sd->bl.id || !sd->login_id1 )
+	if( !sd || !sd->id || !sd->login_id1 )
 		return -1;
 
 	chrif_check(-1);
 
 	WFIFOHEAD(char_fd,18);
 	WFIFOW(char_fd, 0) = 0x2b02;
-	WFIFOL(char_fd, 2) = sd->bl.id;
+	WFIFOL(char_fd, 2) = sd->id;
 	WFIFOL(char_fd, 6) = sd->login_id1;
 	WFIFOL(char_fd,10) = sd->login_id2;
 	WFIFOL(char_fd,14) = htonl(s_ip);
@@ -963,7 +963,7 @@ int32 chrif_changedsex(int32 fd) {
 		sd->status.sex = !sd->status.sex;
 
 		// Reset skills of gender split jobs.
-		if ((sd->class_&MAPID_UPPERMASK) == MAPID_BARDDANCER || (sd->class_&MAPID_UPPERMASK) == MAPID_KAGEROUOBORO) {
+		if ((sd->class_&MAPID_SECONDMASK) == MAPID_BARDDANCER || (sd->class_&MAPID_SECONDMASK) == MAPID_KAGEROUOBORO) {
 			const static struct {
 				e_skill start;
 				e_skill end;
@@ -1001,6 +1001,7 @@ int32 chrif_changedsex(int32 fd) {
 			else// Changed from male version of job.
 				sd->status.class_ += 1;
 			//sd->class_ Does not need to be updated as both versions of the job are the same.
+			sd->status.body = sd->status.class_;
 		}
 		// save character
 		sd->login_id1++; // change identify, because if player come back in char within the 5 seconds, he can change its characters
@@ -1184,7 +1185,7 @@ int32 chrif_disconnectplayer(int32 fd) {
 /*==========================================
  * Request/Receive top 10 Fame character list
  *------------------------------------------*/
-int32 chrif_updatefamelist(map_session_data &sd, e_rank ranktype) {
+int32 chrif_updatefamelist( const map_session_data& sd, e_rank ranktype ) {
 	chrif_check(-1);
 
 	WFIFOHEAD(char_fd, 11);
@@ -1270,12 +1271,12 @@ int32 chrif_updatefamelist_ack(int32 fd) {
 	return 1;
 }
 
-int32 chrif_save_scdata(map_session_data *sd) { //parses the sc_data of the player and sends it to the char-server for saving. [Skotlex]
+int32 chrif_save_scdata( const map_session_data* sd ) { //parses the sc_data of the player and sends it to the char-server for saving. [Skotlex]
 #ifdef ENABLE_SC_SAVING
-	int32 i, count=0;
+	int32 count=0;
 	t_tick tick;
-	struct status_change_data data;
-	status_change *sc = &sd->sc;
+	status_change_data data;
+	const status_change *sc = &sd->sc;
 	const struct TimerData *timer;
 
 	chrif_check(-1);
@@ -1286,12 +1287,9 @@ int32 chrif_save_scdata(map_session_data *sd) { //parses the sc_data of the play
 	WFIFOL(char_fd,4) = sd->status.account_id;
 	WFIFOL(char_fd,8) = sd->status.char_id;
 
-	for (i = 0; i < SC_MAX; i++) {
-		auto sce = sc->getSCE(static_cast<sc_type>(i));
-		if (!sce)
-			continue;
-		if (sce->timer != INVALID_TIMER) {
-			timer = get_timer(sce->timer);
+	for( const auto& [type, sce] : *sc ){
+		if (sce.timer != INVALID_TIMER) {
+			timer = get_timer(sce.timer);
 			if (timer == nullptr || timer->func != status_change_timer)
 				continue;
 			if (DIFF_TICK(timer->tick,tick) > 0)
@@ -1300,11 +1298,11 @@ int32 chrif_save_scdata(map_session_data *sd) { //parses the sc_data of the play
 				data.tick = 0; //Negative tick does not necessarily mean that sc has expired
 		} else
 			data.tick = INFINITE_TICK; //Infinite duration
-		data.type = i;
-		data.val1 = sce->val1;
-		data.val2 = sce->val2;
-		data.val3 = sce->val3;
-		data.val4 = sce->val4;
+		data.type = type;
+		data.val1 = sce.val1;
+		data.val2 = sce.val2;
+		data.val3 = sce.val3;
+		data.val4 = sce.val4;
 		memcpy(WFIFOP(char_fd,14 +count*sizeof(struct status_change_data)),
 			&data, sizeof(struct status_change_data));
 		count++;
@@ -1345,7 +1343,7 @@ int32 chrif_load_scdata(int32 fd) {
 	for (i = 0; i < count; i++) {
 		struct status_change_data *data = (struct status_change_data*)RFIFOP(fd,14 + i*sizeof(struct status_change_data));
 
-		status_change_start(nullptr,&sd->bl, (sc_type)data->type, 10000, data->val1, data->val2, data->val3, data->val4, data->tick, SCSTART_NOAVOID|SCSTART_NOTICKDEF|SCSTART_LOADED|SCSTART_NORATEDEF);
+		status_change_start(nullptr, sd, (sc_type)data->type, 10000, data->val1, data->val2, data->val3, data->val4, data->tick, SCSTART_NOAVOID|SCSTART_NOTICKDEF|SCSTART_LOADED|SCSTART_NORATEDEF);
 	}
 
 	pc_scdata_received(sd);
@@ -1358,7 +1356,7 @@ int32 chrif_load_scdata(int32 fd) {
  * @param sd: Player object
  * @return -1 on failure or 0 otherwise
  */
-int chrif_skillcooldown_save(map_session_data &sd) {
+int chrif_skillcooldown_save( const map_session_data& sd ) {
 	chrif_check(-1);
 
 	if (sd.scd.empty())
@@ -1430,7 +1428,7 @@ int32 chrif_skillcooldown_load(int fd) {
 /*=========================================
  * Tell char-server charcter disconnected [Wizputer]
  *-----------------------------------------*/
-int32 chrif_char_offline(map_session_data *sd) {
+int32 chrif_char_offline( const map_session_data* sd ) {
 	chrif_check(-1);
 
 	WFIFOHEAD(char_fd,10);
@@ -1483,7 +1481,7 @@ int32 chrif_char_reset_offline(void) {
  * Tell char-server charcter is online [Wizputer]
  *-----------------------------------------*/
 
-int32 chrif_char_online(map_session_data *sd) {
+int32 chrif_char_online( const map_session_data* sd ) {
 	chrif_check(-1);
 
 	WFIFOHEAD(char_fd,10);
