@@ -87,12 +87,20 @@ If vcpkg is already installed on your machine, set `VCPKG_ROOT` and it is used i
 
 #### Visual Studio
 
+Visual Studio 2022 and 2026 (with the "Desktop development with C++" workload) build CMake projects
+natively: **File → Open → Folder…** on the clone, pick `msvs` / `msvs-2026` (or `dev` / `debug`) in the
+configuration dropdown, and build/debug as usual. The first configure takes a few minutes while vcpkg
+builds the dependencies.
+
+If you prefer a classic solution file:
+
 ```powershell
-cmake --preset msvs                                  # generates build-msvs/rAthena.sln (msvs-2026: build-msvs-2026/rAthena.slnx)
-cmake --build --preset msvs --config Debug           # or open the solution / the folder in Visual Studio
+cmake --preset msvs                                  # generates build-msvs\rAthena.sln (msvs-2026: rAthena.slnx)
+cmake --build --preset msvs --config Debug           # or open the solution in Visual Studio
 ```
 
-Pre-generated solutions are committed in `build-msvs/` (VS 2022) and `build-msvs-2026/` (VS 2026) by the *Generate Visual Studio solution* workflow. They embed the CI path `D:\a\rathena\rathena`, so they open as-is only from a checkout at that path; anywhere else, run the preset once (a few minutes) to regenerate. Visual Studio also opens the repository folder directly and picks the presets up from `CMakePresets.json`.
+The solution is generated, not committed: it embeds absolute paths and the project lists are globbed,
+so re-run the preset after adding or removing source files.
 
 ## 3. Troubleshooting
 

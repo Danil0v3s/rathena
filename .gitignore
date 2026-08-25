@@ -112,28 +112,3 @@ Thumbs.db
 generated
 
 /build-*
-# generated Visual Studio solutions are committed (see README); nothing else from those build directories is
-!/build-msvs/
-/build-msvs/*
-!/build-msvs/README-generated.txt
-!/build-msvs/*.sln
-!/build-msvs/*.slnx
-!/build-msvs/*.vcxproj
-!/build-msvs/*.vcxproj.filters
-!/build-msvs/src/
-/build-msvs/src/**
-!/build-msvs/src/**/
-!/build-msvs/src/**/*.vcxproj
-!/build-msvs/src/**/*.vcxproj.filters
-!/build-msvs-2026/
-/build-msvs-2026/*
-!/build-msvs-2026/README-generated.txt
-!/build-msvs-2026/*.sln
-!/build-msvs-2026/*.slnx
-!/build-msvs-2026/*.vcxproj
-!/build-msvs-2026/*.vcxproj.filters
-!/build-msvs-2026/src/
-/build-msvs-2026/src/**
-!/build-msvs-2026/src/**/
-!/build-msvs-2026/src/**/*.vcxproj
-!/build-msvs-2026/src/**/*.vcxproj.filters

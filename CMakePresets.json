@@ -49,9 +49,9 @@
       "name": "msvs-2026",
       "displayName": "Visual Studio 2026",
       "inherits": "msvs",
-      "description": "Same as 'msvs' for Visual Studio 2026 (generator 'Visual Studio 18 2026', needs CMake 4.2+). Generates build-msvs-2026/rAthena.slnx.",
+      "description": "Same as 'msvs' for Visual Studio 2026 (generator 'Visual Studio 18 2026', needs CMake 4.2+).",
       "generator": "Visual Studio 18 2026",
-      "binaryDir": "${sourceDir}/build-msvs-2026"
+      "binaryDir": "${sourceDir}/build-msvs"
     }
   ],
   "buildPresets": [
