@@ -12,6 +12,7 @@ on:
     branches:
       - master
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   changes:
@@ -55,7 +56,7 @@ jobs:
     needs: changes
     # Github Actions checks for '[ci skip]', '[skip ci]', '[no ci]', '[skip actions]', or '[actions skip]' but not a hyphenated version.
     # It's a catch-all incase a Pull Request has been opened and someone is on auto-pilot.
-    if: ${{ needs.changes.outputs.should_run == 'true' && !contains(github.event.head_commit.message, 'ci-skip') }}
+    if: ${{ needs.changes.outputs.should_run == 'true' && !contains(github.event.head_commit.message, 'ci-skip') && (github.event_name != 'pull_request' || !github.event.pull_request.draft) }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -105,7 +106,7 @@ jobs:
     steps:
       - name: Enforce required CodeQL result
         run: |
-          if [ "${{ needs.changes.outputs.should_run }}" != "true" ]; then
+          if [ "${{ needs.changes.outputs.should_run }}" != "true" ] || [ "${{ github.event.pull_request.draft }}" = "true" ]; then
             echo "No relevant source or CI changes detected; skipping CodeQL."
             exit 0
           fi
