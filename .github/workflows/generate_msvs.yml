@@ -1,0 +1,68 @@
+name: Generate Visual Studio solution
+# generate_msvs.yml
+# Manual: configures with the Visual Studio preset on a Windows runner and uploads the
+# generated solution / project files as an artifact.
+#
+# The files embed the runner's absolute path (D:\a\rathena\rathena). They open as-is
+# only if the repository is checked out at that same path; otherwise treat them as
+# reference and run 'cmake --preset msvs' locally (a few minutes, see README).
+
+on:
+  workflow_dispatch:
+    inputs:
+      preset:
+        description: CMake preset
+        type: choice
+        default: msvs
+        options: [msvs, msvs-2026]
+      cmake-args:
+        description: Extra configure arguments, e.g. -DENABLE_PRERE=ON -DPACKETVER=20211103
+        type: string
+        default: ''
+
+jobs:
+  generate:
+    # windows-2025 ships Visual Studio 2022, windows-latest ships Visual Studio 2026
+    runs-on: ${{ inputs.preset == 'msvs-2026' && 'windows-latest' || 'windows-2025' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: lukka/get-cmake@latest
+
+      - name: Cache vcpkg binary packages
+        uses: actions/cache@v4
+        with:
+          path: ~/AppData/Local/vcpkg/archives
+          key: vcpkg-${{ runner.os }}-msvc-${{ hashFiles('vcpkg.json') }}
+          restore-keys: vcpkg-${{ runner.os }}-msvc-
+
+      - name: Configure (${{ inputs.preset }})
+        shell: bash
+        run: cmake --preset ${{ inputs.preset }} ${{ inputs.cmake-args }}
+
+      - name: Describe
+        shell: bash
+        run: |
+          {
+            echo "Generated on $(date -u +%Y-%m-%dT%H:%MZ) from $GITHUB_SHA (${GITHUB_REF_NAME})"
+            echo "preset: ${{ inputs.preset }}   cmake-args: ${{ inputs.cmake-args }}"
+            echo "source path baked into the projects: $(cygpath -w "$PWD")"
+            echo
+            echo "To use as-is, check the repository out at exactly that path, run 'cmake --preset ${{ inputs.preset }}' once"
+            echo "so vcpkg installs the dependencies into build-msvs/vcpkg_installed, then open rAthena.sln."
+          } > build-msvs/README-generated.txt
+          cat build-msvs/README-generated.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rathena-${{ inputs.preset }}-solution
+          if-no-files-found: error
+          path: |
+            build-msvs/README-generated.txt
+            build-msvs/CMakeCache.txt
+            build-msvs/*.sln
+            build-msvs/**/*.vcxproj
+            build-msvs/**/*.vcxproj.filters
+            !build-msvs/vcpkg_installed/**
+            !build-msvs/CMakeFiles/**
