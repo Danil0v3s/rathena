@@ -31,14 +31,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # windows-2025 ships Visual Studio 2022, windows-latest ships Visual Studio 2026
-        include:
-          - preset: msvs
-            os: windows-2025
-          - preset: msvs-2026
-            os: windows-latest
-    # a manual run generates only the chosen preset, a push generates both
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.preset == matrix.preset }}
+        # windows-2025 ships Visual Studio 2022, windows-latest ships Visual Studio 2026.
+        # A manual run generates only the chosen preset, a push generates both.
+        include: ${{ fromJSON(github.event_name == 'workflow_dispatch' && (inputs.preset == 'msvs-2026' && '[{"preset":"msvs-2026","os":"windows-latest"}]' || '[{"preset":"msvs","os":"windows-2025"}]') || '[{"preset":"msvs","os":"windows-2025"},{"preset":"msvs-2026","os":"windows-latest"}]') }}
 
     steps:
       - uses: actions/checkout@v4
