@@ -130,14 +130,14 @@ void DialogContext::close_callback(const v8::FunctionCallbackInfo<v8::Value>& in
 // ---- C++ implementations ---------------------------------------------------
 
 v8::Local<v8::Promise> DialogContext::mes(v8::Isolate* iso, const std::string& text) {
-    clif_scriptmes(sd_, static_cast<uint32>(nd_.bl.id), text.c_str());
+    clif_scriptmes(sd_, static_cast<uint32>(nd_.id), text.c_str());
     // Non-suspending: client just appends the line. JS continues
     // immediately. Match ClearScript's Task.CompletedTask shape.
     return resolved_promise(iso, iso->GetCurrentContext());
 }
 
 v8::Local<v8::Promise> DialogContext::next(v8::Isolate* iso) {
-    clif_scriptnext(sd_, static_cast<uint32>(nd_.bl.id));
+    clif_scriptnext(sd_, static_cast<uint32>(nd_.id));
     return arm_pending(iso, iso->GetCurrentContext(), session_, PendingKind::Next);
 }
 
@@ -157,24 +157,24 @@ v8::Local<v8::Promise> DialogContext::select(v8::Isolate* iso, v8::Local<v8::Val
     sd_.npc_menu = option_count;
     sd_.state.menu_or_input = 1;
 
-    clif_scriptmenu(sd_, static_cast<uint32>(nd_.bl.id), joined.c_str());
+    clif_scriptmenu(sd_, static_cast<uint32>(nd_.id), joined.c_str());
     return arm_pending(iso, ctx, session_, PendingKind::Menu);
 }
 
 v8::Local<v8::Promise> DialogContext::close(v8::Isolate* iso) {
-    clif_scriptclose(sd_, static_cast<uint32>(nd_.bl.id));
+    clif_scriptclose(sd_, static_cast<uint32>(nd_.id));
     return arm_pending(iso, iso->GetCurrentContext(), session_, PendingKind::Close);
 }
 
 v8::Local<v8::Promise> DialogContext::input(v8::Isolate* iso) {
     sd_.state.menu_or_input = 1;
-    clif_scriptinput(sd_, static_cast<uint32>(nd_.bl.id));
+    clif_scriptinput(sd_, static_cast<uint32>(nd_.id));
     return arm_pending(iso, iso->GetCurrentContext(), session_, PendingKind::Input);
 }
 
 v8::Local<v8::Promise> DialogContext::inputString(v8::Isolate* iso) {
     sd_.state.menu_or_input = 1;
-    clif_scriptinputstr(sd_, static_cast<uint32>(nd_.bl.id));
+    clif_scriptinputstr(sd_, static_cast<uint32>(nd_.id));
     return arm_pending(iso, iso->GetCurrentContext(), session_, PendingKind::InputStr);
 }
 
@@ -182,7 +182,7 @@ namespace { TIMER_FUNC(ts_sleep_timer_cb_fwd); } // defined further down
 
 v8::Local<v8::Promise> DialogContext::sleep(v8::Isolate* iso, int ms) {
     auto promise = arm_pending(iso, iso->GetCurrentContext(), session_, PendingKind::Sleep);
-    add_timer(gettick() + ms, ts_sleep_timer_cb_fwd, sd_.bl.id, 0);
+    add_timer(gettick() + ms, ts_sleep_timer_cb_fwd, sd_.id, 0);
     return promise;
 }
 
@@ -396,7 +396,7 @@ void end_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
 void clear_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* self = unwrap_dialog(info);
     if (!self) return;
-    clif_scriptclear(self->sd(), static_cast<int32>(self->nd().bl.id));
+    clif_scriptclear(self->sd(), static_cast<int32>(self->nd().id));
 }
 
 TIMER_FUNC(ts_npc_timer_cb) {
@@ -417,7 +417,7 @@ void addTimer_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     // The string is leaked into the timer arg; we delete it in the cb.
     auto* heap_target = new std::string(target);
     int tid = add_timer(gettick() + ms, ts_npc_timer_cb,
-                       self->sd().bl.id,
+                       self->sd().id,
                        reinterpret_cast<intptr_t>(heap_target));
     args::ret_int(info, tid);
 }

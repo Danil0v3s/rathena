@@ -3832,20 +3832,20 @@ bool npc_install_script_npc(struct npc_data* nd, int16 m, int16 dir) {
 	nd->u.scr.label_list = nullptr;
 	nd->u.scr.label_list_num = 0;
 	nd->u.scr.timerid = INVALID_TIMER;
-	nd->bl.type = BL_NPC;
+	nd->type = BL_NPC;
 	nd->subtype = NPCTYPE_SCRIPT;
 
 	map_addnpc(m, nd);
-	status_change_init(&nd->bl);
-	unit_dataset(&nd->bl);
+	status_change_init(nd);
+	unit_dataset(nd);
 	nd->ud.dir = (uint8)dir;
 	npc_setcells(nd);
-	if (map_addblock(&nd->bl))
+	if (map_addblock(nd))
 		return false;
 	if (nd->class_ != JT_FAKENPC) {
-		status_set_viewdata(&nd->bl, nd->class_);
-		if (map_getmapdata(nd->bl.m)->users)
-			clif_spawn(&nd->bl);
+		status_set_viewdata(nd, nd->class_);
+		if (map_getmapdata(nd->m)->users)
+			clif_spawn(nd);
 	}
 	strdb_put(npcname_db, nd->exname, nd);
 	npc_script++;

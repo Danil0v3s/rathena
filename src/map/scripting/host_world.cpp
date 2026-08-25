@@ -92,7 +92,7 @@ void WorldHost::announce_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP_OPT;
     auto msg = str_arg(info, 0);
     if (self->sd()) {
-        clif_broadcast(&self->sd()->bl, msg.c_str(),
+        clif_broadcast(self->sd(), msg.c_str(),
                        static_cast<int32>(msg.size() + 1), BC_DEFAULT, ALL_CLIENT);
     }
 }
@@ -102,7 +102,7 @@ void WorldHost::mapAnnounce_cb(const v8::FunctionCallbackInfo<v8::Value>& info) 
     (void)str_arg(info, 0);
     auto msg = str_arg(info, 1);
     if (self->sd()) {
-        clif_broadcast(&self->sd()->bl, msg.c_str(),
+        clif_broadcast(self->sd(), msg.c_str(),
                        static_cast<int32>(msg.size() + 1), BC_DEFAULT, ALL_SAMEMAP);
     }
 }
@@ -111,7 +111,7 @@ void WorldHost::areaAnnounce_cb(const v8::FunctionCallbackInfo<v8::Value>& info)
     (void)str_arg(info, 0);
     auto msg = str_arg(info, 5);
     if (self->sd()) {
-        clif_broadcast(&self->sd()->bl, msg.c_str(),
+        clif_broadcast(self->sd(), msg.c_str(),
                        static_cast<int32>(msg.size() + 1), BC_DEFAULT, AREA);
     }
 }
@@ -119,7 +119,7 @@ void WorldHost::areaAnnounce_cb(const v8::FunctionCallbackInfo<v8::Value>& info)
 void WorldHost::globalMessage_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP_REQ;
     auto msg = str_arg(info, 0);
-    clif_GlobalMessage(sd->bl, msg.c_str(), AREA_CHAT_WOC);
+    clif_GlobalMessage((*sd), msg.c_str(), AREA_CHAT_WOC);
 }
 void WorldHost::debugMessage_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto msg = str_arg(info, 0);
@@ -286,7 +286,7 @@ int32 respawnguild_pc_sub(map_session_data* sd, va_list ap) {
     int16 m  = va_arg(ap, int32);
     int32 gid = va_arg(ap, int32);
     int32 flag = va_arg(ap, int32);
-    if (!sd || sd->bl.m != m) return 0;
+    if (!sd || sd->m != m) return 0;
     if ((static_cast<int32>(sd->status.guild_id) == gid && flag & 1) ||
         (static_cast<int32>(sd->status.guild_id) != gid && flag & 2) ||
         (sd->status.guild_id == 0 && flag & 2)) {
@@ -504,11 +504,11 @@ void WorldHost::setUnitData_cb(const v8::FunctionCallbackInfo<v8::Value>& info) 
     // that's actually exercised by typical scripts.
     switch (type) {
         case UMOB_SIZE:    md->status.size = md->base_status->size = static_cast<unsigned char>(value); break;
-        case UMOB_LEVEL:   md->level = static_cast<uint16>(value); clif_name_area(&md->bl); break;
-        case UMOB_HP:      md->base_status->hp = value; status_set_hp(bl, value, 0); clif_name_area(&md->bl); break;
-        case UMOB_MAXHP:   md->base_status->hp = md->base_status->max_hp = value; status_set_maxhp(bl, value, 0); clif_name_area(&md->bl); break;
-        case UMOB_X:       unit_movepos(bl, static_cast<int16>(value), md->bl.y, 0, 0); break;
-        case UMOB_Y:       unit_movepos(bl, md->bl.x, static_cast<int16>(value), 0, 0); break;
+        case UMOB_LEVEL:   md->level = static_cast<uint16>(value); clif_name_area(md); break;
+        case UMOB_HP:      md->base_status->hp = value; status_set_hp(bl, value, 0); clif_name_area(md); break;
+        case UMOB_MAXHP:   md->base_status->hp = md->base_status->max_hp = value; status_set_maxhp(bl, value, 0); clif_name_area(md); break;
+        case UMOB_X:       unit_movepos(bl, static_cast<int16>(value), md->y, 0, 0); break;
+        case UMOB_Y:       unit_movepos(bl, md->x, static_cast<int16>(value), 0, 0); break;
         case UMOB_SPEED:   md->base_status->speed = static_cast<uint16>(value); status_calc_misc(bl, &md->status, md->level); break;
         case UMOB_MODE:    md->base_status->mode = static_cast<e_mode>(value); unit_refresh(bl); break;
         case UMOB_CLASS:   status_set_viewdata(bl, static_cast<uint16>(value)); unit_refresh(bl); break;
@@ -561,7 +561,7 @@ void WorldHost::getUnits_cb(const v8::FunctionCallbackInfo<v8::Value>& info)    
         // No map filter — iterate sd map, parking on attached player.
         UNWRAP_OPT;
         if (self && self->sd())
-            map_foreachinmap(collect_units_sub, self->sd()->bl.m, type, &ids);
+            map_foreachinmap(collect_units_sub, self->sd()->m, type, &ids);
     } else {
         auto mn = str_arg(info, 1);
         int m = map_mapname2mapid(mn.c_str());
@@ -884,7 +884,7 @@ void WorldHost::attachRid_cb(const v8::FunctionCallbackInfo<v8::Value>& info)  {
 void WorldHost::addRid_cb(const v8::FunctionCallbackInfo<v8::Value>& info)     { (void)info; }
 void WorldHost::playerAttached_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP_OPT;
-    ret_int(info, self->sd() ? self->sd()->bl.id : 0);
+    ret_int(info, self->sd() ? self->sd()->id : 0);
 }
 void WorldHost::getAttachedRid_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     playerAttached_cb(info);
@@ -965,7 +965,7 @@ void WorldHost::flagEmblem_cb(const v8::FunctionCallbackInfo<v8::Value>& info){
     if (!nd || nd->subtype != NPCTYPE_SCRIPT || gid < 0) return;
     bool changed = (nd->u.scr.guild_id != gid);
     nd->u.scr.guild_id = gid;
-    clif_guild_emblem_area(&nd->bl);
+    clif_guild_emblem_area(nd);
     if (gid)         guild_flag_add(nd);
     else if (changed) guild_flag_remove(nd);
 }

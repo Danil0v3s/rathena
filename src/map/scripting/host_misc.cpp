@@ -184,19 +184,19 @@ void npc_speed_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
 void npc_walkTo_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* self = args::unwrap<NpcInfoHost>(info);
     if (!self) return;
-    unit_walktoxy(&self->nd().bl, args::int_arg(info, 0), args::int_arg(info, 1), 0);
+    unit_walktoxy(&self->nd(), args::int_arg(info, 0), args::int_arg(info, 1), 0);
 }
 void npc_stop_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* self = args::unwrap<NpcInfoHost>(info);
     if (!self) return;
-    unit_stop_walking(&self->nd().bl, args::bool_arg(info, 0) ? 1 : 0);
+    unit_stop_walking(&self->nd(), args::bool_arg(info, 0) ? 1 : 0);
 }
 void npc_moveTo_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* self = args::unwrap<NpcInfoHost>(info);
     if (!self) return;
     int x = args::int_arg(info, 0), y = args::int_arg(info, 1);
     int dir = args::int_arg(info, 2, self->nd().ud.dir);
-    unit_warp(&self->nd().bl, self->nd().bl.m, x, y, CLR_TELEPORT);
+    unit_warp(&self->nd(), self->nd().m, x, y, CLR_TELEPORT);
     self->nd().ud.dir = static_cast<uint8>(dir);
 }
 
@@ -266,7 +266,7 @@ void npc_npcTimer_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
 }
 void npc_getNpcId_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* self = args::unwrap<NpcInfoHost>(info);
-    args::ret_int(info, self ? self->nd().bl.id : 0);
+    args::ret_int(info, self ? self->nd().id : 0);
 }
 void npc_npcInfo_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* self = args::unwrap<NpcInfoHost>(info);
@@ -288,7 +288,7 @@ void npc_npcInfo_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
             return;
         }
         case 3: args::ret_str(info, nd.exname); return;
-        case 4: args::ret_str(info, nd.bl.m >= 0 ? map_getmapdata(nd.bl.m)->name : ""); return;
+        case 4: args::ret_str(info, nd.m >= 0 ? map_getmapdata(nd.m)->name : ""); return;
         default: args::ret_str(info, "");
     }
 }
@@ -428,7 +428,7 @@ void npc_warpWaitingPc_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     if (info.Length() >= 4) n = args::int_arg(info, 3);
     for (int i = 0; i < n && cd->users > 0; ++i) {
         auto* sd = cd->usersd[0];
-        if (mn == "SavePoint" && map_getmapflag(sd->bl.m, MF_NOTELEPORT)) break;
+        if (mn == "SavePoint" && map_getmapflag(sd->m, MF_NOTELEPORT)) break;
         if (cd->zeny) {
             if (static_cast<uint32>(sd->status.zeny) < cd->zeny) break;
             pc_payzeny(sd, cd->zeny, LOG_TYPE_NPC);
@@ -551,7 +551,7 @@ void quest_showEvent_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     if (icon < 0 || icon > 7) icon = 0;
     else icon += 1;
 #endif
-    clif_quest_show_event(&self->sd(), &self->sd().bl,
+    clif_quest_show_event(&self->sd(), &self->sd(),
         static_cast<e_questinfo_types>(icon),
         static_cast<e_questinfo_markcolor>(color));
 }
@@ -869,7 +869,7 @@ void pet_info_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
         case PETINFO_HUNGRY:   args::ret_int(info, pd->pet.hungry);  return;
         case PETINFO_RENAMED:  args::ret_int(info, pd->pet.rename_flag); return;
         case PETINFO_LEVEL:    args::ret_int(info, pd->pet.level);   return;
-        case PETINFO_BLOCKID:  args::ret_int(info, pd->bl.id);       return;
+        case PETINFO_BLOCKID:  args::ret_int(info, pd->id);       return;
         case PETINFO_EGGID:    args::ret_int(info, pd->pet.egg_id);  return;
         case PETINFO_FOODID:   args::ret_int(info, pd->get_pet_db()->FoodID); return;
         default: args::ret_int(info, 0);
@@ -896,7 +896,7 @@ void pet_skillBonus_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     else
         pd->bonus->timer = add_timer(gettick() + pd->bonus->delay * 1000,
                                      pet_skill_bonus_timer,
-                                     self->sd().bl.id, 0);
+                                     self->sd().id, 0);
 }
 
 void pet_skillSupport_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -925,7 +925,7 @@ void pet_skillSupport_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     else
         pd->s_skill->timer = add_timer(gettick() + pd->s_skill->delay * 1000,
                                        pet_skill_support_timer,
-                                       self->sd().bl.id, 0);
+                                       self->sd().id, 0);
 }
 
 void pet_skillAttack_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -1054,7 +1054,7 @@ void hom_info_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
         case 4: args::ret_int(info, hd->homunculus.hunger);   return;
         case 5: args::ret_int(info, hd->homunculus.rename_flag); return;
         case 6: args::ret_int(info, hd->homunculus.level);    return;
-        case 7: args::ret_int(info, hd->bl.id);               return;
+        case 7: args::ret_int(info, hd->id);               return;
         default: args::ret_int(info, 0);
     }
 }
@@ -1062,10 +1062,10 @@ void hom_morph_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* self = args::unwrap<HomHost>(info);
     if (!self || self->sd().hd == nullptr) return;
     auto& sd = self->sd();
-    if (!hom_is_active(sd.hd)) { clif_emotion(sd.bl, ET_SWEAT); return; }
+    if (!hom_is_active(sd.hd)) { clif_emotion(sd, ET_SWEAT); return; }
     int m_class = hom_class2mapid(sd.hd->homunculus.class_);
     if (m_class == -1 || !(m_class & HOM_EVO) || sd.hd->homunculus.level < 99) {
-        clif_emotion(sd.hd->bl, ET_SWEAT); return;
+        clif_emotion(sd.(*hd), ET_SWEAT); return;
     }
     struct item item_tmp{};
     item_tmp.nameid   = ITEMID_STRANGE_EMBRYO;
@@ -1073,7 +1073,7 @@ void hom_morph_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     char i = pc_additem(&sd, &item_tmp, 1, LOG_TYPE_SCRIPT);
     if (i) {
         clif_additem(&sd, 0, 0, i);
-        clif_emotion(sd.bl, ET_SWEAT);
+        clif_emotion(sd, ET_SWEAT);
     } else {
         hom_vaporize(&sd, HOM_ST_MORPH);
     }
@@ -1143,7 +1143,7 @@ void merc_heal_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     if (!self || !self->sd().md) return;
     int hp = args::int_arg(info, 0);
     int sp = args::int_arg(info, 1, 0);
-    status_heal(&self->sd().md->bl, hp, sp, 0);
+    status_heal(self->sd().md, hp, sp, 0);
 }
 
 void merc_scStart_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -1152,7 +1152,7 @@ void merc_scStart_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     sc_type type = static_cast<sc_type>(args::int_arg(info, 0));
     int tick = args::int_arg(info, 1);
     int val1 = args::int_arg(info, 2);
-    status_change_start(nullptr, &self->sd().md->bl, type, 10000,
+    status_change_start(nullptr, self->sd().md, type, 10000,
                         val1, 0, 0, 0, tick, SCSTART_NOTICKDEF);
 }
 
@@ -1198,7 +1198,7 @@ void merc_elementalInfo_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* ed = self->sd().ed;
     switch (type) {
         case 0: args::ret_int(info, ed->elemental.elemental_id); return;
-        case 1: args::ret_int(info, ed->bl.id);                   return;
+        case 1: args::ret_int(info, ed->id);                   return;
         case 2: args::ret_int(info, ed->elemental.class_);        return;
         default: args::ret_int(info, 0);
     }
@@ -1223,7 +1223,7 @@ void merc_info_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
         case 5: args::ret_int(info, md->mercenary.kill_count);    return;
         case 6: args::ret_int(info, static_cast<int>(mercenary_get_lifetime(md))); return;
         case 7: args::ret_int(info, md->db->lv);                  return;
-        case 8: args::ret_int(info, md->bl.id);                   return;
+        case 8: args::ret_int(info, md->id);                   return;
         default: args::ret_null(info);
     }
 }
@@ -1443,7 +1443,7 @@ void guild_getMapUsers_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     int c = 0;
     for (int i = 0; i < MAX_GUILD; ++i) {
         auto* pl = g->guild.member[i].sd;
-        if (pl && pl->bl.m == m && !pl->state.autotrade) ++c;
+        if (pl && pl->m == m && !pl->state.autotrade) ++c;
     }
     args::ret_int(info, c);
 }
@@ -1511,7 +1511,7 @@ void instance_npcName_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     auto* nd = npc_name2id(name.c_str());
     if (instance_id <= 0 || !nd) { args::ret_str(info, ""); return; }
     char buf[NAME_LENGTH];
-    snprintf(buf, sizeof(buf), "dup_%d_%d", instance_id, nd->bl.id);
+    snprintf(buf, sizeof(buf), "dup_%d_%d", instance_id, nd->id);
     args::ret_str(info, buf);
 }
 
@@ -1617,7 +1617,7 @@ void instance_checkGuild_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     int c = 0;
     for (int i = 0; i < MAX_GUILD; ++i) {
         auto* pl_sd = g->guild.member[i].sd;
-        if (!pl_sd || !map_id2bl(pl_sd->bl.id) || pl_sd->state.autotrade) continue;
+        if (!pl_sd || !map_id2bl(pl_sd->id) || pl_sd->state.autotrade) continue;
         if (pl_sd->status.base_level < min || pl_sd->status.base_level > max) {
             args::ret_bool(info, false); return;
         }
@@ -1719,7 +1719,7 @@ void instance_checkClan_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     int c = 0;
     for (int i = 0; i < MAX_CLAN; ++i) {
         auto* pl = cd->members[i];
-        if (!pl || !map_id2bl(pl->bl.id) || pl->state.autotrade) continue;
+        if (!pl || !map_id2bl(pl->id) || pl->state.autotrade) continue;
         if (pl->status.base_level < min || pl->status.base_level > max) {
             args::ret_bool(info, false); return;
         }
@@ -1873,10 +1873,10 @@ void bg_setMonsterTeam_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     if (!mbl || mbl->type != BL_MOB) return;
     auto* md = reinterpret_cast<mob_data*>(mbl);
     md->bg_id = static_cast<uint32>(bg_id);
-    unit_stop_attack(&md->bl);
-    unit_stop_walking(&md->bl, USW_NONE);
+    unit_stop_attack(md);
+    unit_stop_walking(md, USW_NONE);
     md->target_id = md->attacked_id = 0;
-    clif_name_area(&md->bl);
+    clif_name_area(md);
 }
 
 void bg_leave_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -1902,9 +1902,9 @@ void bg_areaUsers_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     if (!bg || m < 0) { args::ret_int(info, 0); return; }
     int c = 0;
     for (const auto& member : bg->members) {
-        if (member.sd->bl.m != m) continue;
-        if (member.sd->bl.x < x0 || member.sd->bl.y < y0 ||
-            member.sd->bl.x > x1 || member.sd->bl.y > y1) continue;
+        if (member.sd->m != m) continue;
+        if (member.sd->x < x0 || member.sd->y < y0 ||
+            member.sd->x > x1 || member.sd->y > y1) continue;
         ++c;
     }
     args::ret_int(info, c);

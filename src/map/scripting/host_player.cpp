@@ -45,13 +45,13 @@ void PlayerHost::heal_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int hp = int_arg(info, 0);
     int sp = int_arg(info, 1);
-    status_heal(&sd.bl, hp, sp, 0, 1);
+    status_heal(&sd, hp, sp, 0, 1);
 }
 
 void PlayerHost::healAp_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int ap = int_arg(info, 0);
-    status_heal(&sd.bl, 0, 0, ap, 1);
+    status_heal(&sd, 0, 0, ap, 1);
 }
 
 void PlayerHost::itemHeal_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -61,21 +61,21 @@ void PlayerHost::itemHeal_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     // The itemheal-rate adjustment lives in pc_itemheal; status_heal
     // is the underlying packet. We use status_heal as the simplest
     // wiring — adjust later if itemheal_rate handling matters.
-    status_heal(&sd.bl, hp, sp, 0, 1);
+    status_heal(&sd, hp, sp, 0, 1);
 }
 
 void PlayerHost::percentHeal_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int hp = int_arg(info, 0);
     int sp = int_arg(info, 1);
-    status_percent_heal(&sd.bl, static_cast<int8>(hp), static_cast<int8>(sp));
+    status_percent_heal(&sd, static_cast<int8>(hp), static_cast<int8>(sp));
 }
 
 void PlayerHost::recovery_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     // Simplest correct behavior: full revive + full heal.
-    if (pc_isdead(&sd)) status_revive(&sd.bl, 100, 100);
-    else status_percent_heal(&sd.bl, 100, 100);
+    if (pc_isdead(&sd)) status_revive(&sd, 100, 100);
+    else status_percent_heal(&sd, 100, 100);
 }
 
 // =====================================================================
@@ -130,7 +130,7 @@ void PlayerHost::changeSex_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     sd.status.sex = sd.status.sex == 0 ? 1 : 0;
     // Trigger client-side refresh
-    clif_changelook(&sd.bl, LOOK_BODY2, 0);
+    clif_changelook(&sd, LOOK_BODY2, 0);
 }
 
 void PlayerHost::jobName_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -197,7 +197,7 @@ void PlayerHost::pushPc_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
         dir = direction_opposite(static_cast<directions>(dir));
         cells = -cells;
     }
-    unit_blown(&sd.bl, dirx[dir], diry[dir], cells, BLOWN_NONE);
+    unit_blown(&sd, dirx[dir], diry[dir], cells, BLOWN_NONE);
 }
 
 void PlayerHost::warpPartner_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -648,7 +648,7 @@ void PlayerHost::removeCards_cb(const v8::FunctionCallbackInfo<v8::Value>& info)
         clif_additem(&sd, 0, 0, flag);
         return;
     }
-    clif_misceffect(sd.bl, NOTIFYEFFECT_REFINE_SUCCESS);
+    clif_misceffect(sd, NOTIFYEFFECT_REFINE_SUCCESS);
 }
 void PlayerHost::getBrokenId_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
@@ -729,7 +729,7 @@ void PlayerHost::setLook_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int type  = int_arg(info, 0);
     int value = int_arg(info, 1);
-    clif_changelook(&sd.bl, type, value);
+    clif_changelook(&sd, type, value);
 }
 void PlayerHost::changeLook_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     setLook_cb(info);
@@ -776,9 +776,9 @@ void PlayerHost::setMadogear_cb(const v8::FunctionCallbackInfo<v8::Value>& info)
 void PlayerHost::setMounting_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     if (sd.sc.getSCE(SC_ALL_RIDING))
-        status_change_end(&sd.bl, SC_ALL_RIDING);
+        status_change_end(&sd, SC_ALL_RIDING);
     else
-        sc_start(&sd.bl, &sd.bl, SC_ALL_RIDING, 10000, 1, INFINITE_TICK);
+        sc_start(&sd, &sd, SC_ALL_RIDING, 10000, 1, INFINITE_TICK);
 }
 
 void PlayerHost::checkCart_cb(const v8::FunctionCallbackInfo<v8::Value>& info)   { UNWRAP; ret_bool(info, pc_iscarton(&sd)); }
@@ -816,13 +816,13 @@ void PlayerHost::scStart_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int type  = int_arg(info, 0);
     int dur   = int_arg(info, 1);
-    sc_start(&sd.bl, &sd.bl, static_cast<sc_type>(type), 10000, 1, dur);
+    sc_start(&sd, &sd, static_cast<sc_type>(type), 10000, 1, dur);
 }
 void PlayerHost::scEnd_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int type = int_arg(info, 0, -1);
-    if (type < 0) status_change_clear(&sd.bl, 0);
-    else status_change_end(&sd.bl, static_cast<sc_type>(type));
+    if (type < 0) status_change_clear(&sd, 0);
+    else status_change_end(&sd, static_cast<sc_type>(type));
 }
 void PlayerHost::getStatus_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
@@ -876,14 +876,14 @@ void PlayerHost::message_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
 void PlayerHost::dispBottom_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     auto text = str_arg(info, 0);
-    clif_messagecolor(&sd.bl,
+    clif_messagecolor(&sd,
         static_cast<unsigned long>(int_arg(info, 1, 0x00FFFFFF)),
         text.c_str(), false, SELF);
 }
 void PlayerHost::showScript_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     auto text = str_arg(info, 0);
-    clif_showscript(&sd.bl, text.c_str(),
+    clif_showscript(&sd, text.c_str(),
         static_cast<send_target>(int_arg(info, 1, SELF)));
 }
 void PlayerHost::cutin_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
@@ -894,17 +894,17 @@ void PlayerHost::cutin_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
 void PlayerHost::emotion_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int e = int_arg(info, 0);
-    clif_emotion(sd.bl, static_cast<emotion_type>(e));
+    clif_emotion(sd, static_cast<emotion_type>(e));
 }
 void PlayerHost::miscEffect_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     int e = int_arg(info, 0);
-    clif_specialeffect(&sd.bl, e, AREA);
+    clif_specialeffect(&sd, e, AREA);
 }
 void PlayerHost::soundEffect_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
     auto file = str_arg(info, 0);
-    clif_soundeffect(sd.bl, file.c_str(), int_arg(info, 1, 0), SELF);
+    clif_soundeffect(sd, file.c_str(), int_arg(info, 1, 0), SELF);
 }
 void PlayerHost::playBgm_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
@@ -917,7 +917,7 @@ void PlayerHost::viewpoint_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     int x = int_arg(info, 1), y = int_arg(info, 2);
     int point = int_arg(info, 3);
     int color = int_arg(info, 4);
-    clif_viewpoint(sd, sd.bl.id, act, static_cast<uint16>(x), static_cast<uint16>(y), point, static_cast<uint32>(color));
+    clif_viewpoint(sd, sd.id, act, static_cast<uint16>(x), static_cast<uint16>(y), point, static_cast<uint32>(color));
 }
 void PlayerHost::showDigit_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
     UNWRAP;
@@ -1164,7 +1164,7 @@ void PlayerHost::charInfo_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
             ret_str(info, g ? g->guild.name : "");
             break;
         }
-        case 3: { auto mn = map_mapid2mapname(sd.bl.m); ret_str(info, mn ? mn : ""); break; }
+        case 3: { auto mn = map_mapid2mapname(sd.m); ret_str(info, mn ? mn : ""); break; }
         default: ret_str(info, ""); break;
     }
 }

@@ -168,24 +168,24 @@ bool ScriptHostImpl::dispatch_npc_click(map_session_data& sd, npc_data& nd) {
     if (!reg || reg->on_click.IsEmpty()) return false;
 
     ShowStatus("[ts-scripting] click → '%s' (npc_id=%d) by aid=%d\n",
-               nd.exname, nd.bl.id, sd.bl.id);
+               nd.exname, nd.id, sd.id);
 
     v8::Isolate::Scope iso_scope(isolate_);
     v8::HandleScope handle_scope(isolate_);
     auto context = context_.Get(isolate_);
     v8::Context::Scope ctx_scope(context);
 
-    auto* session = sessions_.get_or_create(sd.bl.id);
+    auto* session = sessions_.get_or_create(sd.id);
     session->sd = &sd;
     session->nd = &nd;
-    session->npc_id = nd.bl.id;
+    session->npc_id = nd.id;
     session->ctx = std::make_unique<DialogContext>(sd, nd, *session);
 
     auto js_ctx = session->ctx->to_js(isolate_, context);
     session->ctx_js.Reset(isolate_, js_ctx);
 
     // Mark sd as in dialog so npc_scriptcont routes here.
-    sd.npc_id = nd.bl.id;
+    sd.npc_id = nd.id;
 
 #ifdef SECURE_NPCTIMEOUT
     // Without this, clif_parse_NpcSelectMenu (and Next/Close) silently
@@ -196,7 +196,7 @@ bool ScriptHostImpl::dispatch_npc_click(map_session_data& sd, npc_data& nd) {
     if (sd.npc_idle_timer == INVALID_TIMER && !sd.state.ignoretimeout) {
         sd.npc_idle_timer = add_timer(
             gettick() + (SECURE_NPCTIMEOUT_INTERVAL * 1000),
-            npc_secure_timeout_timer, sd.bl.id, 0);
+            npc_secure_timeout_timer, sd.id, 0);
     }
     sd.npc_idle_tick = gettick();
 #endif
@@ -208,15 +208,15 @@ bool ScriptHostImpl::dispatch_npc_click(map_session_data& sd, npc_data& nd) {
 
 bool ScriptHostImpl::dispatch_npc_resume(map_session_data& sd, int npc_id, bool closing) {
     if (!initialized_) return false;
-    auto* session = sessions_.find(sd.bl.id);
+    auto* session = sessions_.find(sd.id);
     if (!session) {
         ShowStatus("[ts-scripting] resume: no session for aid=%d npc_id=%d (fall through to legacy)\n",
-                   sd.bl.id, npc_id);
+                   sd.id, npc_id);
         return false;
     }
     if (session->pending_kind == PendingKind::None) {
         ShowStatus("[ts-scripting] resume: session for aid=%d has no armed promise — fall through\n",
-                   sd.bl.id);
+                   sd.id);
         return false;
     }
     if (session->npc_id != npc_id) {
@@ -234,7 +234,7 @@ bool ScriptHostImpl::dispatch_npc_resume(map_session_data& sd, int npc_id, bool 
         default: break;
     }
     ShowStatus("[ts-scripting] resume %s for aid=%d npc=%d closing=%d npc_menu=%d\n",
-               kind_str, sd.bl.id, npc_id, (int)closing, (int)sd.npc_menu);
+               kind_str, sd.id, npc_id, (int)closing, (int)sd.npc_menu);
 
     v8::Isolate::Scope iso_scope(isolate_);
     v8::HandleScope handle_scope(isolate_);
@@ -269,7 +269,7 @@ bool ScriptHostImpl::dispatch_npc_resume(map_session_data& sd, int npc_id, bool 
     }
 
     if (closing || kind == PendingKind::Close) {
-        sessions_.remove(sd.bl.id);
+        sessions_.remove(sd.id);
         sd.npc_id = 0;
     }
     return true;
@@ -334,7 +334,7 @@ bool ScriptHostImpl::dispatch_event(const std::string& event_target,
     // player is in mid-dialog can call ctx.mes on the same ctx. But
     // we also need to make sure the session's NPC matches the event's
     // NPC; if it doesn't, build a transient session for the event.
-    auto* existing = sessions_.find(attached_sd->bl.id);
+    auto* existing = sessions_.find(attached_sd->id);
     bool reuse = existing && existing->ctx && existing->nd == nd;
     DialogSession* session = nullptr;
     std::unique_ptr<DialogSession> transient;
@@ -342,8 +342,8 @@ bool ScriptHostImpl::dispatch_event(const std::string& event_target,
         session = existing;
     } else {
         transient = std::make_unique<DialogSession>();
-        transient->account_id = attached_sd->bl.id;
-        transient->npc_id = nd->bl.id;
+        transient->account_id = attached_sd->id;
+        transient->npc_id = nd->id;
         transient->sd = attached_sd;
         transient->nd = nd;
         transient->ctx = std::make_unique<DialogContext>(*attached_sd, *nd, *transient);
