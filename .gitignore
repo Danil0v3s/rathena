@@ -1,4 +1,3 @@
-autom4te.cache/
 
 #Global
 .cache
@@ -30,17 +29,12 @@ Thumbs.db
 /*.suo
 *.o
 *.a
-*.vcxproj.user
 /char-server
 /csv2yaml
-/config.log
-/config.status
 /core
 /enc_temp_folder
 /ipch
 /login-server
-/Makefile
-/Makefile.cache
 /map-server
 /map-server-generator
 /mapcache
@@ -48,21 +42,6 @@ Thumbs.db
 /web-server
 /yaml2sql
 /yamlupgrade
-
-# /3rdparty/libconfig/
-/3rdparty/libconfig/Makefile
-/3rdparty/libconfig/*.o
-/3rdparty/libconfig/obj
-
-# /3rdparty/rapidyaml/
-/3rdparty/rapidyaml/Makefile
-
-# /3rdparty/yaml-cpp/
-/3rdparty/yaml-cpp/Makefile
-
-# /3rdparty/httplib/
-/3rdparty/httplib/Makefile
-/3rdparty/httplib/obj
 
 # /db/
 /db/import
@@ -78,35 +57,14 @@ Thumbs.db
 /log/*.log
 /log/*.leaks
 
-# /src/char/
-/src/char/Makefile
-/src/char/obj_sql
-
 # /src/common/
-/src/common/Makefile
-/src/common/obj_all
-/src/common/obj_sql
 /src/common/version.hpp
 
 # /src/custom/
 /src/custom
 
-# /src/login/
-/src/login/Makefile
-/src/login/obj_sql
-
 # /src/map/
-/src/map/Makefile
-/src/map/obj_sql
 /src/map/pcre.hpp
-
-# /src/web
-/src/web/Makefile
-/src/web/obj
-
-# /src/tool/
-/src/tool/Makefile
-/src/tool/obj_all
 
 # /tools/
 /tools/convert
@@ -119,7 +77,6 @@ Thumbs.db
 .vs
 *.VC.db
 *.VC.opendb
-*.slnLaunch.user
 
 /.idea/.name
 /.idea/misc.xml
@@ -128,7 +85,6 @@ Thumbs.db
 /.idea/vcs.xml
 /.idea/workspace.xml
 /build/
-/cbuild/
 
 # bat tools
 /charserv.bat
@@ -148,8 +104,9 @@ Thumbs.db
 /pcre8.dll
 /zlib.dll
 
-# CMakeFiles
+# CMake
 /CMakeFiles/
+/CMakeUserPresets.json
 
 # generated files
 generated

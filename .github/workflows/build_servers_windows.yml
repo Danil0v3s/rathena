@@ -1,5 +1,6 @@
-name: Build servers with CMake
-# build_servers_cmake.yml
+name: Build servers on Windows
+# build_servers_windows.yml
+# Uses the 'msvs' preset, i.e. the same Visual Studio solution developers get from 'cmake --preset msvs'.
 
 concurrency:
   group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
@@ -13,41 +14,39 @@ on:
   pull_request:
     paths:
       # Always trigger all Github Actions if an action or something CI related was changed
-      - '.github/workflows/**'
+      - '.github/**'
       - 'tools/ci/**'
       # This workflow should run when a file in a source directory has been modified.
       - 'src/**'
-      - '3rdparty/**'
-      # This workflow should run whenever a CMake related file has been modified
+      # This workflow should run whenever a build related file has been modified
       - '**/CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'vcpkg.json'
 
 jobs:
   build:
     # Github Actions checks for '[ci skip]', '[skip ci]', '[no ci]', '[skip actions]', or '[actions skip]' but not a hyphenated version.
     # It's a catch-all incase a Pull Request has been opened and someone is on auto-pilot.
     if: "!contains(github.event.head_commit.message, 'ci-skip')"
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
-          # The ubuntu-latest label currently points to ubuntu-24.04.
-          # Available: ubuntu-24.04, ubuntu-22.04
-          os: [ubuntu-latest]
+          mode: [PRE, RE]
+          include:
+            - mode: PRE
+              prere: 'ON'
+            - mode: RE
+              prere: 'OFF'
 
     steps:
       - uses: actions/checkout@v4
 
-      # Install latest CMake.
-      - uses: lukka/get-cmake@latest
-
-      - name: Create build directory
-        run: mkdir cbuild
-
-      - name: Create Unix Makefiles
-        run: |
-          cd cbuild
-          cmake -G "Unix Makefiles" ..
-
-      - name: Command - make
-        run: |
-          cd cbuild
-          make
+      - uses: ./.github/actions/cmake-build
+        with:
+          preset: msvs
+          config: Debug
+          cache-key: msvc
+          cmake-args: >-
+            -DENABLE_PRERE=${{ matrix.prere }}
+            -DENABLE_EXTRA_BUILDBOT_CODE=ON

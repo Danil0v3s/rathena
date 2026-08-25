@@ -12,7 +12,7 @@
 #ifndef PACKETVER
 	/// Do NOT edit this line! To set your client version, please do this instead:
 	/// In Windows: Add this line in your src\custom\defines_pre.hpp file: #define PACKETVER YYYYMMDD
-	/// In Linux: The same as above or run the following command: ./configure --enable-packetver=YYYYMMDD
+	/// Or configure the build with: cmake --preset dev -DPACKETVER=YYYYMMDD
 	#define PACKETVER 20211103
 #endif
 

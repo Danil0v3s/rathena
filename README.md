@@ -1,10 +1,9 @@
 <img src="doc/logo.png" align="right" height="90" />
 
 # rAthena
-![clang](https://img.shields.io/github/actions/workflow/status/rathena/rathena/build_servers_clang.yml?label=clang%20build&logo=llvm) 
-![cmake](https://img.shields.io/github/actions/workflow/status/rathena/rathena/build_servers_cmake.yml?label=cmake%20build&logo=cmake)
-![gcc](https://img.shields.io/github/actions/workflow/status/rathena/rathena/build_servers_gcc.yml?label=gcc%20build&logo=gnu) 
-![ms](https://img.shields.io/github/actions/workflow/status/rathena/rathena/build_servers_msbuild.yml?label=ms%20build&logo=visualstudio) 
+![linux](https://img.shields.io/github/actions/workflow/status/Danil0v3s/rathena/build_servers_linux.yml?label=linux%20build&logo=linux) 
+![macos](https://img.shields.io/github/actions/workflow/status/Danil0v3s/rathena/build_servers_macos.yml?label=macos%20build&logo=apple) 
+![windows](https://img.shields.io/github/actions/workflow/status/Danil0v3s/rathena/build_servers_windows.yml?label=windows%20build&logo=visualstudio) 
 ![GitHub](https://img.shields.io/github/license/rathena/rathena.svg) 
 ![commit activity](https://img.shields.io/github/commit-activity/w/rathena/rathena) 
 ![GitHub repo size](https://img.shields.io/github/repo-size/rathena/rathena.svg)
@@ -38,8 +37,10 @@ Disk Space | 300 MB | 500 MB
 ### Operating System & Preferred Compiler
 Operating System | Compiler
 ------|------
-Linux  | [gcc-6 or newer](https://www.gnu.org/software/gcc/gcc-6/) / [Make](https://www.gnu.org/software/make/)
-Windows | [MS Visual Studio 2017 or newer](https://www.visualstudio.com/downloads/)
+Linux / macOS | gcc 11+ or clang 14+, [CMake 3.21+](https://cmake.org/download/), [Ninja](https://ninja-build.org/) or Make
+Windows | [MS Visual Studio 2022](https://www.visualstudio.com/downloads/) with the "C++ CMake tools" component
+
+All platforms build with CMake. Dependencies (MariaDB client, PCRE, zlib, yaml-cpp, rapidyaml, libconfig, cpp-httplib, nlohmann-json) are declared in `vcpkg.json` and fetched/built by [vcpkg](https://vcpkg.io) automatically on first configure; `git`, `curl`, `zip`, `unzip`, `tar` and `pkg-config` must be installed for that.
 
 ### Required Applications
 Application | Name
@@ -60,43 +61,38 @@ Database | [MySQL Workbench 5 or newer](http://www.mysql.com/downloads/workbench
   * [Debian](https://github.com/rathena/rathena/wiki/Install-on-Debian)
   * [FreeBSD](https://github.com/rathena/rathena/wiki/Install-on-FreeBSD)
 
-### CMake Build With vcpkg
-
-rAthena now supports external dependency resolution via `vcpkg` (manifest: `vcpkg.json`).
+### Building
 
 ```bash
-# One-time setup (if not already installed)
-git clone https://github.com/microsoft/vcpkg.git "$HOME/vcpkg"
-"$HOME/vcpkg/bootstrap-vcpkg.sh"
-
-# Optional: persist this in your shell profile
-export VCPKG_ROOT="$HOME/vcpkg"
-
-cmake --preset dev-vcpkg
-cmake --build --preset build-vcpkg -j
+cmake --preset dev            # configure: Ninja, Release, deps via vcpkg (first run takes a few minutes)
+cmake --build --preset dev    # build everything; add --target map-server etc. to build less
 ```
 
-If you cloned vcpkg into `./vcpkg` (inside this repo), `cmake --preset dev` also auto-detects it.
+Other presets (`cmake --list-presets`): `debug` (Ninja, Debug), `make` (Unix Makefiles, for machines without Ninja),
+`msvs` (Visual Studio 2022, Windows only). Binaries land in the repository root as before.
 
-### Legacy `configure` / `make` Compatibility
+Common configure options, passed as `-D<option>=<value>` after the preset:
 
-`./configure` and `make` are now compatibility wrappers around the CMake build.
-This keeps common commands working while using external dependencies via vcpkg.
+| Option | Meaning |
+|---|---|
+| `ENABLE_PRERE=ON` | Pre-Renewal mode |
+| `PACKETVER=20211103` | Client packet version |
+| `ENABLE_VIP=ON` | VIP features |
+| `MAXCONN=16384` | Maximum socket connections |
+| `ENABLE_LTO=ON` | Link time optimization |
+| `ENABLE_EXTRA_DEBUG_CODE=ON`, `ENABLE_EXTRA_BUILDBOT_CODE=ON` | Extra debug / CI checks |
+| `ENABLE_WEB_SERVER=OFF` | Skip the web server |
 
-```bash
-./configure
-make all -j10
-```
+If vcpkg is already installed on your machine, set `VCPKG_ROOT` and it is used instead of a local clone in `.vcpkg/`.
 
-### Visual Studio (CMake Preset)
-
-Use the CMake Visual Studio preset instead of the legacy `rAthena.sln`.
-The preset generates a fresh solution in `build-msvs/` and uses vcpkg manifest mode.
+#### Visual Studio
 
 ```powershell
-cmake --preset msvs
-cmake --build --preset build-msvs
+cmake --preset msvs                                  # generates build-msvs/rAthena.sln
+cmake --build --preset msvs --config Debug           # or open the solution / the folder in Visual Studio
 ```
+
+The solution is generated, not committed: it embeds absolute paths and has to be regenerated whenever source files are added. Visual Studio 2022 also opens the repository folder directly and picks the presets up from `CMakePresets.json`.
 
 ## 3. Troubleshooting
 

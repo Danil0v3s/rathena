@@ -23,7 +23,7 @@ target_compile_definitions(tools INTERFACE
 target_link_libraries(tools INTERFACE
 	${GLOBAL_LIBRARIES}
 	${ZLIB_LIBRARIES}
-	yaml-cpp
+	${YAML_CPP_TARGET}
 	ryml
 	minicore
 )

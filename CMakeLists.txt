@@ -504,6 +504,42 @@ endif()
 
 
 #
+# Enable VIP features (default=OFF)
+#
+option( ENABLE_VIP "compile with VIP features (default=OFF)" OFF )
+if( ENABLE_VIP )
+	set_property( CACHE GLOBAL_DEFINITIONS  PROPERTY VALUE "${GLOBAL_DEFINITIONS} -DVIP_ENABLE" )
+	message( STATUS "Enabled VIP features" )
+endif()
+
+
+#
+# Maximum number of connections (default=platform default, see src/common/socket.hpp)
+#
+set( MAXCONN ""  CACHE STRING "maximum number of socket connections (empty=platform default)" )
+if( MAXCONN )
+	set_property( CACHE GLOBAL_DEFINITIONS  PROPERTY VALUE "${GLOBAL_DEFINITIONS} -DMAXCONN=${MAXCONN}" )
+	message( STATUS "Set MAXCONN to ${MAXCONN}" )
+endif()
+
+
+#
+# Enable link time optimization (default=OFF)
+#
+option( ENABLE_LTO "enable link time optimization (default=OFF)" OFF )
+if( ENABLE_LTO )
+	include( CheckIPOSupported )
+	check_ipo_supported( RESULT _IPO_SUPPORTED OUTPUT _IPO_OUTPUT )
+	if( _IPO_SUPPORTED )
+		set( CMAKE_INTERPROCEDURAL_OPTIMIZATION ON )
+		message( STATUS "Enabled link time optimization" )
+	else()
+		message( WARNING "Link time optimization is not supported: ${_IPO_OUTPUT}" )
+	endif()
+endif()
+
+
+#
 # Enable extra buildbot code (default=OFF)
 #
 option( ENABLE_EXTRA_BUILDBOT_CODE "enable extra buildbot code (default=OFF)" OFF )
@@ -581,9 +617,8 @@ set( SVN_FOLDER_PATTERN "[\\.]svn"  CACHE STRING "pattern of svn folder that we 
 mark_as_advanced( SVN_FOLDER_PATTERN )
 set( DEVELOPMENT_FILES
 	"${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt"
-	"${CMAKE_CURRENT_SOURCE_DIR}/configure"
-	"${CMAKE_CURRENT_SOURCE_DIR}/configure.in"
-	"${CMAKE_CURRENT_SOURCE_DIR}/rAthena.sln"
+	"${CMAKE_CURRENT_SOURCE_DIR}/CMakePresets.json"
+	"${CMAKE_CURRENT_SOURCE_DIR}/vcpkg.json"
 	)
 set( DEVELOPMENT_DIRECTORIES
 	"3rdparty"
@@ -736,10 +771,11 @@ endif()
 set( WITH_MYSQL ON CACHE BOOL "use MYSQL" FORCE )
 
 find_package( yaml-cpp CONFIG QUIET )
-if( TARGET yaml-cpp::yaml-cpp AND NOT TARGET yaml-cpp )
-	add_library( yaml-cpp INTERFACE IMPORTED )
-	target_link_libraries( yaml-cpp INTERFACE yaml-cpp::yaml-cpp )
-elseif( NOT TARGET yaml-cpp )
+if( TARGET yaml-cpp::yaml-cpp )
+	set( YAML_CPP_TARGET yaml-cpp::yaml-cpp )
+elseif( TARGET yaml-cpp )
+	set( YAML_CPP_TARGET yaml-cpp )
+else()
 	find_library( YAML_CPP_LIBRARY NAMES yaml-cpp yamlcpp REQUIRED )
 	find_path( YAML_INCLUDE_DIRS "yaml-cpp/yaml.h" REQUIRED )
 	mark_as_advanced( YAML_CPP_LIBRARY YAML_INCLUDE_DIRS )
@@ -747,7 +783,9 @@ elseif( NOT TARGET yaml-cpp )
 	set_target_properties( yaml-cpp PROPERTIES
 		IMPORTED_LOCATION "${YAML_CPP_LIBRARY}"
 		INTERFACE_INCLUDE_DIRECTORIES "${YAML_INCLUDE_DIRS}" )
+	set( YAML_CPP_TARGET yaml-cpp )
 endif()
+set( YAML_CPP_TARGET ${YAML_CPP_TARGET} CACHE INTERNAL "yaml-cpp link target" )
 
 find_package( ryml CONFIG QUIET )
 if( TARGET ryml::ryml AND NOT TARGET ryml )

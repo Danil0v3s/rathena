@@ -1,8 +1,6 @@
-name: Validate NPC Scripts and DB Changes
-# npc_db_validation.yml
-
-# For NPC and DB validation we only need two builds: one of Renewal and one for Pre-Renewal checks.
-# NPC scripts and database files are not platform dependent, so we can achieve this validation using only a simple linux setup.
+name: Build servers on Linux
+# build_servers_linux.yml
+# gcc and clang, Pre-Renewal and Renewal; each build is started once to verify it boots.
 
 concurrency:
   group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
@@ -18,22 +16,31 @@ on:
       # Always trigger all Github Actions if an action or something CI related was changed
       - '.github/**'
       - 'tools/ci/**'
-      # This workflow should run when a file in either the db/ or npc/ directory has been modified.
-      - 'db/**'
-      - 'npc/**'
+      # This workflow should run when a file in a source directory has been modified.
+      - 'src/**'
+      # This workflow should run whenever a build related file has been modified
+      - '**/CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'vcpkg.json'
 
 jobs:
   build:
     # Github Actions checks for '[ci skip]', '[skip ci]', '[no ci]', '[skip actions]', or '[actions skip]' but not a hyphenated version.
     # It's a catch-all incase a Pull Request has been opened and someone is on auto-pilot.
     if: "!contains(github.event.head_commit.message, 'ci-skip')"
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-          os: [ubuntu-latest]
-          # We run build checks for both Renewal and PRE-Renewal
+          compiler: [gcc, clang]
           mode: [PRE, RE]
           include:
+            - compiler: gcc
+              cc: gcc
+              cxx: g++
+            - compiler: clang
+              cc: clang
+              cxx: clang++
             - mode: PRE
               prere: 'ON'
             - mode: RE
@@ -45,24 +52,23 @@ jobs:
       - name: Start MySQL
         run: sudo systemctl start mysql.service
 
-      # npc.sh enables all NPC scripts in the custom and test folders.
-      - name: Enable All NPCs for Testing
-        run: ./tools/ci/npc.sh
-
-      # Builds the tools, the map server and the conf/db import directories.
-      - uses: ./.github/actions/cmake-build
-        with:
-          cache-key: gcc
-          cmake-args: >-
-            -DENABLE_PRERE=${{ matrix.prere }}
-            -DENABLE_EXTRA_BUILDBOT_CODE=ON
-          targets: generate-import-files csv2yaml yaml2sql yamlupgrade mapcache map-server
-
-      - name: Run Once - yaml2sql
-        run: ./yaml2sql
-
       - name: Setup Database and import table data
         run: ./tools/ci/sql.sh
+
+      - uses: ./.github/actions/cmake-build
+        with:
+          cache-key: ${{ matrix.compiler }}
+          cmake-args: >-
+            -DCMAKE_C_COMPILER=${{ matrix.cc }}
+            -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+            -DENABLE_PRERE=${{ matrix.prere }}
+            -DENABLE_EXTRA_BUILDBOT_CODE=ON
+
+      - name: Run Once - login-server
+        run: ./login-server --run-once
+
+      - name: Run Once - char-server
+        run: ./char-server --run-once
 
       - name: Run Once - map-server
         run: ./map-server --run-once

@@ -4,7 +4,7 @@
 #ifndef CONFIG_RENEWAL_HPP
 #define CONFIG_RENEWAL_HPP
 
-//quick option to disable all renewal option, used by ./configure
+//quick option to disable all renewal option, set by the build system (cmake -DENABLE_PRERE=ON)
 //#define PRERE
 #ifndef PRERE
 /**

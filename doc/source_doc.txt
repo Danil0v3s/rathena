@@ -351,26 +351,16 @@ When adding a new src file or library (new.cpp and its header, new.hpp), you'll 
 need to update the following files to fully integrate it into the project so that
 users can compile it.
 
-There are 3 ways to compile the project:
-
-> configure + makefile (requires POSIX environment + C compiler)
-  This flow is mainly used by Linux users, but can be done in any POSIX environment (ex. Windows + Cygwin).
-  - Configure.in: Template file to generate the configure script by autoconf.
-  - Makefile.in: Template makefile to generate the real makefile according to configure. Each subfolder needs its own makefile.
-  - Makefile: File filled with rules for gcc to compile folder.
+The project is built with CMake (requires a C++17 compiler + cmake 3.21+):
+  - CMakeLists.txt: One per folder (root, src/, src/<server>/). Sources are globbed, so a new
+    .cpp/.hpp inside an existing folder is picked up automatically at the next configure;
+    a new folder or a new executable needs its own add_subdirectory()/add_executable().
+  - CMakePresets.json: Named configurations ('dev', 'debug', 'make', 'msvs').
+  - vcpkg.json: Third party dependencies, fetched and built by vcpkg on first configure.
   The sequence is as follows:
-	1) configure.in => configure by autoconf ('autoconf configure.in > configure')
-	2) configure    => Makefile by Makefile.in
-	3) Makefile     => binary by 'make all' or alternative
-
-> cmake (requires C compiler + cmake)
-  - CmakeList: Comparable to Makefile, but in a more cross-OS way.
-  The sequence is as follows:
-	1) Define which toolchain to use, acting like a configure ('cmake -G "Unix Makefiles"' or 'cmake -G "Visual Studio 10"')
-	2) Enter the build folder where the Makefiles are generated and launch 'make install' to produce binaries from them
-
-> sln (requires Visual Studio)
-  - *.sln: Solution project for Visual Studio (Windows).
+	1) cmake --preset dev            => generates the build system in build/ (and bootstraps vcpkg)
+	2) cmake --build --preset dev    => produces the binaries in the repository root
+  Windows: 'cmake --preset msvs' generates build-msvs/rAthena.sln for Visual Studio.
 
 See https://github.com/rathena/rathena/wiki/compiling for more detailed compilation instructions.
 
