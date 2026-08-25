@@ -170,17 +170,15 @@ MvpDrops: List of items of the MVP drop. Maximum of 3 items (MAX_MVP_DROP). None
 	- Item				- Item name.
       Rate				- Drop rate of item, n/10000.
       RandomOptionGroup	- Random Option Group applied to item on drop. (Optional)
-```
-
       Index               Index used for overwriting item. (Optional)
+```
 
 Drops: List of items of the monster drop. Maximum of 10 items (MAX_MOB_DROP).
 
 ```
-- Item                Item name.
-```
-
+	- Item                Item name.
       Rate                Drop rate of item, n/10000.
       StealProtected      If the item is shielded from TF_STEAL. (Default: false)
       RandomOptionGroup   Random Option Group applied to item on drop. (Optional)
       Index               Index used for overwriting item. (Optional)
+```

@@ -103,16 +103,16 @@ Scalar Form
 
 Sequence Map Form
   Range:
-    - Level: 1
-      Size: 1
-    - Level: 2
-      Size: 1
-    - Level: 3
-      Size: 2
-    - Level: 4
-      Size: 2
-    - Level: 5
-      Size: 3
+  - Level: 1
+  Size: 1
+  - Level: 2
+  Size: 1
+  - Level: 3
+  Size: 2
+  - Level: 4
+  Size: 2
+  - Level: 5
+  Size: 3
 
 Hit: Skill hit type.
 
@@ -130,16 +130,16 @@ Scalar Form
 
 Sequence Map Form
   HitCount:
-    - Level: 1
-      Count: 2
-    - Level: 2
-      Count: 4
-    - Level: 3
-      Count: 6
-    - Level: 4
-      Count: 8
-    - Level: 5
-      Count: 10
+  - Level: 1
+  Count: 2
+  - Level: 2
+  Count: 4
+  - Level: 3
+  Count: 6
+  - Level: 4
+  Count: 8
+  - Level: 5
+  Count: 10
 
 Element: Skill element.
 
@@ -166,16 +166,16 @@ Scalar Form
 
 Sequence Map Form
   Element:
-    - Level: 1
-      Element: Neutral
-    - Level: 2
-      Element: Neutral
-    - Level: 3
-      Element: Poison
-    - Level: 4
-      Element: Poison
-    - Level: 5
-      Element: Poison
+  - Level: 1
+  Element: Neutral
+  - Level: 2
+  Element: Neutral
+  - Level: 3
+  Element: Poison
+  - Level: 4
+  Element: Poison
+  - Level: 5
+  Element: Poison
 
 SplashArea: Skill splash area of effect.
 
@@ -210,16 +210,16 @@ Scalar Form
 
 Sequence Map Form
   SplashArea:
-    - Level: 1
-      Area: 1
-    - Level: 2
-      Area: 1
-    - Level: 3
-      Area: 2
-    - Level: 4
-      Area: 2
-    - Level: 5
-      Area: 3
+  - Level: 1
+  Area: 1
+  - Level: 2
+  Area: 1
+  - Level: 3
+  Area: 2
+  - Level: 4
+  Area: 2
+  - Level: 5
+  Area: 3
 
 ActiveInstance: Maximum amount of active skill instances that can be on the ground.
 
@@ -229,16 +229,16 @@ Scalar Form
 
 Sequence Map Form
   ActiveInstance:
-    - Level: 1
-      Max: 1
-    - Level: 2
-      Max: 1
-    - Level: 3
-      Max: 2
-    - Level: 4
-      Max: 2
-    - Level: 5
-      Max: 3
+  - Level: 1
+  Max: 1
+  - Level: 2
+  Max: 1
+  - Level: 3
+  Max: 2
+  - Level: 4
+  Max: 2
+  - Level: 5
+  Max: 3
 
 Knockback: Amount of tiles the skill knockbacks.
 
@@ -248,16 +248,16 @@ Scalar Form
 
 Sequence Map Form
   Range:
-    - Level: 1
-      Amount: 1
-    - Level: 2
-      Amount: 1
-    - Level: 3
-      Amount: 2
-    - Level: 4
-      Amount: 2
-    - Level: 5
-      Amount: 3
+  - Level: 1
+  Amount: 1
+  - Level: 2
+  Amount: 1
+  - Level: 3
+  Amount: 2
+  - Level: 4
+  Amount: 2
+  - Level: 5
+  Amount: 3
 
 CopyFlags: Determines if the skill is copyable.
 
@@ -313,16 +313,16 @@ Scalar Form
 
 Sequence Map Form
   CastTime:
-    - Level: 1
-      Time: 1000
-    - Level: 2
-      Time: 2000
-    - Level: 3
-      Time: 3000
-    - Level: 4
-      Time: 4000
-    - Level: 5
-      Time: 5000
+  - Level: 1
+  Time: 1000
+  - Level: 2
+  Time: 2000
+  - Level: 3
+  Time: 3000
+  - Level: 4
+  Time: 4000
+  - Level: 5
+  Time: 5000
 
 AfterCastActDelay: Time the character cannot use skills in milliseconds.
 
@@ -332,16 +332,16 @@ Scalar Form
 
 Sequence Map Form
   AfterCastActDelay:
-    - Level: 1
-      Time: 1000
-    - Level: 2
-      Time: 2000
-    - Level: 3
-      Time: 3000
-    - Level: 4
-      Time: 4000
-    - Level: 5
-      Time: 5000
+  - Level: 1
+  Time: 1000
+  - Level: 2
+  Time: 2000
+  - Level: 3
+  Time: 3000
+  - Level: 4
+  Time: 4000
+  - Level: 5
+  Time: 5000
 
 AfterCastWalkDelay: Time before the character can move again in milliseconds.
 
@@ -351,16 +351,16 @@ Scalar Form
 
 Sequence Map Form
   AfterCastWalkDelay:
-    - Level: 1
-      Time: 1000
-    - Level: 2
-      Time: 2000
-    - Level: 3
-      Time: 3000
-    - Level: 4
-      Time: 4000
-    - Level: 5
-      Time: 5000
+  - Level: 1
+  Time: 1000
+  - Level: 2
+  Time: 2000
+  - Level: 3
+  Time: 3000
+  - Level: 4
+  Time: 4000
+  - Level: 5
+  Time: 5000
 
 Duration1: Duration of the skill in milliseconds.
 
@@ -370,16 +370,16 @@ Scalar Form
 
 Sequence Map Form
   Duration1:
-    - Level: 1
-      Time: 1000
-    - Level: 2
-      Time: 2000
-    - Level: 3
-      Time: 3000
-    - Level: 4
-      Time: 4000
-    - Level: 5
-      Time: 5000
+  - Level: 1
+  Time: 1000
+  - Level: 2
+  Time: 2000
+  - Level: 3
+  Time: 3000
+  - Level: 4
+  Time: 4000
+  - Level: 5
+  Time: 5000
 
 Duration2:  Duration of the skill in milliseconds.
 
@@ -389,16 +389,16 @@ Scalar Form
 
 Sequence Map Form
   Duration2:
-    - Level: 1
-      Time: 1000
-    - Level: 2
-      Time: 2000
-    - Level: 3
-      Time: 3000
-    - Level: 4
-      Time: 4000
-    - Level: 5
-      Time: 5000
+  - Level: 1
+  Time: 1000
+  - Level: 2
+  Time: 2000
+  - Level: 3
+  Time: 3000
+  - Level: 4
+  Time: 4000
+  - Level: 5
+  Time: 5000
 
 Cooldown: Time before the character can use the same skill again in milliseconds.
 
@@ -408,16 +408,16 @@ Scalar Form
 
 Sequence Map Form
   Cooldown:
-    - Level: 1
-      Time: 1000
-    - Level: 2
-      Time: 2000
-    - Level: 3
-      Time: 3000
-    - Level: 4
-      Time: 4000
-    - Level: 5
-      Time: 5000
+  - Level: 1
+  Time: 1000
+  - Level: 2
+  Time: 2000
+  - Level: 3
+  Time: 3000
+  - Level: 4
+  Time: 4000
+  - Level: 5
+  Time: 5000
 
 FixedCastTime: Time that is fixed during cast of the skill in milliseconds. A value of -1 will use 20% of CastTime as FixedCastTime. See battle_config::default_fixed_castrate to adjust the rate.
 
@@ -427,16 +427,16 @@ Scalar Form
 
 Sequence Map Form
   FixedCastTime:
-    - Level: 1
-      Time: 1000
-    - Level: 2
-      Time: 2000
-    - Level: 3
-      Time: 3000
-    - Level: 4
-      Time: 4000
-    - Level: 5
-      Time: 5000
+  - Level: 1
+  Time: 1000
+  - Level: 2
+  Time: 2000
+  - Level: 3
+  Time: 3000
+  - Level: 4
+  Time: 4000
+  - Level: 5
+  Time: 5000
 
 CastTimeFlags: Effects of the skill's cast time.
 
@@ -466,16 +466,16 @@ Scalar Form
 
 Sequence Map Form
   HpCost:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 SpCost: SP required to cast.
 
@@ -485,16 +485,16 @@ Scalar Form
 
 Sequence Map Form
   SpCost:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 ApCost: AP required to cast.
 
@@ -504,16 +504,16 @@ Scalar Form
 
 Sequence Map Form
   ApCost:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 HpRateCost: HP rate required to cast. If positive, uses current HP, else uses Max HP.
 
@@ -523,16 +523,16 @@ Scalar Form
 
 Sequence Map Form
   HpRateCost:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 SpRateCost: SP rate required to cast. If positive, uses current SP, else uses Max SP.
 
@@ -542,16 +542,16 @@ Scalar Form
 
 Sequence Map Form
   SpRateCost:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 ApRateCost: AP rate required to cast. If positive, uses current AP, else uses Max AP.
 
@@ -561,16 +561,16 @@ Scalar Form
 
 Sequence Map Form
   ApRateCost:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 MaxHpTrigger: Maximum amount of HP to cast the skill.
 
@@ -580,16 +580,16 @@ Scalar Form
 
 Sequence Map Form
   MaxHpTrigger:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 ZenyCost: Zeny required to cast.
 
@@ -599,16 +599,16 @@ Scalar Form
 
 Sequence Map Form
   ZenyCost:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 Weapon: Weapon required to cast.
 
@@ -659,16 +659,16 @@ Scalar Form
 
 Sequence Map Form
   AmmoAmount:
-    - Level: 1
-      Amount: 1
-    - Level: 2
-      Amount: 2
-    - Level: 3
-      Amount: 3
-    - Level: 4
-      Amount: 4
-    - Level: 5
-      Amount: 5
+  - Level: 1
+  Amount: 1
+  - Level: 2
+  Amount: 2
+  - Level: 3
+  Amount: 3
+  - Level: 4
+  Amount: 4
+  - Level: 5
+  Amount: 5
 
 State: Special state required to cast.
 
@@ -707,41 +707,41 @@ Scalar Form
 
 Sequence Map Form
   SphereCost:
-    - Level: 1
-      Amount: 1
-    - Level: 2
-      Amount: 2
-    - Level: 3
-      Amount: 3
-    - Level: 4
-      Amount: 4
-    - Level: 5
-      Amount: 5
+  - Level: 1
+  Amount: 1
+  - Level: 2
+  Amount: 2
+  - Level: 3
+  Amount: 3
+  - Level: 4
+  Amount: 4
+  - Level: 5
+  Amount: 5
 
 ItemCost: Item required to cast. If the Level is supplied, then the ItemCost becomes skill level dependent.
 
 Levels 1 - 5 have no item cost but levels 6 - 10 require a Blue Gemstone.
   ItemCost:
-    - Item: Blue_Gemstone
-      Amount: 1
-      Level: 6
-    - Item: Blue_Gemstone
-      Amount: 1
-      Level: 7
-    - Item: Blue_Gemstone
-      Amount: 1
-      Level: 8
-    - Item: Blue_Gemstone
-      Amount: 1
-      Level: 9
-    - Item: Blue_Gemstone
-      Amount: 1
-      Level: 10
+  - Item: Blue_Gemstone
+  Amount: 1
+  Level: 6
+  - Item: Blue_Gemstone
+  Amount: 1
+  Level: 7
+  - Item: Blue_Gemstone
+  Amount: 1
+  Level: 8
+  - Item: Blue_Gemstone
+  Amount: 1
+  Level: 9
+  - Item: Blue_Gemstone
+  Amount: 1
+  Level: 10
 
 \# All levels require a Blue Gemstone.
   ItemCost:
-    - Item: Blue_Gemstone
-      Amount: 1
+  - Item: Blue_Gemstone
+  Amount: 1
 
 GiveAp: AP given on successful casting.
 
@@ -751,16 +751,16 @@ Scalar Form
 
 Sequence Map Form
   GiveAp:
-    - Level: 1
-      Amount: 10
-    - Level: 2
-      Amount: 20
-    - Level: 3
-      Amount: 30
-    - Level: 4
-      Amount: 40
-    - Level: 5
-      Amount: 50
+  - Level: 1
+  Amount: 10
+  - Level: 2
+  Amount: 20
+  - Level: 3
+  Amount: 30
+  - Level: 4
+  Amount: 40
+  - Level: 5
+  Amount: 50
 
 Equipment: Equipped item required to cast.
 
@@ -797,16 +797,16 @@ Scalar Form
 
 Sequence Map Form
   Layout:
-    - Level: 1
-      Size: 1
-    - Level: 2
-      Size: 2
-    - Level: 3
-      Size: 3
-    - Level: 4
-      Size: 4
-    - Level: 5
-      Size: 5
+  - Level: 1
+  Size: 1
+  - Level: 2
+  Size: 2
+  - Level: 3
+  Size: 3
+  - Level: 4
+  Size: 4
+  - Level: 5
+  Size: 5
 
 Range: Skill unit range.
 
@@ -816,16 +816,16 @@ Scalar Form
 
 Sequence Map Form
   Range:
-    - Level: 1
-      Size: 1
-    - Level: 2
-      Size: 2
-    - Level: 3
-      Size: 3
-    - Level: 4
-      Size: 4
-    - Level: 5
-      Size: 5
+  - Level: 1
+  Size: 1
+  - Level: 2
+  Size: 2
+  - Level: 3
+  Size: 3
+  - Level: 4
+  Size: 4
+  - Level: 5
+  Size: 5
 
 Interval: Skill unit interval in milliseconds.
 

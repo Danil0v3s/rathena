@@ -33,26 +33,32 @@ The table below explains which fields are accessed in each.
 +===============+=================+====================+================+
 
 GroupID: See the "Item Group ID" section in 'src/map/itemdb.hpp' and the "item groups" section in 'src/map/script_constants.hpp'.
+
+```
          Supports IG_* constants. 'IG_' is appended to the name when the file is read.
+```
 
 Index: Unique number that can be used to add the same Item with different data in the list.
 
 Item: Available item that will be obtained from this item group.
+
+```
       Requires the AegisName of the item.
+```
 
 Rate: Probability to get the item. Not a percentage value!
 
 Examples:
   - Group: MyItemGroup
-    SubGroups:
-      - SubGroup: 1
-        List:
-          - Index: 0
-            Item: Knife
-            Rate: 5
-          - Index: 1
-            Item: Dagger
-            Rate: 1
+  SubGroups:
+  - SubGroup: 1
+  List:
+  - Index: 0
+  Item: Knife
+  Rate: 5
+  - Index: 1
+  Item: Dagger
+  Rate: 1
 
 ```
 - Knife has chance 5/6 (83.3%) to be obtained
@@ -65,26 +71,24 @@ SubGroup: Unique number to create a list of item.
 
 Algorithm: Type of algorithm associated with SubGroup.
 
-Random            - A random item is picked from the sub group using rate as chance for an item being picked.
-                    The chance remains the same every time.
-All               - All items in this sub group shall be picked.
-                    If you use a command that is supposed to return only one item with such a sub group, then a random item is returned instead, with each
-                    item having the same chance to be picked.
-                    When using this algorithm, the rate must remain unspecified (0).
-SharedPool        - Rate is the amount of items of this item ID in the sub group. A random item is picked from all the items in the group and then removed
-                    from the sub group. That means each time an item is returned from the sub group, it will have a lower chance to be returned again and if
-                    no more items of this item ID remain in the sub group, it cannot be returned at all anymore. This also means that if the server requests
-                    an item from this sub group as often as there are total items in this sub group, it will get exactly the amounts specified under "rate".
-                    Only when the group is completely empty or the server restarts, the group refills.
+- `Random` - A random item is picked from the sub group using rate as chance for an item being picked.
+  The chance remains the same every time.
+- `All` - All items in this sub group shall be picked.
+  If you use a command that is supposed to return only one item with such a sub group, then a random item is returned instead, with each
+  item having the same chance to be picked.
+  When using this algorithm, the rate must remain unspecified (0).
+- `SharedPool` - Rate is the amount of items of this item ID in the sub group. A random item is picked from all the items in the group and then removed
+  from the sub group. That means each time an item is returned from the sub group, it will have a lower chance to be returned again and if
+  no more items of this item ID remain in the sub group, it cannot be returned at all anymore. This also means that if the server requests
+  an item from this sub group as often as there are total items in this sub group, it will get exactly the amounts specified under "rate".
+  Only when the group is completely empty or the server restarts, the group refills.
 
 Default: SharedPool
 
 Example:
 
 ```
-Item Group:
-```
-
+	Item Group:
       - Group: MyItemGroup
         SubGroups:
           - SubGroup: 0
@@ -113,53 +117,52 @@ Item Group:
                 Item: Dagger_     # random at SubGroup 2
                 Rate: 4
 
-```
-Usages:
-getgroupitem(<group_id>)
-------------
--> 'getgroupitem(IG_MyItemGroup);'
-	- Player always gets 1x Knife and 1x Dagger
-	- Player has chance to get 1x Stiletto by chance 5/7 from SubGroup 1
-	- Player has chance to get 1x Stiletto_ by chance 2/7 from SubGroup 1
-	- Player has chance to get 1x Stiletto by chance 5/9 from SubGroup 2
-	- Player has chance to get 1x Dagger_ by chance 4/9 from SubGroup 2
+	Usages:
+	getgroupitem(<group_id>)
+	------------
+	-> 'getgroupitem(IG_MyItemGroup);'
+		- Player always gets 1x Knife and 1x Dagger
+		- Player has chance to get 1x Stiletto by chance 5/7 from SubGroup 1
+		- Player has chance to get 1x Stiletto_ by chance 2/7 from SubGroup 1
+		- Player has chance to get 1x Stiletto by chance 5/9 from SubGroup 2
+		- Player has chance to get 1x Dagger_ by chance 4/9 from SubGroup 2
 
-getrandgroupitem(<group_id>{,<quantity>{,<sub_group>}})
-------------
--> 'getrandgroupitem(IG_MyItemGroup);'
-	- Random SubGroup: 1, Amount: [Based on list]
-	- Equals to: getrandgroupitem(IG_MyItemGroup,0) and getrandgroupitem(IG_MyItemGroup,0,1)
-	- Player has chance to get 1x Stiletto by chance 5/7 from SubGroup 1
-	- Player has chance to get 1x Stiletto_ by chance 2/7 from SubGroup 1
-	- 'must' and 'SubGroup 2' are ignored
+	getrandgroupitem(<group_id>{,<quantity>{,<sub_group>}})
+	------------
+	-> 'getrandgroupitem(IG_MyItemGroup);'
+		- Random SubGroup: 1, Amount: [Based on list]
+		- Equals to: getrandgroupitem(IG_MyItemGroup,0) and getrandgroupitem(IG_MyItemGroup,0,1)
+		- Player has chance to get 1x Stiletto by chance 5/7 from SubGroup 1
+		- Player has chance to get 1x Stiletto_ by chance 2/7 from SubGroup 1
+		- 'must' and 'SubGroup 2' are ignored
 
--> 'getrandgroupitem(IG_MyItemGroup,1);'
-	- Random SubGroup: 1, Amount: 2, ignore 'amount' on the list
-	- Equals to: getrandgroupitem(IG_MyItemGroup,1,1)
-	- Player has chance to get 2x Stiletto by chance 5/7 from SubGroup 1
-	- Player has chance to get 2x Stiletto_ by chance 2/7 from SubGroup 1
-	- 'must' and 'SubGroup 2' are ignored
+	-> 'getrandgroupitem(IG_MyItemGroup,1);'
+		- Random SubGroup: 1, Amount: 2, ignore 'amount' on the list
+		- Equals to: getrandgroupitem(IG_MyItemGroup,1,1)
+		- Player has chance to get 2x Stiletto by chance 5/7 from SubGroup 1
+		- Player has chance to get 2x Stiletto_ by chance 2/7 from SubGroup 1
+		- 'must' and 'SubGroup 2' are ignored
 
--> 'getrandgroupitem(IG_MyItemGroup,3, 0);'
-	- Random SubGroup: 'must', Amount: 2, ignore 'amount' on the list
-	- Player has chance to get 3x Knife by chance 1/2 from 'must' SubGroup
-	- Player has chance to get 3x Dagger by chance 1/2 from 'must' SubGroup
-	- 'SubGroup 1' and 'SubGroup 2' are ignored
+	-> 'getrandgroupitem(IG_MyItemGroup,3, 0);'
+		- Random SubGroup: 'must', Amount: 2, ignore 'amount' on the list
+		- Player has chance to get 3x Knife by chance 1/2 from 'must' SubGroup
+		- Player has chance to get 3x Dagger by chance 1/2 from 'must' SubGroup
+		- 'SubGroup 1' and 'SubGroup 2' are ignored
 
-groupranditem(<group id>{,<sub_group>})
-------------
-This command only returns an Item ID from random SubGroup. Combine with 'getitem'
-to retrieve the items.
--> 'groupranditem(IG_MyItemGroup);'
-	- Random SubGroup: 1
-	- Returns Item ID of Stiletto by chance 5/7 from SubGroup 1
-	- Returns Item ID of Stiletto_ by chance 2/7 from SubGroup 1
-	- 'must' and 'SubGroup 2' are ignored
--> 'groupranditem(IG_MyItemGroup,0);'
-	- Random SubGroup: 0
-	- Returns Item ID of Knife by chance 5/7 from 'must' SubGroup
-	- Returns Item ID of Dagger by chance 2/7 from 'must' SubGroup
-	- 'SubGroup 1' and 'SubGroup 2' are ignored
+	groupranditem(<group id>{,<sub_group>})
+	------------
+	This command only returns an Item ID from random SubGroup. Combine with 'getitem'
+	to retrieve the items.
+	-> 'groupranditem(IG_MyItemGroup);'
+		- Random SubGroup: 1
+		- Returns Item ID of Stiletto by chance 5/7 from SubGroup 1
+		- Returns Item ID of Stiletto_ by chance 2/7 from SubGroup 1
+		- 'must' and 'SubGroup 2' are ignored
+	-> 'groupranditem(IG_MyItemGroup,0);'
+		- Random SubGroup: 0
+		- Returns Item ID of Knife by chance 5/7 from 'must' SubGroup
+		- Returns Item ID of Dagger by chance 2/7 from 'must' SubGroup
+		- 'SubGroup 1' and 'SubGroup 2' are ignored
 ```
 
 Example #2:
@@ -230,23 +233,32 @@ After the two commands were called 16 times, the server will always have given o
 Now the group is refilled and the next time the command is called, it will behave similar to the first time.
 
 Announced: If player obtained this item, it will be broadcast to the server.
-           "[Player] has won [Item] from 'Box'"
-
-Duration: Makes the item a rental item, which will be expire in the given amount
-          of minutes. Not intended for use with stackable items.
-
-UniqueId: Makes the given item(s) with Unique ID. Item will be stacked ONLY each group
-      when it obtained. Cannot be stacked with same item, even it's stackable item.
 
 ```
-  Example, there is Box (just call it Apple_Box) that contains 3x Apples with
-  UniqueId = 1. When Apples appear it will stack for each 3 even another 3x Apples
-  are appeared by same box. So it will be filled in inventory as:
-        3x Apples | 3x Apples | so on... | nx Apples (normal)
+           "[Player] has won [Item] from 'Box'"
+```
+
+Duration: Makes the item a rental item, which will be expire in the given amount
+
+```
+          of minutes. Not intended for use with stackable items.
+```
+
+UniqueId: Makes the given item(s) with Unique ID. Item will be stacked ONLY each group
+
+```
+      when it obtained. Cannot be stacked with same item, even it's stackable item.
+	  Example, there is Box (just call it Apple_Box) that contains 3x Apples with
+	  UniqueId = 1. When Apples appear it will stack for each 3 even another 3x Apples
+	  are appeared by same box. So it will be filled in inventory as:
+	        3x Apples | 3x Apples | so on... | nx Apples (normal)
 ```
 
 Bound: Binds the obtained item.
+
+```
        See 'getitembound' in 'doc/script_commands.md' for valid bound types.
+```
 
 Named: Inscribes the item with the obtainer's name.
 
@@ -255,49 +267,76 @@ Stacked: Whether stackable items are given stacked or not.
 RandomOptionGroup: Applies random options of this group to all equipable items.
 
 RefineMinimum: Applies at least this refine level to all equipable items.
+
+```
        When RefineMaximum also has a value, the refine level of the equipment will be between RefineMinimum and RefineMaximum.
        When RefineMaximum hasn't a value, the refine level of the equipment will be between RefineMinimum and MAX_REFINE.
+```
 
 RefineMaximum: Applies at most this refine level to all equipable items.
+
+```
        When RefineMinimum also has a value, the refine level of the equipment will be between RefineMinimum and RefineMaximum.
        When RefineMinimum hasn't a value, the refine level of the equipment will be between 1 and RefineMaximum.
+```
 
 Example 1:
+
+```
        (Supposing MAX_REFINE = 20)
        RefineMinimum: 17
 
        Possible refine level of the equipment : 17, 18, 19, 20
+```
 
 Example 2:
+
+```
        RefineMaximum: 5
 
        Possible refine level of the equipment : 1, 2, 3, 4, 5
+```
 
 Example 3:
+
+```
        RefineMinimum: 7
        RefineMaximum: 10
 
        Possible refine level of the equipment : 7, 8, 9, 10
+```
 
 GradeMinimum: Applies at least this level of grade to all equipable items.
+
+```
        When GradeMaximum also has a value, the level of grade of the equipment will be between GradeMinimum and GradeMaximum.
        When GradeMaximum hasn't a value, the level of grade of the equipment will be between GradeMinimum and the highest possible grade (A).
 
        Accepted value, written in ascending order of level : None, D, C, B, A
+```
 
 GradeMaximum: Applies at most this level of grade to all equipable items.
+
+```
        When GradeMinimum also has a value, the level of grade of the equipment will be between GradeMinimum and GradeMaximum.
        When GradeMinimum hasn't a value, the level of grade of the equipment will be between None and GradeMaximum.
 
        Accepted value, written in ascending order of level : None, D, C, B, A
+```
 
 Example 1:
+
+```
        GradeMaximum: C
 
        Possible grade level of the equipment : None, D or C
+```
 
 Example 2:
+
+```
        GradeMinimum: D
        GradeMaximum: C
 
        Possible grade level of the equipment : D or C
+```

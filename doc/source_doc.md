@@ -29,7 +29,7 @@ important to have a thorough understanding of what they are to avoid confusion.
   serv          a program/daemon that runs indefinitely offering a service
   host          a machine that has one or more servs running
   command       a request of an action on the server or client
-                (atcommand, script_command, packet_request)
+  (atcommand, script_command, packet_request)
   interface     a class/module that offers a list of commands
 
 ## 2. Intro & Emulation
@@ -56,18 +56,14 @@ aggregations, the login-serv and map-serv never directly communicate with each o
 We have 3 types of communication:
 
   1. serv `<=>` serv  (AH,HA,HZ,ZH)
-     This type of server-to-server communication is referred to as "inter-serv" communication.
+  This type of server-to-server communication is referred to as "inter-serv" communication.
 
   2. serv `<=>` client  (AC,CA,HC,CH,ZC,CZ)
-     This is what our servs send or receive to a player client.
-
-```
-
-```
-
+  This is what our servs send or receive to a player client.
+  
   3. serv `<=>` console/terminal
-     This is the only kind of communication which doesn't use packets (currently).
-     It's only done in localhost from console to servs (a way to input args in servs runtime).
+  This is the only kind of communication which doesn't use packets (currently).
+  It's only done in localhost from console to servs (a way to input args in servs runtime).
 
 The packet notation and structure are well defined in 'doc/packet_struct_notation.md'.
 
@@ -268,7 +264,7 @@ The following list describes each module and its purpose.
   log            functions for server log system
   mail           functions for mail system
   map            map-serv main module, and a representation of a map object
-                   adds or removes other objects into map (blocklist) and provides iterators (ex. map_foreachpc)
+  adds or removes other objects into map (blocklist) and provides iterators (ex. map_foreachpc)
   mapreg         functions to save or read variables in mapreg_db (global variables for all map-serv)
   mercenary      functions for Mercenary system (create, search, get stats, dead)
   mob            functions for mob data, structures, and mob routines
@@ -284,9 +280,9 @@ The following list describes each module and its purpose.
   searchstore    functions for the Vendor Shop Search feature
   skill          functions for skills (skill_casttime calculation, skill behaviours, skill_chk_cast, requirement checks, 'db/skill_*.txt' processing)
   status         functions for statuses on a bl (add, remove, calculation of effects as a temporary bonus)
-                   status is a struct available by most units as common attributes (bl_type only attribute are dealt in bl specific files, like 'pc.cpp' or 'mob.cpp')
+  status is a struct available by most units as common attributes (bl_type only attribute are dealt in bl specific files, like 'pc.cpp' or 'mob.cpp')
   storage        functions for the storage system: Kafra, cart, guild, inventory (add, transfer, remove items between containers)
-                   also ensures container mutex (e.g. guild_storage) and preparation for save requests
+  also ensures container mutex (e.g. guild_storage) and preparation for save requests
   trade          functions to perform a trade (request, accept, add items/Zeny, checks, complete trade)
   unit           functions for controlling player/mob/NPC actions (walk, follow, skill use)
   vending        functions for Merchant Vending (create, purchase)
@@ -308,8 +304,8 @@ NOTES:
   - If a status name conflicts with a skill name, another '_' is added (e.g. SC__WEAKNESS).
   - All constants should be written in all caps.
   - battle_config vs. #define macro:
-        battle_config can be changed during runtime (ex. @setbattleflag), but this requires
-        more processing and could render the server less stable than a macro would.
+  battle_config can be changed during runtime (ex. @setbattleflag), but this requires
+  more processing and could render the server less stable than a macro would.
 
 ## 7. Variable Notes
 
@@ -335,7 +331,7 @@ The following variables are commonly used in the source code.
   st         script stack         the stack of an NPC
   aid        account id           a player account ID
   gid        game id              the general unique ID of a Unit, which is the aid for players
-                                  (since a single character per account can be connected at one time)
+  (since a single character per account can be connected at one time)
   cid        character id         a player character ID
   rid        character id         a variant of cid
   su         skill unit           a skill with a unit that remains on the ground
@@ -348,17 +344,13 @@ users can compile it.
 
 The project is built with CMake (requires a C++17 compiler + cmake 3.21+):
   - CMakeLists.txt: One per folder (root, src/, src/`<server>`/). Sources are globbed, so a new
-    .cpp/.hpp inside an existing folder is picked up automatically at the next configure;
-    a new folder or a new executable needs its own add_subdirectory()/add_executable().
+  .cpp/.hpp inside an existing folder is picked up automatically at the next configure;
+  a new folder or a new executable needs its own add_subdirectory()/add_executable().
   - CMakePresets.json: Named configurations ('dev', 'debug', 'make', 'msvs').
   - vcpkg.json: Third party dependencies, fetched and built by vcpkg on first configure.
   The sequence is as follows:
-
-```
-1) cmake --preset dev            => generates the build system in build/ (and bootstraps vcpkg)
-2) cmake --build --preset dev    => produces the binaries in the repository root
-```
-
+  1) cmake --preset dev            => generates the build system in build/ (and bootstraps vcpkg)
+  2) cmake --build --preset dev    => produces the binaries in the repository root
   Windows: 'cmake --preset msvs' generates build-msvs/rAthena.sln for Visual Studio.
 
 See https://github.com/rathena/rathena/wiki/compiling for more detailed compilation instructions.
@@ -384,8 +376,8 @@ ACMD_DEF2("alias",name)  - OR -  ACMD_DEF2R("alias",name,restriction)
 
   Restriction    Description
   -----------    -----------
-      1          restrict usage in console
-      2          restrict usage in script_command
+  1          restrict usage in console
+  2          restrict usage in script_command
 
 ### Script Commands
 
@@ -402,14 +394,14 @@ BUILDIN_DEF2(name,"alias","arguments")
 
   Argument    Description
   --------    -----------
-     i        integer
-     s        string
-     v        variable
-     l        label
-     r        reference (of a variable)
-     ?        optional parameter (one)
-     *        optional parameter (unknown count)
-              null (no arguments)
+  i        integer
+  s        string
+  v        variable
+  l        label
+  r        reference (of a variable)
+  ?        optional parameter (one)
+  *        optional parameter (unknown count)
+  null (no arguments)
 
 Useful functions:
   script_hasdata(st,i);       // Returns if the stack contains data at the target index

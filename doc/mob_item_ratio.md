@@ -29,7 +29,7 @@ Body:
  - Item: Jellopy
    Ratio: 100
    List:
-     PORING: true
+  PORING: true
 
 Notes:
 - Does not override item_drop_*_min/max settings.

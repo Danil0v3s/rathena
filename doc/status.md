@@ -259,10 +259,10 @@ Fail: List of status that causes the status to fail to activate.
 EndOnStart: List of status that will end if the status activates.
 
 EndReturn: List of status that will end if the status activates and it won't give its effect.
-           The statuses checked in this list are done at the beginning of status_change_start(). If at least 1 status from this list
 
 ```
-	   is removed then it will return back and not check anything else.
+           The statuses checked in this list are done at the beginning of status_change_start(). If at least 1 status from this list
+		   is removed then it will return back and not check anything else.
 ```
 
 EndOnEnd: List of status that will end when the status becomes inactive.
