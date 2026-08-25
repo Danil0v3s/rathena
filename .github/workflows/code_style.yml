@@ -17,6 +17,7 @@ on:
       - 'tools/format.sh'
       - 'src/**'
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '.github/**'
       - '.clang-format'
@@ -25,7 +26,7 @@ on:
 
 jobs:
   clang-format:
-    if: "!contains(github.event.head_commit.message, 'ci-skip')"
+    if: ${{ !contains(github.event.head_commit.message, 'ci-skip') && (github.event_name != 'pull_request' || !github.event.pull_request.draft) }}
     runs-on: ubuntu-latest
 
     steps:
