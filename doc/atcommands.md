@@ -59,7 +59,8 @@ Show server uptime since last map server restart.
 Output Example:
 Server Uptime: 3 days, 8 hours, 6 minutes, 4 seconds.
 
-### @refresh
+<a name="refreshall"></a>
+### @refresh / @refreshall
 
 ```
 @refresh
@@ -114,7 +115,8 @@ Available types:
 -- 8: RixMagic
 -- 9: RixJJangu
 
-### @agitstart
+<a name="agitend"></a>
+### @agitstart / @agitend
 
 ```
 @agitstart
@@ -124,7 +126,8 @@ Available types:
 Starts or ends War of Emperium [FE] by invoking scripts with the
 OnAgitStart/OnAgitEnd labels.
 
-### @agitstart2
+<a name="agitend2"></a>
+### @agitstart2 / @agitend2
 
 ```
 @agitstart2
@@ -134,7 +137,8 @@ OnAgitStart/OnAgitEnd labels.
 Starts or ends War of Emperium [SE] by invoking scripts with the
 OnAgitStart2/OnAgitEnd2 labels.
 
-### @agitstart3
+<a name="agitend3"></a>
+### @agitstart3 / @agitend3
 
 ```
 @agitstart3
@@ -144,7 +148,8 @@ OnAgitStart2/OnAgitEnd2 labels.
 Starts or ends War of Emperium [TE] by invoking scripts with the
 OnAgitStart3/OnAgitEnd3 labels.
 
-### @pvpon
+<a name="pvpoff"></a>
+### @pvpon / @pvpoff
 
 ```
 @pvpon
@@ -153,7 +158,8 @@ OnAgitStart3/OnAgitEnd3 labels.
 
 Enables or disables PvP (Player vs. Player) mode on a map.
 
-### @gvgon
+<a name="gvgoff"></a>
+### @gvgon / @gvgoff
 
 ```
 @gvgon
@@ -162,7 +168,8 @@ Enables or disables PvP (Player vs. Player) mode on a map.
 
 Enables or disables GvG (Guild vs. Guild) mode on a map.
 
-### @skillon
+<a name="skilloff"></a>
+### @skillon / @skilloff
 
 ```
 @skillon
@@ -175,7 +182,8 @@ Enables or disables skill usage on a map.
 
 Toggles Kill Steal Protection on a map.
 
-### @day
+<a name="night"></a>
+### @day / @night
 
 ```
 @day
@@ -192,7 +200,13 @@ Sets the server to day or night mode.
 
 Plays the specified sound.
 
-### @snow
+<a name="clouds"></a>
+<a name="clouds2"></a>
+<a name="fog"></a>
+<a name="fireworks"></a>
+<a name="sakura"></a>
+<a name="leaves"></a>
+### @snow / @clouds / @clouds2 / @fog / @fireworks / @sakura / @leaves
 
 ```
 @snow
@@ -487,7 +501,8 @@ Looks up a skill by name (or part of a name).
 
 Lists requirements to obtain the specified skill on the target character.
 
-### @questskill
+<a name="lostskill"></a>
+### @questskill / @lostskill
 
 ```
 @questskill {<skill ID>}
@@ -564,7 +579,9 @@ Displays cart contents of the specified player.
 
 Displays inventory contents of the attached player.
 
-### @who
+<a name="who2"></a>
+<a name="who3"></a>
+### @who / @who2 / @who3
 
 ```
 @who {<filter>}
@@ -575,7 +592,9 @@ Displays inventory contents of the attached player.
 Returns a list of online characters.
 If a filter is given, the list will be restricted to names containing the filter string.
 
-### @who
+<a name="who2"></a>
+<a name="who3"></a>
+### @who / @who2 / @who3
 
 ```
 @who will also return character positions.
@@ -583,7 +602,9 @@ If a filter is given, the list will be restricted to names containing the filter
 @who3 will also return parties/guilds.
 ```
 
-### @whomap
+<a name="whomap2"></a>
+<a name="whomap3"></a>
+### @whomap / @whomap2 / @whomap3
 
 ```
 @whomap {<map>}
@@ -594,7 +615,9 @@ If a filter is given, the list will be restricted to names containing the filter
 Returns a list of online characters in a specific map.
 If a map is given, the list will be restricted to characters on the specified map.
 
-### @whomap
+<a name="whomap2"></a>
+<a name="whomap3"></a>
+### @whomap / @whomap2 / @whomap3
 
 ```
 @whomap will also return character positions.
@@ -686,7 +709,8 @@ Opens your mailbox.
 
 Opens the auction window.
 
-### @identify
+<a name="identifyall"></a>
+### @identify / @identifyall
 
 ```
 @identify
@@ -723,7 +747,8 @@ all items are sold, or the mapserver closes.
 
 /monster `<monster name>`
 
-### @monstersmall
+<a name="monsterbig"></a>
+### @monstersmall / @monsterbig
 
 ```
 @monstersmall <monster name/ID> {<amount>}
@@ -743,7 +768,9 @@ Additionally, monster size can be adjusted.
 Spawns mobs that treat you as their master.
 If a duration is specified, they will stay with you until the duration has ended.
 
-### @clone
+<a name="slaveclone"></a>
+<a name="evilclone"></a>
+### @clone / @slaveclone / @evilclone
 
 ```
 @clone <player name/ID>
@@ -753,7 +780,9 @@ If a duration is specified, they will stay with you until the duration has ended
 
 Spawns a clone of the specified player.
 
-### @clone
+<a name="slaveclone"></a>
+<a name="evilclone"></a>
+### @clone / @slaveclone / @evilclone
 
 ```
 @clone will spawn a supportive clone.
@@ -781,7 +810,8 @@ Creates an item with the given parameters (the 'cards' can be any item).
 identify_flag: 0 = unidentified, 1 = identified
 attribute: 0 = not broken, 1 = broken
 
-### @itembound
+<a name="itembound2"></a>
+### @itembound / @itembound2
 
 ```
 @itembound <item name/ID>{:<item name/ID>:...} <amount> <bound type>
@@ -880,6 +910,8 @@ Repairs all broken items in your inventory.
 Drops all items based on the item type.
 
 Valid item types:
+
+```
     -1 = All Items (default)
      0 = Healing Items
      2 = Useable Items
@@ -890,6 +922,7 @@ Valid item types:
      7 = Pet Eggs
      8 = Pet Armors
      10 = Ammunition Items
+```
 
 Example:
 To drop all weapons in inventory...
@@ -909,6 +942,8 @@ To drop all weapons in inventory...
 Transfer all items from cart to inventory based on the item type.
 
 Valid item types:
+
+```
     -1 = All (default)
      0 = Healing
      2 = Usable
@@ -919,6 +954,7 @@ Valid item types:
      7 = Pet Eggs
      8 = Pet Armors
      10 = Ammunition
+```
 
 Example:
 To transfer all weapons from cart to inventory...
@@ -937,7 +973,8 @@ Places all inventory and equipped items directly into your Kafra Storage.
 
 Deletes all inventory items (not equipped items).
 
-### @clearstorage
+<a name="cleargstorage"></a>
+### @clearstorage / @cleargstorage
 
 ```
 @clearstorage
@@ -950,7 +987,8 @@ Deletes all items in storage (or guild storage).
 
 Deletes all items in cart, but does not remove the cart.
 
-### @cleanarea
+<a name="cleanmap"></a>
+### @cleanarea / @cleanmap
 
 ```
 @cleanarea
@@ -1066,7 +1104,8 @@ Allows you to attack other players outside of PvP.
 
 Allows other players to attack you outside of PvP.
 
-### @blvl
+<a name="jlvl"></a>
+### @blvl / @jlvl
 
 ```
 @blvl <+/- amount>
@@ -1081,7 +1120,12 @@ Restriction:
 - Used from console
 ```
 
-### @str
+<a name="agi"></a>
+<a name="vit"></a>
+<a name="int"></a>
+<a name="dex"></a>
+<a name="luk"></a>
+### @str / @agi / @vit / @int / @dex / @luk
 
 ```
 @str <+/- amount>
@@ -1107,7 +1151,8 @@ If no amount is given, sets all stats to the maximum (default is 99).
 
 Gives your character all skills in their current skill tree.
 
-### @stpoint
+<a name="skpoint"></a>
+### @stpoint / @skpoint
 
 ```
 @stpoint <+/- amount>
@@ -1181,7 +1226,8 @@ Summons the specified amount of spirit spheres around you.
 
 Summons the specified amount of soul spheres around you.
 
-### @mount
+<a name="mount2"></a>
+### @mount / @mount2
 
 ```
 @mount {<dragon color 1-5>}
@@ -1215,7 +1261,11 @@ Changes Cash Points by the specified amount.
 
 Changes Kafra Points by the specified amount.
 
-### @model
+<a name="hairstyle"></a>
+<a name="haircolor"></a>
+<a name="dye"></a>
+<a name="bodystyle"></a>
+### @model / @hairstyle / @haircolor / @dye / @bodystyle
 
 ```
 @model <hair style> <hair color> <cloth color>
@@ -1275,7 +1325,8 @@ Removes all character costumes.
 Temporarily changes name to the specified string (lasts until player logs out).
 If no string is given, the character's real name will be re-applied.
 
-### @size
+<a name="sizeall"></a>
+### @size / @sizeall
 
 ```
 @size <0-2>
@@ -1285,7 +1336,11 @@ If no string is given, the character's real name will be re-applied.
 Changes your size (0 = Normal, 1 = Small, 2 = Large).
 Additionally, @sizeall will change the size of all online players.
 
-### @duel
+<a name="invite"></a>
+<a name="accept"></a>
+<a name="reject"></a>
+<a name="leave"></a>
+### @duel / @invite / @accept / @reject / @leave
 
 ```
 @duel {<duel participant count>}
@@ -1309,7 +1364,9 @@ Some options can be found in '/conf/battle/misc.conf'.
 Heals the specified amount of HP and SP.
 If no parameters are given, the character will be fully healed.
 
-### @alive
+<a name="raisemap"></a>
+<a name="raise"></a>
+### @alive / @raisemap / @raise
 
 ```
 @alive
@@ -1319,7 +1376,9 @@ If no parameters are given, the character will be fully healed.
 
 Resurrection commands.
 
-### @alive
+<a name="raisemap"></a>
+<a name="raise"></a>
+### @alive / @raisemap / @raise
 
 ```
 @alive will revive the attached player.
@@ -1327,7 +1386,10 @@ Resurrection commands.
 @raise will revive all players on the server.
 ```
 
-### @disguise
+<a name="undisguise"></a>
+<a name="disguiseall"></a>
+<a name="undisguiseall"></a>
+### @disguise / @undisguise / @disguiseall / @undisguiseall
 
 ```
 @disguise <monster/npc name/ID>
@@ -1502,7 +1564,8 @@ Changes the gender attached to the player's account.
 
 Changes the gender attached to the player's character.
 
-### @marry
+<a name="divorce"></a>
+### @marry / @divorce
 
 ```
 @marry <player 1> <player 2>
@@ -1564,14 +1627,18 @@ Displays the motd file to all players.
 Announces a message in yellow text.
 Except for /nb and /nlb, the message will be prefixed with the name of the attached character.
 
-### @broadcast
+<a name="localbroadcast"></a>
+### @broadcast / @localbroadcast
 
 ```
 @broadcast will be shown to the entire server.
 @localbroadcast will be shown on the player's map only.
 ```
 
-### @kami
+<a name="kamib"></a>
+<a name="kamic"></a>
+<a name="lkami"></a>
+### @kami / @kamib / @kamic / @lkami
 
 ```
 @kami <message>
@@ -1582,7 +1649,10 @@ Except for /nb and /nlb, the message will be prefixed with the name of the attac
 
 Announces a message without a name prefix.
 
-### @kami
+<a name="kamib"></a>
+<a name="kamic"></a>
+<a name="lkami"></a>
+### @kami / @kamib / @kamic / @lkami
 
 ```
 @kami will broadcast in yellow text.
@@ -1599,7 +1669,8 @@ Example:
 @kamic FF0000 This message is in red.
 ```
 
-### @killmonster
+<a name="killmonster2"></a>
+### @killmonster / @killmonster2
 
 ```
 @killmonster
@@ -1609,7 +1680,10 @@ Example:
 Kills all monsters on the map.
 Additionally, @killmonster2 will prevent the monsters from dropping items (except looted items).
 
-### @kill
+<a name="nuke"></a>
+<a name="doommap"></a>
+<a name="doom"></a>
+### @kill / @nuke / @doommap / @doom
 
 ```
 @kill
@@ -1620,7 +1694,10 @@ Additionally, @killmonster2 will prevent the monsters from dropping items (excep
 
 Kill commands.
 
-### @kill
+<a name="nuke"></a>
+<a name="doommap"></a>
+<a name="doom"></a>
+### @kill / @nuke / @doommap / @doom
 
 ```
 @kill will kill the attached player.
@@ -1629,7 +1706,9 @@ Kill commands.
 @doom will kill all players on the server.
 ```
 
-### @mute
+<a name="mutearea"></a>
+<a name="unmute"></a>
+### @mute / @mutearea / @unmute
 
 ```
 @mute <time> <player name>
@@ -1645,7 +1724,9 @@ Mutes or unmutes a player (prevents talking, usage of skills, and commands).
 @mutearea will mute every player on screen for the specified time.
 ```
 
-### @jail
+<a name="jailfor"></a>
+<a name="unjail"></a>
+### @jail / @jailfor / @unjail
 
 ```
 @jail <player name>
@@ -1676,7 +1757,8 @@ Restriction:
 
 Disconnects a user or all users from the server.
 
-### @ban
+<a name="unban"></a>
+### @ban / @unban
 
 ```
 @ban <+/- time> <player name>
@@ -1696,7 +1778,8 @@ Example:
 
 -> bans Char2's account for 2 days.
 
-### @block
+<a name="unblock"></a>
+### @block / @unblock
 
 ```
 @block <player name>
@@ -1705,7 +1788,8 @@ Example:
 
 Blocks or unblocks a player from logging in indefinitely.
 
-### @charban
+<a name="charunban"></a>
+### @charban / @charunban
 
 ```
 @charban <+/- time> <player name>
@@ -1731,7 +1815,22 @@ Example:
 Sends quit signal to mapserver, saving all data and causing a graceful shutdown.
 This will also send a packet to clients causing them to close.
 
-### @reload
+<a name="reloadatcommand"></a>
+<a name="reloadbattleconf"></a>
+<a name="reloadinstancedb"></a>
+<a name="reloaditemdb"></a>
+<a name="reloadmobdb"></a>
+<a name="reloadmotd"></a>
+<a name="reloadmsgconf"></a>
+<a name="reloadpcdb"></a>
+<a name="reloadquestdb"></a>
+<a name="reloadscript"></a>
+<a name="reloadskilldb"></a>
+<a name="reloadstatusdb"></a>
+<a name="reloadachievementdb"></a>
+<a name="reloadattendancedb"></a>
+<a name="reloadbarterdb"></a>
+### @reload / @reloadatcommand / @reloadbattleconf / @reloadinstancedb / @reloaditemdb / @reloadmobdb / @reloadmotd / @reloadmsgconf / @reloadpcdb / @reloadquestdb / @reloadscript / @reloadskilldb / @reloadstatusdb / @reloadachievementdb / @reloadattendancedb / @reloadbarterdb
 
 ```
 @reload <type>
@@ -1825,7 +1924,8 @@ if the config being changed is EXP/drop related.
 Temporarily changes the group of a character (lasts until player logs out).
 The groups are defined in '/conf/groups.conf'.
 
-### @addperm
+<a name="rmvperm"></a>
+### @addperm / @rmvperm
 
 ```
 @addperm {<permission name>}
@@ -1843,7 +1943,8 @@ If no permission is given, a list of available permissions will be returned.
 
 Moves an NPC to a specified coordinate on its map.
 
-### @hidenpc
+<a name="shownpc"></a>
+### @hidenpc / @shownpc
 
 ```
 @hidenpc <npc name>
@@ -2007,7 +2108,8 @@ Opens your guild storage.
 
 Changes guild level by the specified amount.
 
-### @disguiseguild
+<a name="undisguiseguild"></a>
+### @disguiseguild / @undisguiseguild
 
 ```
 @disguiseguild <monster/npc name/ID> <guild name/ID>
@@ -2096,7 +2198,8 @@ Sets the hunger level of your pet, with 100 being "Stuffed".
 
 Creates the specified homunculus.
 
-### @homevolution
+<a name="hommutate"></a>
+### @homevolution / @hommutate
 
 ```
 @homevolution
@@ -2107,7 +2210,8 @@ Evolves or mutates your homunculus, if possible.
 If no Homunculus ID is specified for @hommutate, a random ID is chosen.
 If it doesn't work, the /swt emotion is shown.
 
-### @hominfo
+<a name="homstats"></a>
+### @hominfo / @homstats
 
 ```
 @hominfo
@@ -2172,7 +2276,8 @@ Sets the hunger level of your homunculus, with 100 being "Stuffed".
 
 ## 10. Channel Commands
 
-### @join
+<a name="channel"></a>
+### @join / @channel
 
 ```
 @join <#channel_name> {<password>}
@@ -2275,7 +2380,10 @@ Bans or unbans a player from the specified channel.
 
 Binds or unbinds your global chat with the specified channel, which sends all global messages to the specified channel.
 
-### @setquest
+<a name="erasequest"></a>
+<a name="completequest"></a>
+<a name="checkquest"></a>
+### @setquest / @erasequest / @completequest / @checkquest
 
 ```
 @setquest <quest ID>

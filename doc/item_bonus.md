@@ -8,7 +8,7 @@ List of script instructions used in item bonuses.
 
 This list contains all available constants referenced in the 'bonus' commands.
 
-###  Status effect (eff)
+### Status effect (eff)
 
 ```
 Eff_Bleeding, Eff_Blind, Eff_Burning, Eff_Confusion, Eff_Crystalize, Eff_Curse, Eff_DPoison,
@@ -16,21 +16,21 @@ Eff_Fear, Eff_Freeze, Eff_Poison, Eff_Silence, Eff_Sleep, Eff_Stone, Eff_Stun, E
 Eff_Heat, Eff_Deepsleep, Eff_WhiteImprison, Eff_Hallucination
 ```
 
-###  Element (e)
+### Element (e)
 
 ```
 Ele_Dark, Ele_Earth, Ele_Fire, Ele_Ghost, Ele_Holy, Ele_Neutral, Ele_Poison,
 Ele_Undead, Ele_Water, Ele_Wind, Ele_All
 ```
 
-###  Race (r)
+### Race (r)
 
 ```
 RC_Angel, RC_Brute, RC_DemiHuman, RC_Demon, RC_Dragon, RC_Fish, RC_Formless,
 RC_Insect, RC_Plant, RC_Player_Human (RC_Player deprecated), RC_Player_Doram, RC_Undead, RC_All
 ```
 
-###  Monster Race (mr)
+### Monster Race (mr)
 
 ```
 RC2_Goblin, RC2_Kobold, RC2_Orc, RC2_Golem, RC2_Guardian, RC2_Ninja, RC2_GVG, RC2_Battlefield,
@@ -42,19 +42,19 @@ RC2_Illusion_Turtle, RC2_Rachel_Sanctuary, RC2_Illusion_Luanda, RC2_Illusion_Fro
 RC2_Ep16_def, RC2_Edda_Arunafeltz, RC2_Lasagna, RC2_Glast_Heim_Abyss, RC2_Destroyed_Valkyrie_Realm, RC2_Encroached_Gephenia
 ```
 
-###  Class (c)
+### Class (c)
 
 ```
 Class_Normal, Class_Boss, Class_Guardian, Class_All
 ```
 
-###  Size (s)
+### Size (s)
 
 ```
 Size_Small, Size_Medium, Size_Large, Size_All
 ```
 
-###  Trigger criteria (bf)
+### Trigger criteria (bf)
 
 ```
 BF_SHORT	= Trigger on melee attacks
@@ -71,7 +71,7 @@ BF_SKILL	= Trigger on skills
 (Default: BF_SKILL if type is BF_MISC or BF_MAGIC, BF_NORMAL if type is BF_WEAPON)
 ```
 
-###  Trigger criteria (atf)
+### Trigger criteria (atf)
 
 ```
 Effect target: (Default: Attacked target)
@@ -89,7 +89,7 @@ ATF_MAGIC	= Trigger on magic skills
 ATF_MISC	= Trigger on misc skills
 ```
 
-###  Other values:
+### Other values
 
 ```
 Skill (sk): see 'db/(pre-)re/skill_db.yml' (NOTE: Both skill IDs and names, in quotes, are supported.)
@@ -439,15 +439,12 @@ bonus4 bAutoSpell,sk,y,n,i;          	Adds a n/10% chance to cast skill sk of le
 bonus5 bAutoSpell,sk,y,n,bf,i;       	Adds a n/10% chance to cast skill sk of level y when attacking with trigger criteria bf
 bonus4 bAutoSpellWhenHit,sk,y,n,i;   	Adds a n/10% chance to cast skill sk of level y when being hit by a direct attack
 bonus5 bAutoSpellWhenHit,sk,y,n,bf,i;	Adds a n/10% chance to cast skill sk of level y when being hit by a direct attack with trigger criteria bf
-```
-
                                         i provides additional options (bitfield):
                                           &0 = cast on self
                                           &1 = cast on enemy
                                           &2 = use random skill level in [1..y]
                                           &3 = 1+2 (random level on enemy)
 
-```
 bonus4 bAutoSpellOnSkill,sk,x,y,n;  	Adds a n/10% chance to autospell skill x at level y when using skill sk
 bonus5 bAutoSpellOnSkill,sk,x,y,n,i;	Adds a n/10% chance to autospell skill x at level y when using skill sk
                                     	i provides additional options (bitfield):
@@ -545,13 +542,10 @@ bonus3 bAddClassDropItemGroup,ig,c,n;	Adds a n/100% chance to get an item of gro
                                      	NOTE: If 'x' is negative value, then it's a part of formula:
                                      	      chance = -n*(killed_mob_level/10)+1
                                      	NOTE: Officially, the drop bonus for groups always activates to 100% so n should be 10000 for all
-```
-
                                               official items. The actual drop rate of each item is defined in the item_group_db instead.
                                               Please note that each time only one random item in the group is checked for its drop rate.
                                               That means that the chance is divided by the number of items in the group.
 
-```
 bonus2 bGetZenyNum,x,n;   		Adds a n% chance of gaining 1~x zeny when killing a monster (only the highest among all is applied)
 bonus2 bAddGetZenyNum,x,n;		Adds a n% chance of gaining 1~x zeny when killing a monster
                           		NOTE: If n < 0, the max zeny to gain is -x*monster level.

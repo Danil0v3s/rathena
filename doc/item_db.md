@@ -12,19 +12,19 @@ Name: Name in English for displaying as output for atcommands and script command
 
 Type: Item's type.
 
-Healing      - Healing item.
-Usable       - Usable item.
-Etc          - Etc item.
-Armor        - Armor/Garment/Boots/Headgear/Accessory item.
-Weapon       - Weapon item.
-Card         - Card item.
-PetEgg       - Pet egg item.
-PetArmor     - Pet equipment item.
-Ammo         - Ammo (Arrows/Bullets/etc) item.
-DelayConsume - Usable with delayed consumption (intended for 'itemskill').
-               Items using the 'itemskill' script command are consumed after selecting a target. Any other command will NOT consume the item.
-ShadowGear   - Shadow Equipment item.
-Cash         - Another delayed consume that requires user confirmation before using the item.
+- `Healing` - Healing item.
+- `Usable` - Usable item.
+- `Etc` - Etc item.
+- `Armor` - Armor/Garment/Boots/Headgear/Accessory item.
+- `Weapon` - Weapon item.
+- `Card` - Card item.
+- `PetEgg` - Pet egg item.
+- `PetArmor` - Pet equipment item.
+- `Ammo` - Ammo (Arrows/Bullets/etc) item.
+- `DelayConsume` - Usable with delayed consumption (intended for 'itemskill').
+  Items using the 'itemskill' script command are consumed after selecting a target. Any other command will NOT consume the item.
+- `ShadowGear` - Shadow Equipment item.
+- `Cash` - Another delayed consume that requires user confirmation before using the item.
 
 SubType: Indicates the weapon-class of the item.
 
@@ -77,7 +77,10 @@ Weight: Item's weight. Each 10 is 1 weight.
 Attack: Weapon's attack.
 
 MagicAttack: Weapon's magic attack. (Renewal only)
+
+```
              Unlike matk bonus from equipment, MagicAttack is taken into account in weapon variance calculation on Renewal.
+```
 
 Defense: Armor's defense.
 
@@ -87,17 +90,17 @@ Slots: Amount of slots the item possesses.
 
 Jobs: Equippable jobs.
 
-All          - Applies to all jobs listed below.
+- `All` - Applies to all jobs listed below.
 Acolyte
 Alchemist
 Archer
 Assassin
-BardDancer   - Applies to Bard and Dancer.
+- `BardDancer` - Applies to Bard and Dancer.
 Blacksmith
 Crusader
 Gunslinger
 Hunter
-KagerouOboro - Applies to Kagerou and Oboro.
+- `KagerouOboro` - Applies to Kagerou and Oboro.
 Knight
 Mage
 Merchant
@@ -119,17 +122,17 @@ Wizard
 
 Classes: Equippable upper-types.
 
-All         - Applies to all classes.
-Normal      - Normal classes (no Baby/Transcendent/Third classes).
-Upper       - Transcedent classes (no Transcedent-Third classes).
-Baby        - Baby classes (no Third-Baby classes).
-Third       - Third classes (no Transcedent-Third or Third-Baby classes).
-Third_Upper - Transcedent-Third classes.
-Third_Baby  - Third-Baby classes.
-Fourth      - Fourth classes.
-All_Upper   - All Transcedent classes
-All_Baby    - All baby classes
-All_Third   - Applies to all Third classes.
+- `All` - Applies to all classes.
+- `Normal` - Normal classes (no Baby/Transcendent/Third classes).
+- `Upper` - Transcedent classes (no Transcedent-Third classes).
+- `Baby` - Baby classes (no Third-Baby classes).
+- `Third` - Third classes (no Transcedent-Third or Third-Baby classes).
+- `Third_Upper` - Transcedent-Third classes.
+- `Third_Baby` - Third-Baby classes.
+- `Fourth` - Fourth classes.
+- `All_Upper` - All Transcedent classes
+- `All_Baby` - All baby classes
+- `All_Third` - Applies to all Third classes.
 
 Gender: Gender restriction.
 
@@ -139,30 +142,30 @@ Both
 
 Locations: Equipment's placement.
 
-Head_Top               - Upper Headgear
-Head_Mid               - Middle Headgear
-Head_Low               - Lower Headgear
-Armor                  - Armor
-Right_Hand             - Weapon
-Left_Hand              - Shield
-Garment                - Garment/Robe
-Shoes                  - Shoes
-Right_Accessory        - Accessory Right
-Left_Accessory         - Accessory Left
-Costume_Head_Top       - Costume Top Headgear
-Costume_Head_Mid       - Costume Mid Headgear
-Costume_Head_Low       - Costume Low Headgear
-Costume_Garment        - Costume Garment/Robe
-Ammo                   - Ammo
-Shadow_Armor           - Shadow Armor
-Shadow_Weapon          - Shadow Weapon
-Shadow_Shield          - Shadow Shield
-Shadow_Shoes           - Shadow Shoes
+- `Head_Top` - Upper Headgear
+- `Head_Mid` - Middle Headgear
+- `Head_Low` - Lower Headgear
+- `Armor` - Armor
+- `Right_Hand` - Weapon
+- `Left_Hand` - Shield
+- `Garment` - Garment/Robe
+- `Shoes` - Shoes
+- `Right_Accessory` - Accessory Right
+- `Left_Accessory` - Accessory Left
+- `Costume_Head_Top` - Costume Top Headgear
+- `Costume_Head_Mid` - Costume Mid Headgear
+- `Costume_Head_Low` - Costume Low Headgear
+- `Costume_Garment` - Costume Garment/Robe
+- `Ammo` - Ammo
+- `Shadow_Armor` - Shadow Armor
+- `Shadow_Weapon` - Shadow Weapon
+- `Shadow_Shield` - Shadow Shield
+- `Shadow_Shoes` - Shadow Shoes
 Shadow_Right_Accessory - Shadow Accessory Right (Earring)
 Shadow_Left_Accessory  - Shadow Accessory Left (Pendant)
 
-Both_Hand              - Right_Hand + Left_Hand
-Both_Accessory         - Right_Accessory + Left_Accessory
+- `Both_Hand` - Right_Hand + Left_Hand
+- `Both_Accessory` - Right_Accessory + Left_Accessory
 
 WeaponLevel: Weapon level. Used for refinement.
 
@@ -177,18 +180,21 @@ Gradable: Defines if the item can be graded.
 View: For normal items, defines a replacement view-sprite for the item.
 
 AliasName: Use the AegisName of another item which will be sent to the client instead of this item.
+
+```
            This makes items visually appear as another without having to change the client data.
+```
 
 Flags: Different types of flags for an item.
 
-BuyingStore  - If the item is available to Buying Stores.
-DeadBranch   - If the item is a Dead Branch type.
-Container    - If the item is part of a Container.
-UniqueId     - If the item is a unique stack.
-BindOnEquip  - If the item is bound to the character upon equipping.
-DropAnnounce - If the item has a special announcement to self on drop.
-NoConsume    - If the item is consumed on use.
-DropEffect   - If the item has a special effect on the ground when dropped by a monster.
+- `BuyingStore` - If the item is available to Buying Stores.
+- `DeadBranch` - If the item is a Dead Branch type.
+- `Container` - If the item is part of a Container.
+- `UniqueId` - If the item is a unique stack.
+- `BindOnEquip` - If the item is bound to the character upon equipping.
+- `DropAnnounce` - If the item has a special announcement to self on drop.
+- `NoConsume` - If the item is consumed on use.
+- `DropEffect` - If the item has a special effect on the ground when dropped by a monster.
 
 Delay: Item use delay.
   Duration - Duration of delay in seconds.
@@ -220,7 +226,13 @@ Trade: Trade restrictions.
 Script: Script to execute when the item is used/equipped.
 
 EquipScript: Script to execute when the item is equipped.
+
+```
              Warning, not all item bonuses will work here as expected.
+```
 
 UnEquipScript: Script to execute when the item is unequipped or when a rental item expires.
+
+```
                Warning, not all item bonuses will work here as expected.
+```

@@ -13,13 +13,13 @@ the prefix is not required in the mob_avail database as the script engine will s
 
 Example:
   - Mob: POPORING
-    Sprite: PORING # This will change the Poporing into a Poring.
+  Sprite: PORING # This will change the Poporing into a Poring.
 
   - Mob: PORING
-    Sprite: JOB_STALKER # This will change the Poring into a Stalker.
+  Sprite: JOB_STALKER # This will change the Poring into a Stalker.
 
   - Mob: WOLF
-    Sprite: 4_M_BARBER # This will change the Wolf into the Barber NPC.
+  Sprite: 4_M_BARBER # This will change the Wolf into the Barber NPC.
 
 These constants can be found in src/map/script_constants.hpp.
 

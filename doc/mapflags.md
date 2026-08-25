@@ -92,7 +92,9 @@ Disables dropping items on a map.
 Note that items may still be dropped if a player's inventory is full and 'item_flooritem_check'
 is disabled in '/conf/battle/items.conf'.
 
-### noloot
+<a name="nomobloot"></a>
+<a name="nomvploot"></a>
+### noloot / nomobloot / nomvploot
 
 ```
 noloot
@@ -107,7 +109,9 @@ Disables normal monsters and MVPs from dropping items on a map. Looted items wil
 
 ```
 
-### noexp
+<a name="nobaseexp"></a>
+<a name="nojobexp"></a>
+### noexp / nobaseexp / nojobexp
 
 ```
 noexp
@@ -118,7 +122,9 @@ nojobexp
 Disables gaining base and job experience from monsters, including MVP bonuses, on a map.
 'noexp' is the same as 'nobaseexp' and 'nojobexp' combined.
 
-### nopenalty
+<a name="noexppenalty"></a>
+<a name="nozenypenalty"></a>
+### nopenalty / noexppenalty / nozenypenalty
 
 ```
 nopenalty
@@ -164,14 +170,14 @@ located in 'db/(pre-)re/item_noequip.txt' and 'db/(pre-)re/skill_nocast_db.txt',
 contain explanations and examples of how this mapflag is used.
 
 Restricted Zones:
-1 - Aldebaran Turbo Track
-2 - Jail
-3 - Izlude Battle Arena
-4 - WoE:SE Maps
-5 - Sealed Shrine
-6 - Instances: Endless Tower, Orc's Memory, Nidhoggr's Instance
-7 - Towns
-8 - WOE:TE Dungeons
+- `1` - Aldebaran Turbo Track
+- `2` - Jail
+- `3` - Izlude Battle Arena
+- `4` - WoE:SE Maps
+- `5` - Sealed Shrine
+- `6` - Instances: Endless Tower, Orc's Memory, Nidhoggr's Instance
+- `7` - Towns
+- `8` - WOE:TE Dungeons
 
 ### monster_noteleport
 
@@ -256,7 +262,10 @@ Disable RODex on a map.
 
 ## 2. Battle-related
 
-### pvp
+<a name="pvp_noparty"></a>
+<a name="pvp_noguild"></a>
+<a name="pvp_nocalcrank"></a>
+### pvp / pvp_noparty / pvp_noguild / pvp_nocalcrank
 
 ```
 pvp
@@ -283,7 +292,12 @@ because it does not necessarily require PvP mode to be set.
 `<type>` specifies where items are dropped from. It can be "inventory", "equip", or "all".
 `<rate>` is the chance that an item will drop (10000 = 100%).
 
-### gvg
+<a name="gvg_noparty"></a>
+<a name="gvg_castle"></a>
+<a name="gvg_dungeon"></a>
+<a name="gvg_te"></a>
+<a name="gvg_te_castle"></a>
+### gvg / gvg_noparty / gvg_castle / gvg_dungeon / gvg_te / gvg_te_castle
 
 ```
 gvg
@@ -309,7 +323,8 @@ battleground	{<type>}
 Enables Battlegrounds on a map and applies the corresponding damage adjustments.
 If `<type>` is 2, a scoreboard will be shown. The default is 1 (nothing).
 
-### partylock
+<a name="guildlock"></a>
+### partylock / guildlock
 
 ```
 partylock
@@ -388,7 +403,13 @@ Duration defaults to 'player_invincible_time' in '/conf/battle/player.conf' if t
 
 ## 3. Map Effects
 
-### clouds
+<a name="clouds2"></a>
+<a name="fireworks"></a>
+<a name="fog"></a>
+<a name="leaves"></a>
+<a name="sakura"></a>
+<a name="snow"></a>
+### clouds / clouds2 / fireworks / fog / leaves / sakura / snow
 
 ```
 clouds
@@ -416,7 +437,8 @@ Marks a map as a town. This allows players to access their mail and disables kil
 
 Allows usage of item Neuralizer (ID 12213).
 
-### bexp
+<a name="jexp"></a>
+### bexp / jexp
 
 ```
 bexp	<rate>

@@ -13,7 +13,10 @@ Filename: Name of the BMP image file (with location).
 ```
 
 Example:
+
+```
     Filename: db/import/captcha/rathena.bmp
+```
 
 Answer: Correct answer for the captcha (case-sensitive).
 
@@ -25,6 +28,8 @@ Bonus: NPC script that is ran when a captcha is successfully answered. Accepts a
 ```
 
 Example:
+
+```
     # Give level 10 Blessing for 20 minutes with no failures, else give for 30 seconds.
     Bonus: >
       if (@captcha_retries == getbattleflag("macro_detection_retry")) {
@@ -36,3 +41,4 @@ Example:
         specialeffect2 EF_BLESSING;
         sc_start SC_BLESSING,30000,10;
       }
+```
