@@ -8,6 +8,8 @@ name: Generate Visual Studio solution
 # reference and run 'cmake --preset msvs' locally (a few minutes, see README).
 
 on:
+  # Manual dispatch only works once the workflow exists on the default branch;
+  # until then a push that touches this file generates both flavours.
   workflow_dispatch:
     inputs:
       preset:
@@ -19,11 +21,25 @@ on:
         description: Extra configure arguments, e.g. -DENABLE_PRERE=ON -DPACKETVER=20211103
         type: string
         default: ''
+  push:
+    paths:
+      - '.github/workflows/generate_msvs.yml'
 
 jobs:
   generate:
-    # windows-2025 ships Visual Studio 2022, windows-latest ships Visual Studio 2026
-    runs-on: ${{ inputs.preset == 'msvs-2026' && 'windows-latest' || 'windows-2025' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # windows-2025 ships Visual Studio 2022, windows-latest ships Visual Studio 2026
+        include:
+          - preset: msvs
+            os: windows-2025
+          - preset: msvs-2026
+            os: windows-latest
+        exclude:
+          - preset: ${{ github.event_name == 'workflow_dispatch' && inputs.preset == 'msvs-2026' && 'msvs' || 'none' }}
+          - preset: ${{ github.event_name == 'workflow_dispatch' && inputs.preset == 'msvs' && 'msvs-2026' || 'none' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -37,26 +53,26 @@ jobs:
           key: vcpkg-${{ runner.os }}-msvc-${{ hashFiles('vcpkg.json') }}
           restore-keys: vcpkg-${{ runner.os }}-msvc-
 
-      - name: Configure (${{ inputs.preset }})
+      - name: Configure (${{ matrix.preset }})
         shell: bash
-        run: cmake --preset ${{ inputs.preset }} ${{ inputs.cmake-args }}
+        run: cmake --preset ${{ matrix.preset }} ${{ inputs.cmake-args || '' }}
 
       - name: Describe
         shell: bash
         run: |
           {
             echo "Generated on $(date -u +%Y-%m-%dT%H:%MZ) from $GITHUB_SHA (${GITHUB_REF_NAME})"
-            echo "preset: ${{ inputs.preset }}   cmake-args: ${{ inputs.cmake-args }}"
+            echo "preset: ${{ matrix.preset }}   cmake-args: ${{ inputs.cmake-args || '' }}"
             echo "source path baked into the projects: $(cygpath -w "$PWD")"
             echo
-            echo "To use as-is, check the repository out at exactly that path, run 'cmake --preset ${{ inputs.preset }}' once"
+            echo "To use as-is, check the repository out at exactly that path, run 'cmake --preset ${{ matrix.preset }}' once"
             echo "so vcpkg installs the dependencies into build-msvs/vcpkg_installed, then open rAthena.sln."
           } > build-msvs/README-generated.txt
           cat build-msvs/README-generated.txt
 
       - uses: actions/upload-artifact@v4
         with:
-          name: rathena-${{ inputs.preset }}-solution
+          name: rathena-${{ matrix.preset }}-solution
           if-no-files-found: error
           path: |
             build-msvs/README-generated.txt
