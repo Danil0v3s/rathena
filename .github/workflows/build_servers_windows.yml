@@ -32,9 +32,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          # windows-2025 ships Visual Studio 2022, windows-latest (windows-2025-vs2026) ships Visual Studio 2026.
+          # windows-2022 is the last image with Visual Studio 2022, windows-latest ships Visual Studio 2026.
           include:
-            - os: windows-2025
+            - os: windows-2022
               preset: msvs
               mode: PRE
               prere: 'ON'

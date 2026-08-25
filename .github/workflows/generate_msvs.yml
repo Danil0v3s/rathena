@@ -31,9 +31,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # windows-2025 ships Visual Studio 2022, windows-latest ships Visual Studio 2026.
+        # windows-2022 is the last image with Visual Studio 2022; windows-latest ships Visual Studio 2026.
         # A manual run generates only the chosen preset, a push generates both.
-        include: ${{ fromJSON(github.event_name == 'workflow_dispatch' && (inputs.preset == 'msvs-2026' && '[{"preset":"msvs-2026","os":"windows-latest"}]' || '[{"preset":"msvs","os":"windows-2025"}]') || '[{"preset":"msvs","os":"windows-2025"},{"preset":"msvs-2026","os":"windows-latest"}]') }}
+        include: ${{ fromJSON(github.event_name == 'workflow_dispatch' && (inputs.preset == 'msvs-2026' && '[{"preset":"msvs-2026","os":"windows-latest"}]' || '[{"preset":"msvs","os":"windows-2022"}]') || '[{"preset":"msvs","os":"windows-2022"},{"preset":"msvs-2026","os":"windows-latest"}]') }}
 
     steps:
       - uses: actions/checkout@v4
@@ -60,9 +60,10 @@ jobs:
             echo "source path baked into the projects: $(cygpath -w "$PWD")"
             echo
             echo "To use as-is, check the repository out at exactly that path, run 'cmake --preset ${{ matrix.preset }}' once"
-            echo "so vcpkg installs the dependencies into build-msvs/vcpkg_installed, then open rAthena.sln."
+            echo "so vcpkg installs the dependencies into build-msvs/vcpkg_installed, then open the solution."
           } > build-msvs/README-generated.txt
           cat build-msvs/README-generated.txt
+          echo; echo "generated:"; ls build-msvs
 
       - uses: actions/upload-artifact@v4
         with:
@@ -72,6 +73,7 @@ jobs:
             build-msvs/README-generated.txt
             build-msvs/CMakeCache.txt
             build-msvs/*.sln
+            build-msvs/*.slnx
             build-msvs/**/*.vcxproj
             build-msvs/**/*.vcxproj.filters
             !build-msvs/vcpkg_installed/**
