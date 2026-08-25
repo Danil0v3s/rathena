@@ -68,6 +68,7 @@ Suggesting Enhancements
 3. Before making changes, make sure you [create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) for your working tree. Never use your **master** branch! :bangbang:
 4. After completing your changes, commit and push it to your branch.
 5. Now you are ready to [create a Pull Request](https://help.github.com/articles/creating-a-pull-request/) for rAthena!
+  * Run `tools/format.sh` before committing; the code style check in CI must pass (see [doc/code_style.md](../doc/code_style.md)).
   * Upon creating the Pull Request, make sure you follow our [template](https://github.com/rathena/rathena/blob/master/.github/PULL_REQUEST_TEMPLATE.md) and provide the required information.
   * **OPTIONAL**: We would greatly appreciate those that check the box to [allow edits by maintainers](https://help.github.com/articles/allowing-changes-to-a-pull-request-branch-created-from-a-fork/), so we can apply small cleanups or additions to your changes before merging them!
 

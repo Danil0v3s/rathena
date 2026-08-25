@@ -1,0 +1,33 @@
+name: Code style
+# code_style.yml
+# Verifies that every C++ file is formatted according to .clang-format (see doc/code_style.md).
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    paths:
+      - '.github/**'
+      - '.clang-format'
+      - 'tools/format.sh'
+      - 'src/**'
+
+jobs:
+  clang-format:
+    if: "!contains(github.event.head_commit.message, 'ci-skip')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format 22
+        run: pipx install 'clang-format>=22.1,<23'
+
+      - name: Check formatting
+        run: tools/format.sh --check

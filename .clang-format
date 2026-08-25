@@ -1,0 +1,107 @@
+# rAthena C++ formatting rules. See doc/code_style.md.
+#
+# Derived from the WebKit style (https://webkit.org/code-style-guidelines/) and the
+# Linux kernel style (https://www.kernel.org/doc/html/latest/process/coding-style.html),
+# adjusted to what the rAthena tree already does in the majority of places:
+#   - tabs for indentation (kernel; .editorconfig)
+#   - opening brace on the same line, functions included (K&R "attached")
+#   - case labels indented one level inside switch
+#   - no column limit: hand laid-out tables and long packet definitions are kept as they are
+#   - includes are never reordered: rAthena depends on include order in several places
+---
+Language: Cpp
+Standard: c++17
+BasedOnStyle: WebKit
+
+# Indentation
+UseTab: ForIndentation
+IndentWidth: 4
+TabWidth: 4
+ContinuationIndentWidth: 4
+AccessModifierOffset: -4
+IndentCaseLabels: true
+IndentCaseBlocks: false
+IndentGotoLabels: false
+IndentPPDirectives: None
+NamespaceIndentation: All
+LambdaBodyIndentation: Signature
+
+# Braces
+BreakBeforeBraces: Attach
+InsertBraces: false
+RemoveBracesLLVM: false
+
+# Line length and wrapping: keep existing line breaks
+ColumnLimit: 0
+ReflowComments: false
+AlignAfterOpenBracket: DontAlign
+AlignOperands: DontAlign
+BinPackArguments: true
+BinPackParameters: true
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+PackConstructorInitializers: BinPack
+
+# Short statements
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: false
+
+# Spacing
+SpaceBeforeParens: ControlStatements
+SpacesInParens: Never
+SpacesInSquareBrackets: false
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceInEmptyBlock: false
+SpacesBeforeTrailingComments: 1
+Cpp11BracedListStyle: true
+BitFieldColonSpacing: Both
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+DerivePointerAlignment: false
+QualifierAlignment: Leave
+
+# Alignment: do not build ascii tables with spaces
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignConsecutiveMacros: None
+AlignConsecutiveBitFields: None
+AlignEscapedNewlines: Left
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 0
+
+# Blank lines
+MaxEmptyLinesToKeep: 1
+KeepEmptyLines:
+  AtStartOfBlock: false
+  AtStartOfFile: false
+  AtEndOfFile: false
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: LogicalBlock
+SeparateDefinitionBlocks: Leave
+
+# Includes and namespaces
+SortIncludes: Never
+IncludeBlocks: Preserve
+SortUsingDeclarations: Never
+FixNamespaceComments: true
+
+# Files
+LineEnding: LF
+InsertNewlineAtEOF: true
