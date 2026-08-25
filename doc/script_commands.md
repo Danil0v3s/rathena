@@ -880,11 +880,10 @@ Unary operators with only with a single number, which follows the operator, and
 are following:
 
  -  - Negation.
+  The sign of the number will be reversed. If the number was positive, it will
+  become negative and vice versa.
 
 ```
-The sign of the number will be reversed. If the number was positive, it will
-become negative and vice versa.
-
 Example:
 	set .@myvar,10;
 	mes "Negative 10 is " + (-.@myvar);
@@ -9064,11 +9063,7 @@ Target flags:
 - bc_map: Message is sent to everyone in the same map as the source of the broadcast (see below).
 - bc_area: Message is sent to players in the vicinity of the source.
 - bc_self: Message is sent only to current player , if the source flag is bc_pc it also can
-
-```
-		be used to send the Message to the character id if it's provided.
-```
-
+  be used to send the Message to the character id if it's provided.
 You cannot use more than one target flag.
 
 Source flags:
@@ -14181,14 +14176,20 @@ setdialogalign(<align>);
 Set vertical or horizontal align in NPC dialog.
 Valid aligns:
 - horizontal align:
-  DIALOG_ALIGN_LEFT
-  DIALOG_ALIGN_CENTER
-  DIALOG_ALIGN_RIGHT
+
+```
+DIALOG_ALIGN_LEFT
+DIALOG_ALIGN_CENTER
+DIALOG_ALIGN_RIGHT
+```
 
 - vertical align:
-  DIALOG_ALIGN_TOP
-  DIALOG_ALIGN_MIDDLE
-  DIALOG_ALIGN_BOTTOM
+
+```
+DIALOG_ALIGN_TOP
+DIALOG_ALIGN_MIDDLE
+DIALOG_ALIGN_BOTTOM
+```
 
 ### setdialogsize
 

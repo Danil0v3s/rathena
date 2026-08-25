@@ -24,28 +24,30 @@ The format of this file is as follows:
 The following terms will be frequently used throughout this file, so it is
 important to have a thorough understanding of what they are to avoid confusion.
 
-  Term          Description
-  ----          -----------
-  serv          a program/daemon that runs indefinitely offering a service
-  host          a machine that has one or more servs running
-  command       a request of an action on the server or client
-  (atcommand, script_command, packet_request)
-  interface     a class/module that offers a list of commands
+| Term | Description |
+|---|---|
+| serv | a program/daemon that runs indefinitely offering a service |
+| host | a machine that has one or more servs running |
+| command | a request of an action on the server or client (atcommand, script_command, packet_request) |
+| interface | a class/module that offers a list of commands |
 
 ## 2. Intro & Emulation
 
 rAthena is an emulation of Ragnarok Online, which runs on software known as AEGIS.
 AEGIS is separated into 4 servs:
 
-  Serv       Description
-  ----       -----------
-  account    handles player account information and logins.
-  char       handles character data (persistent information).
-  inter      handles broadcasting across map-serv. [merged into rAthena's char-serv]
-  map        handles all player runtime actions.
+| Serv | Description |
+|---|---|
+| account | handles player account information and logins. |
+| char | handles character data (persistent information). |
+| inter | handles broadcasting across map-serv. [merged into rAthena's char-serv] |
+| map | handles all player runtime actions. |
 
 These servs are an aggregation of each other:
-  login-serv  =>  1 - * char-serv, 1 - * map-serv
+
+```
+login-serv  =>  1 - * char-serv, 1 - * map-serv
+```
 
 In this case, * is 30. This means that 1 login-serv is able to manage up to
 30 char-serv, which itself can manage up to 30 map-serv. Note that due to these
@@ -80,66 +82,60 @@ and access it directly, but rather ask the char-serv to fetch it.
 The list below details the association of database tables with the servs.
 For real table names, see 'conf/inter_athena.conf'.
 
-  ==============
-  | Login-serv |
-  ==============
+### Login-serv
 
-  Table                 Contents
-  -----                 --------
-  login_db              all account-related information
-  reg_db                permanent account variables (ex. #CASHPOINTS)
+| Table | Contents |
+|---|---|
+| login_db | all account-related information |
+| reg_db | permanent account variables (ex. #CASHPOINTS) |
 
-  =============
-  | Char-serv |
-  =============
+### Char-serv
 
-  Table                 Contents
-  -----                 --------
-  char_db               all char-related information
-  hotkey_db             hotkeys set for each character
-  scdata_db             character status at disconnection
-  cart_db               list of items in each character's cart
-  inventory_db          list of items in each character's inventory
-  charlog_db            char-serv logs
-  storage_db            list of items in each character's storage (Kafra)
-  reg_db                permanent character variables (ex. ADVJOB)
-  skill_db              character learned skill database
-  interlog_db           inter-serv logs
-  memo_db               character Memo_point database
-  guild_db              guild record (name, master, lv, exp, emblem, etc.)
-  guild_alliance_db     guild relations database (allies, enemies)
-  guild_castle_db       guild owned castle database
-  guild_expulsion_db    guild expulsion logs
-  guild_member_db       guild current member titles and positions
-  guild_skill_db        guild learned skills database
-  guild_position_db     guild positions configuration (names, taxes, rights)
-  guild_storage_db      guild item storage
-  party_db              party record (name, leader, shared_exp, shared_item)
-  pet_db                saved pet objects database
-  friend_db             character friends database
-  mail_db               mail database
-  auction_db            auction database
-  quest_db              character quest realisation database
-  homunculus_db         saved homunculus objects database
-  skill_homunculus_db   homunculus learned skills database
-  mercenary_db          saved mercenary objects database (HP, SP, level, etc.)
-  mercenary_owner_db    character proprietary link to mercenary object save and use stats
-  elemental_db          saved Elemental objects database (HP, SP, FLEE, etc.)
-  ragsrvinfo_db         map-serv rate record (similar to 'conf/battle/drop.conf', possibly a leftover?)
-  skillcooldown_db      character skill cooldowns at disconnection
-  bonus_script_db       character bonus_script at disconnection
+| Table | Contents |
+|---|---|
+| char_db | all char-related information |
+| hotkey_db | hotkeys set for each character |
+| scdata_db | character status at disconnection |
+| cart_db | list of items in each character's cart |
+| inventory_db | list of items in each character's inventory |
+| charlog_db | char-serv logs |
+| storage_db | list of items in each character's storage (Kafra) |
+| reg_db | permanent character variables (ex. ADVJOB) |
+| skill_db | character learned skill database |
+| interlog_db | inter-serv logs |
+| memo_db | character Memo_point database |
+| guild_db | guild record (name, master, lv, exp, emblem, etc.) |
+| guild_alliance_db | guild relations database (allies, enemies) |
+| guild_castle_db | guild owned castle database |
+| guild_expulsion_db | guild expulsion logs |
+| guild_member_db | guild current member titles and positions |
+| guild_skill_db | guild learned skills database |
+| guild_position_db | guild positions configuration (names, taxes, rights) |
+| guild_storage_db | guild item storage |
+| party_db | party record (name, leader, shared_exp, shared_item) |
+| pet_db | saved pet objects database |
+| friend_db | character friends database |
+| mail_db | mail database |
+| auction_db | auction database |
+| quest_db | character quest realisation database |
+| homunculus_db | saved homunculus objects database |
+| skill_homunculus_db | homunculus learned skills database |
+| mercenary_db | saved mercenary objects database (HP, SP, level, etc.) |
+| mercenary_owner_db | character proprietary link to mercenary object save and use stats |
+| elemental_db | saved Elemental objects database (HP, SP, FLEE, etc.) |
+| ragsrvinfo_db | map-serv rate record (similar to 'conf/battle/drop.conf', possibly a leftover?) |
+| skillcooldown_db | character skill cooldowns at disconnection |
+| bonus_script_db | character bonus_script at disconnection |
 
-  ============
-  | Map-serv |
-  ============
+### Map-serv
 
-  Table                 Contents
-  -----                 --------
-  mapreg_db             permanent map-serv global variables (ex. $agit_result_timer)
-  buyingstore_db        live buyers database (map_pos, aid, shop title, etc.)
-  buyingstore_items_db  items currently being purchased by live buyers
-  vending_db            live vendors database (map_pos, aid, shop title, etc.)
-  vending_items_db      items currently being sold by live vendors
+| Table | Contents |
+|---|---|
+| mapreg_db | permanent map-serv global variables (ex. $agit_result_timer) |
+| buyingstore_db | live buyers database (map_pos, aid, shop title, etc.) |
+| buyingstore_items_db | items currently being purchased by live buyers |
+| vending_db | live vendors database (map_pos, aid, shop title, etc.) |
+| vending_items_db | items currently being sold by live vendors |
 
   The tables below are optional alternatives to TXT databases located in 'db/*.txt'.
 
@@ -162,143 +158,133 @@ For real table names, see 'conf/inter_athena.conf'.
 
 The following list describes each module and its purpose.
 
-  ============
-  | 3rdparty |
-  ============
+### 3rdparty
+
   The '3rdparty/' folder contains libraries used by the project but are not maintained by us.
 
-  ==========
-  | Common |
-  ==========
+### Common
+
   The 'src/common' folder contains all the modules which are used by more then 1 serv.
 
-  Module         Description
-  ------         -----------
-  cbasetypes     adapter to OS and arch specification (function name, bit representation)
-  cli            console Line Interface handling (get arguments from terminal at beginning and runtime)
-  conf           facade of libconfig api
-  core           MAIN program entry (initialization of each serv starts here)
-  db             database module (create, parse, and destroy databases)
-  des            Data Encryption Standard algorithm modified for rAthena
-  ers            Entry Reusage System to help memory allocation
-  grfio          handles *.grf files (searches for files in them and decodes them)
-  malloc         handles runtime memory allocation (so that memory manager could check for leaks)
-  mapindex       handles the processing and reading of the mapcache.dat
-  md5calc        offers md5 encryption
-  mmo.hpp        common structures and defines across serv
-  msg_conf       handles msg in src from configuration
-  nullpo         checks and dumps info for debug mode
-  random         generation of random numbers
-  showmsg        display messages in console with a certain color
-  socket         handling of sockets (listening, close, open, etc.)
-  sql.cpp        MySQL database proxy
-  strlib.cpp     string handling
-  timer.cpp      timer-related functions
-  utils.cpp      misc functions
-  winapi.hpp     Windows redefine and include
+| Module | Description |
+|---|---|
+| cbasetypes | adapter to OS and arch specification (function name, bit representation) |
+| cli | console Line Interface handling (get arguments from terminal at beginning and runtime) |
+| conf | facade of libconfig api |
+| core | MAIN program entry (initialization of each serv starts here) |
+| db | database module (create, parse, and destroy databases) |
+| des | Data Encryption Standard algorithm modified for rAthena |
+| ers | Entry Reusage System to help memory allocation |
+| grfio | handles *.grf files (searches for files in them and decodes them) |
+| malloc | handles runtime memory allocation (so that memory manager could check for leaks) |
+| mapindex | handles the processing and reading of the mapcache.dat |
+| md5calc | offers md5 encryption |
+| mmo.hpp | common structures and defines across serv |
+| msg_conf | handles msg in src from configuration |
+| nullpo | checks and dumps info for debug mode |
+| random | generation of random numbers |
+| showmsg | display messages in console with a certain color |
+| socket | handling of sockets (listening, close, open, etc.) |
+| sql.cpp | MySQL database proxy |
+| strlib.cpp | string handling |
+| timer.cpp | timer-related functions |
+| utils.cpp | misc functions |
+| winapi.hpp | Windows redefine and include |
 
-  ==============
-  | Login-serv |
-  ==============
+### Login-serv
 
-  Module         Description
-  ------         -----------
-  account            persistence for account data
-  ipban              offers IP banishment
-  login              main module of login-serv
-  loginclif          client `<=>` login-serv connections interface (send and receive packets to/from client)
-  loginchrif         char-serv `<=>` login-serv connections interface (send and receive packets to char-serv)
-  logincsnlif        console `<=>` login-serv connections interface (send and receive packets to/from console (internal buffer))
-  loginlog           records all operations into log for login-serv
+| Module | Description |
+|---|---|
+| account | persistence for account data |
+| ipban | offers IP banishment |
+| login | main module of login-serv |
+| loginclif | client `<=>` login-serv connections interface (send and receive packets to/from client) |
+| loginchrif | char-serv `<=>` login-serv connections interface (send and receive packets to char-serv) |
+| logincsnlif | console `<=>` login-serv connections interface (send and receive packets to/from console (internal buffer)) |
+| loginlog | records all operations into log for login-serv |
 
-  =============
-  | Char-serv |
-  =============
+### Char-serv
+
   The char-serv is responsible for persistence (save/load data permanently) and
   also serves as a controller that handles all associated map-servs. Further, it
   is responsible for ensuring that there are no duplicate party names among the
   map-servs (which could create conflicts if a party transfers map-servs).
 
-  Module             Description
-  ------             -----------
-  char               currently holds all the char-serv (EA) process
-  -- char_clif       client `<=>` char-serv connections interface (send and receive packets to/from client)
-  -- char_csnlif     console `<=>` char-serv connections interface (send and receive packets to/from console (internal buffer))
-  -- char_mapif      map-serv `<=>` char-serv connections interface (send and receive packets to map-serv)
-  -- char_logif      login-serv `<=>` char-serv connections interface (send and receive packets to login-serv)
-  inter              main entry to inter-serv; delegates packet handling to submodules
-  -- int_auction     handles auction request and saving
-  -- int_elemental   handles elemental data (BL_ELE => Sorcerer mob)
-  -- int_guild       handles guild data (creation, destruction, add member, etc.)
-  -- int_homun       handles homunculus data (BL_HOM => Alchemist mob)
-  -- int_mail        handles mail data
-  -- int_mercenary   handles mercenary data (BL_MER => All class mob)
-  -- int_party       handles party data (creation, destruction, add member, etc.)
-  -- int_pet         handles pet data (BL_PET => All class mob)
-  -- int_quest       handles quest data
-  -- int_storage     handles storage data (save storage, load storage, etc.)
+| Module | Description |
+|---|---|
+| char | currently holds all the char-serv (EA) process |
+| -- char_clif | client `<=>` char-serv connections interface (send and receive packets to/from client) |
+| -- char_csnlif | console `<=>` char-serv connections interface (send and receive packets to/from console (internal buffer)) |
+| -- char_mapif | map-serv `<=>` char-serv connections interface (send and receive packets to map-serv) |
+| -- char_logif | login-serv `<=>` char-serv connections interface (send and receive packets to login-serv) |
+| inter | main entry to inter-serv; delegates packet handling to submodules |
+| -- int_auction | handles auction request and saving |
+| -- int_elemental | handles elemental data (BL_ELE => Sorcerer mob) |
+| -- int_guild | handles guild data (creation, destruction, add member, etc.) |
+| -- int_homun | handles homunculus data (BL_HOM => Alchemist mob) |
+| -- int_mail | handles mail data |
+| -- int_mercenary | handles mercenary data (BL_MER => All class mob) |
+| -- int_party | handles party data (creation, destruction, add member, etc.) |
+| -- int_pet | handles pet data (BL_PET => All class mob) |
+| -- int_quest | handles quest data |
+| -- int_storage | handles storage data (save storage, load storage, etc.) |
 
-  ============
-  | Map-serv |
-  ============
+### Map-serv
 
-  Module         Description
-  ------         -----------
-  atcommand      handles GM commands (ex. @who)
-  battle         handles damage calculation where target is enemy and battle configuration settings
-  battleground   functions for Battleground system (create, destroy, messaging, join, etc.)
-  buyingstore    functions for player Buying Stores (create, search, sell)
-  cashshop       functions to set up the server cashshop (from cashshop_db), and contains function to buy items from cashshop
-  channel        functions for the channel system (create, delete, join/auto-join, leave, broadcast, alter options)
-  chat           functions for the chatroom system (create, delete, trigger chatroom_event, change owner, etc.)
-  chrif          char-serv `<=>` map-serv connections interface (send and receive packets to char-serv)
-  clif           client `<=>` map-serv connections interface (send and receive packets to/from client)
-  date           functions for time
-  duel           functions for the duel system
-  elemental      functions for Sorcerer Elementals processing (create, delete, etc.)
-  guild          functions for the guild system
-  homunculus     functions for Alchemist Homunculi processing (create, delete, get stats, death, etc.)
-  instance       functions for instance system
-  intif          map-serv `<=>` inter-serv interface (meant to communicate with 'char/inter.cpp' or its submodules)
-  itemdb         functions for the item database
-  log            functions for server log system
-  mail           functions for mail system
-  map            map-serv main module, and a representation of a map object
-  adds or removes other objects into map (blocklist) and provides iterators (ex. map_foreachpc)
-  mapreg         functions to save or read variables in mapreg_db (global variables for all map-serv)
-  mercenary      functions for Mercenary system (create, search, get stats, dead)
-  mob            functions for mob data, structures, and mob routines
-  npc            functions for NPC data (create, delete, calling NPCs)
-  npc_chat       functions for PCRE and NPC interaction
-  party          functions for the party system (create, join, delete, alter options, etc.)
-  path           functions for path finding (check_distance, search path unit will use)
-  pc             functions for player processing (loot/drop/delete items, player bonus handling, player dead, etc.)
-  pc_groups      functions for players groups system (manage player permissions and atcommand access)
-  pet            functions for the pet system (similar to mercenary, homunculus, player, etc.)
-  quest          functions for the quest log system (add, complete, remove, etc.)
-  script         handles script language logic (used in NPC scripts), script commands, and mapflags
-  searchstore    functions for the Vendor Shop Search feature
-  skill          functions for skills (skill_casttime calculation, skill behaviours, skill_chk_cast, requirement checks, 'db/skill_*.txt' processing)
-  status         functions for statuses on a bl (add, remove, calculation of effects as a temporary bonus)
-  status is a struct available by most units as common attributes (bl_type only attribute are dealt in bl specific files, like 'pc.cpp' or 'mob.cpp')
-  storage        functions for the storage system: Kafra, cart, guild, inventory (add, transfer, remove items between containers)
-  also ensures container mutex (e.g. guild_storage) and preparation for save requests
-  trade          functions to perform a trade (request, accept, add items/Zeny, checks, complete trade)
-  unit           functions for controlling player/mob/NPC actions (walk, follow, skill use)
-  vending        functions for Merchant Vending (create, purchase)
+| Module | Description |
+|---|---|
+| atcommand | handles GM commands (ex. @who) |
+| battle | handles damage calculation where target is enemy and battle configuration settings |
+| battleground | functions for Battleground system (create, destroy, messaging, join, etc.) |
+| buyingstore | functions for player Buying Stores (create, search, sell) |
+| cashshop | functions to set up the server cashshop (from cashshop_db), and contains function to buy items from cashshop |
+| channel | functions for the channel system (create, delete, join/auto-join, leave, broadcast, alter options) |
+| chat | functions for the chatroom system (create, delete, trigger chatroom_event, change owner, etc.) |
+| chrif | char-serv `<=>` map-serv connections interface (send and receive packets to char-serv) |
+| clif | client `<=>` map-serv connections interface (send and receive packets to/from client) |
+| date | functions for time |
+| duel | functions for the duel system |
+| elemental | functions for Sorcerer Elementals processing (create, delete, etc.) |
+| guild | functions for the guild system |
+| homunculus | functions for Alchemist Homunculi processing (create, delete, get stats, death, etc.) |
+| instance | functions for instance system |
+| intif | map-serv `<=>` inter-serv interface (meant to communicate with 'char/inter.cpp' or its submodules) |
+| itemdb | functions for the item database |
+| log | functions for server log system |
+| mail | functions for mail system |
+| map | map-serv main module, and a representation of a map object adds or removes other objects into map (blocklist) and provides iterators (ex. map_foreachpc) |
+| mapreg | functions to save or read variables in mapreg_db (global variables for all map-serv) |
+| mercenary | functions for Mercenary system (create, search, get stats, dead) |
+| mob | functions for mob data, structures, and mob routines |
+| npc | functions for NPC data (create, delete, calling NPCs) |
+| npc_chat | functions for PCRE and NPC interaction |
+| party | functions for the party system (create, join, delete, alter options, etc.) |
+| path | functions for path finding (check_distance, search path unit will use) |
+| pc | functions for player processing (loot/drop/delete items, player bonus handling, player dead, etc.) |
+| pc_groups | functions for players groups system (manage player permissions and atcommand access) |
+| pet | functions for the pet system (similar to mercenary, homunculus, player, etc.) |
+| quest | functions for the quest log system (add, complete, remove, etc.) |
+| script | handles script language logic (used in NPC scripts), script commands, and mapflags |
+| searchstore | functions for the Vendor Shop Search feature |
+| skill | functions for skills (skill_casttime calculation, skill behaviours, skill_chk_cast, requirement checks, 'db/skill_*.txt' processing) |
+| status | functions for statuses on a bl (add, remove, calculation of effects as a temporary bonus) status is a struct available by most units as common attributes (bl_type only attribute are dealt in bl specific files, like 'pc.cpp' or 'mob.cpp') |
+| storage | functions for the storage system: Kafra, cart, guild, inventory (add, transfer, remove items between containers) also ensures container mutex (e.g. guild_storage) and preparation for save requests |
+| trade | functions to perform a trade (request, accept, add items/Zeny, checks, complete trade) |
+| unit | functions for controlling player/mob/NPC actions (walk, follow, skill use) |
+| vending | functions for Merchant Vending (create, purchase) |
 
 ## 6. Nomenclature
 
 The following are standard naming conventions used by rAthena.
 
-  Type        Prefix         Example
-  ----        ------         -------
-  function    module_        pc_addspiritball -> located in pc.cpp file
-  structure   s_             s_quest_db
-  enum        e_             e_race
-  status      SC_            SC_INTOABYSS
-  skill       classmid_      AL_TELEPORT -> AL = Acolyte
-  bonus       SP_            SP_ATK_RATE
+| Type | Prefix | Example |
+|---|---|---|
+| function | module_ | pc_addspiritball -> located in pc.cpp file |
+| structure | s_ | s_quest_db |
+| enum | e_ | e_race |
+| status | SC_ | SC_INTOABYSS |
+| skill | classmid_ | AL_TELEPORT -> AL = Acolyte |
+| bonus | SP_ | SP_ATK_RATE |
 
 NOTES:
   - If a status name conflicts with a skill name, another '_' is added (e.g. SC__WEAKNESS).
@@ -311,30 +297,29 @@ NOTES:
 
 The following variables are commonly used in the source code.
 
-  Variable   Full Name            Description
-  --------   ---------            -----------
-  sd         session data         represents the session of a client into a serv (login, char, or map)
-  tsd        target sd            same as sd, but for a target
-  pl_sd                           usually in an iteration loop, the current sd of index
-  it_sd                           a variant of pl_sd (for iter_sd)
-  fd         file descriptor      a link to an I/O like a socket or file
-  md         mob data             represents monster information; also used to represent mercenary information
-  hd         homunculus data      represents homunculus information
-  nd         NPC data             represents NPC information
-  ed         elemental data       represents elemental information
-  pd         pet data             represents pet information
-  sc         status change        a structure containing all the possible status applied to a character
-  tsc        target sc            same as sc, but for a target
-  sce        status change entry  represents data of a specific inflicted status
-  bl         blocklist            common data of one object (a skill, pet, player, etc); also represents a 2-way chain-link
-  tbl        target bl            same as bl, but for a target
-  st         script stack         the stack of an NPC
-  aid        account id           a player account ID
-  gid        game id              the general unique ID of a Unit, which is the aid for players
-  (since a single character per account can be connected at one time)
-  cid        character id         a player character ID
-  rid        character id         a variant of cid
-  su         skill unit           a skill with a unit that remains on the ground
+| Variable | Full Name | Description |
+|---|---|---|
+| sd | session data | represents the session of a client into a serv (login, char, or map) |
+| tsd | target sd | same as sd, but for a target |
+| pl_sd |  | usually in an iteration loop, the current sd of index |
+| it_sd |  | a variant of pl_sd (for iter_sd) |
+| fd | file descriptor | a link to an I/O like a socket or file |
+| md | mob data | represents monster information; also used to represent mercenary information |
+| hd | homunculus data | represents homunculus information |
+| nd | NPC data | represents NPC information |
+| ed | elemental data | represents elemental information |
+| pd | pet data | represents pet information |
+| sc | status change | a structure containing all the possible status applied to a character |
+| tsc | target sc | same as sc, but for a target |
+| sce | status change entry | represents data of a specific inflicted status |
+| bl | blocklist | common data of one object (a skill, pet, player, etc); also represents a 2-way chain-link |
+| tbl | target bl | same as bl, but for a target |
+| st | script stack | the stack of an NPC |
+| aid | account id | a player account ID |
+| gid | game id | the general unique ID of a Unit, which is the aid for players (since a single character per account can be connected at one time) |
+| cid | character id | a player character ID |
+| rid | character id | a variant of cid |
+| su | skill unit | a skill with a unit that remains on the ground |
 
 ## 8. Building
 
@@ -374,10 +359,10 @@ ACMD_DEF(name)  - OR -  ACMD_DEFR(name,restriction)
 ACMD_DEF2("alias",name)  - OR -  ACMD_DEF2R("alias",name,restriction)
 ```
 
-  Restriction    Description
-  -----------    -----------
-  1          restrict usage in console
-  2          restrict usage in script_command
+| Restriction | Description |
+|---|---|
+| 1 | restrict usage in console |
+| 2 | restrict usage in script_command |
 
 ### Script Commands
 
@@ -392,25 +377,27 @@ BUILDIN_DEF(name,"arguments")
 BUILDIN_DEF2(name,"alias","arguments")
 ```
 
-  Argument    Description
-  --------    -----------
-  i        integer
-  s        string
-  v        variable
-  l        label
-  r        reference (of a variable)
-  ?        optional parameter (one)
-  *        optional parameter (unknown count)
-  null (no arguments)
+| Argument | Description |
+|---|---|
+| i | integer |
+| s | string |
+| v | variable |
+| l | label |
+| r | reference (of a variable) |
+| ? | optional parameter (one) |
+| * | optional parameter (unknown count) null (no arguments) |
 
 Useful functions:
-  script_hasdata(st,i);       // Returns if the stack contains data at the target index
-  script_getdata(st,i);       // Returns the script_data at the target index (data is a glob type)
-  script_getnum(st,val);      // Returns the int at the target index
-  script_getstr(st,val);      // Returns the string at the target index
-  script_getref(st,val);      // Returns the reference of a variable at the target index (useful for arrays, ex. 'checkweight2')
-  script_getfuncname(st);     // Returns the current function name (useful for function variants, ex. 'sc_start')
-  script_pushint(st,val);     // Pushes an int into the stack
-  script_pushstr(st,val);     // Pushes a string into the stack
-  script_isstring(st,i);      // Returns if the data at at the target index is a string
-  script_isint(st,i);         // Returns if the data at at the target index is an int
+
+```
+script_hasdata(st,i);       // Returns if the stack contains data at the target index
+script_getdata(st,i);       // Returns the script_data at the target index (data is a glob type)
+script_getnum(st,val);      // Returns the int at the target index
+script_getstr(st,val);      // Returns the string at the target index
+script_getref(st,val);      // Returns the reference of a variable at the target index (useful for arrays, ex. 'checkweight2')
+script_getfuncname(st);     // Returns the current function name (useful for function variants, ex. 'sc_start')
+script_pushint(st,val);     // Pushes an int into the stack
+script_pushstr(st,val);     // Pushes a string into the stack
+script_isstring(st,i);      // Returns if the data at at the target index is a string
+script_isint(st,i);         // Returns if the data at at the target index is an int
+```

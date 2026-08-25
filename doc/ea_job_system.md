@@ -56,10 +56,9 @@ EAJ_GANGSI	0xB
 ```
 
 - Branch: All classes can be classified as "1st Class", "2-1 Class", "2-2 Class",
+  and then brought up to "3rd Class" and "4th Class":
 
 ```
-and then brought up to "3rd Class" and "4th Class":
-
 EAJL_2_1	0x100
 EAJL_2_2	0x200
 EAJL_2		0x300
