@@ -14,6 +14,12 @@ find_path( MYSQL_INCLUDE_DIRS
 		"/usr/local/include/mysql"
 		"/usr/local/include/mariadb"
 		"/usr/mysql/include/mysql"
+		# Homebrew (Apple Silicon + Intel)
+		"/opt/homebrew/opt/mysql/include/mysql"
+		"/opt/homebrew/opt/mysql@8.4/include/mysql"
+		"/opt/homebrew/opt/mysql-client/include/mysql"
+		"/usr/local/opt/mysql/include/mysql"
+		"/usr/local/opt/mysql-client/include/mysql"
 		"/opt/homebrew/include/mysql" # for Apple Silicon (M1, M2)
 		"/opt/homebrew/include/mariadb"
 		"/usr/local/include/mysql" # for Intel-based Macs
@@ -32,6 +38,12 @@ find_library( MYSQL_LIBRARIES
 		"/usr/local/lib/mysql"
 		"/usr/local/lib/mariadb"
 		"/usr/mysql/lib/mysql"
+		# Homebrew (Apple Silicon + Intel)
+		"/opt/homebrew/opt/mysql/lib"
+		"/opt/homebrew/opt/mysql@8.4/lib"
+		"/opt/homebrew/opt/mysql-client/lib"
+		"/usr/local/opt/mysql/lib"
+		"/usr/local/opt/mysql-client/lib"
 		"/opt/homebrew/opt/mysql/lib" # for Apple Silicon (M1, M2)
 		"/opt/homebrew/opt/mariadb-connector-c/lib"
 		"/usr/local/opt/mysql/lib" # for Intel-based Macs
