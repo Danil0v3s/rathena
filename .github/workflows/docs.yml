@@ -18,6 +18,7 @@ on:
       - 'tools/mkdocs_hooks.py'
       - 'tools/doc2md.py'
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '.github/workflows/docs.yml'
       - 'doc/**'
@@ -32,6 +33,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ (github.event_name != 'pull_request' || !github.event.pull_request.draft) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
