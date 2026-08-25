@@ -1,26 +1,14 @@
-//===== rAthena Documentation ================================
-//= Item Database Structure
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20220402
-//===== Description: =========================================
-//= Explanation of the item_db.yml file and structure.
-//============================================================
+# Item Database Structure
 
----------------------------------------
+Explanation of the item_db.yml file and structure.
+
+*Last updated 20220402 by rAthena Dev Team (upstream `doc/` header)*
 
 Id: Item ID.
 
----------------------------------------
-
 AegisName: Server name to reference the item in scripts and lookups, should use no spaces.
 
----------------------------------------
-
 Name: Name in English for displaying as output for atcommands and script commands.
-
----------------------------------------
 
 Type: Item's type.
 
@@ -37,8 +25,6 @@ DelayConsume - Usable with delayed consumption (intended for 'itemskill').
                Items using the 'itemskill' script command are consumed after selecting a target. Any other command will NOT consume the item.
 ShadowGear   - Shadow Equipment item.
 Cash         - Another delayed consume that requires user confirmation before using the item.
-
----------------------------------------
 
 SubType: Indicates the weapon-class of the item.
 
@@ -82,40 +68,22 @@ For cards, the types are:
 Normal (default)
 Enchant
 
----------------------------------------
-
 Buy: Default buying price. When not specified, becomes double the sell price.
-
----------------------------------------
 
 Sell: Default selling price. When not specified, becomes half the buy price.
 
----------------------------------------
-
 Weight: Item's weight. Each 10 is 1 weight.
 
----------------------------------------
-
 Attack: Weapon's attack.
-
----------------------------------------
 
 MagicAttack: Weapon's magic attack. (Renewal only)
              Unlike matk bonus from equipment, MagicAttack is taken into account in weapon variance calculation on Renewal.
 
----------------------------------------
-
 Defense: Armor's defense.
-
----------------------------------------
 
 Range: Weapon's attack range.
 
----------------------------------------
-
 Slots: Amount of slots the item possesses.
-
----------------------------------------
 
 Jobs: Equippable jobs.
 
@@ -149,8 +117,6 @@ Taekwon
 Thief
 Wizard
 
----------------------------------------
-
 Classes: Equippable upper-types.
 
 All         - Applies to all classes.
@@ -165,15 +131,11 @@ All_Upper   - All Transcedent classes
 All_Baby    - All baby classes
 All_Third   - Applies to all Third classes.
 
----------------------------------------
-
 Gender: Gender restriction.
 
 Female
 Male
 Both
-
----------------------------------------
 
 Locations: Equipment's placement.
 
@@ -202,36 +164,20 @@ Shadow_Left_Accessory  - Shadow Accessory Left (Pendant)
 Both_Hand              - Right_Hand + Left_Hand
 Both_Accessory         - Right_Accessory + Left_Accessory
 
----------------------------------------
-
 WeaponLevel: Weapon level. Used for refinement.
-
----------------------------------------
 
 EquipLevelMin: Base level required to be able to equip.
 
----------------------------------------
-
 EquipLevelMax: Only able to equip if base level is lower than this.
-
----------------------------------------
 
 Refineable: Defines if the item can be refined.
 
----------------------------------------
-
 Gradable: Defines if the item can be graded.
-
----------------------------------------
 
 View: For normal items, defines a replacement view-sprite for the item.
 
----------------------------------------
-
 AliasName: Use the AegisName of another item which will be sent to the client instead of this item.
            This makes items visually appear as another without having to change the client data.
-
----------------------------------------
 
 Flags: Different types of flags for an item.
 
@@ -244,13 +190,9 @@ DropAnnounce - If the item has a special announcement to self on drop.
 NoConsume    - If the item is consumed on use.
 DropEffect   - If the item has a special effect on the ground when dropped by a monster.
 
----------------------------------------
-
 Delay: Item use delay.
   Duration - Duration of delay in seconds.
   Status   - Status Change used to keep track of the delay.
-
----------------------------------------
 
 Stack: Item stack amount.
   Amount       - Maximum amount that can be stacked.
@@ -259,13 +201,9 @@ Stack: Item stack amount.
   Storage      - If the stack is applied to the player's storage.
   GuildStorage - If the stack is applied to the player's guild storage.
 
----------------------------------------
-
 NoUse: Conditions when the item is unusable.
   Override - Group level to override these conditions.
   Sitting  - If the item can not be used while sitting.
-
----------------------------------------
 
 Trade: Trade restrictions.
   Override       - Group level to override these conditions.
@@ -279,16 +217,10 @@ Trade: Trade restrictions.
   NoMail         - If the item can not be put in a mail.
   NoAuction      - If the item can not be put in an auction.
 
----------------------------------------
-
 Script: Script to execute when the item is used/equipped.
-
----------------------------------------
 
 EquipScript: Script to execute when the item is equipped.
              Warning, not all item bonuses will work here as expected.
-
----------------------------------------
 
 UnEquipScript: Script to execute when the item is unequipped or when a rental item expires.
                Warning, not all item bonuses will work here as expected.

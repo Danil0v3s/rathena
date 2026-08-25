@@ -1,22 +1,12 @@
-//===== rAthena Documentation ================================
-//= Quest Database Structure
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20220629
-//===== Description: =========================================
-//= Explanation of the quest_db.yml file and structure.
-//============================================================
+# Quest Database Structure
 
----------------------------------------
+Explanation of the quest_db.yml file and structure.
+
+*Last updated 20220629 by rAthena Dev Team (upstream `doc/` header)*
 
 Id: Quest ID.
 
----------------------------------------
-
 Title: Quest title.
-
----------------------------------------
 
 TimeLimit: Amount of time before the quest expires.
 
@@ -45,8 +35,6 @@ Examples:
     # The quest expires Monday at 4am.
     TimeLimit: Monday 4h
 
----------------------------------------
-
 Targets: Quest objective target.
 
 The target can be a combination of Mob/Count or of Id/Count and other fields.
@@ -64,9 +52,7 @@ If Id is supplied, Count is required for each new entry.
     Location           Map name where kills are counted.
     MapName            Displayed map name in quest UI.
     MapMobTargets      List of monster names. Only names in the list will increase the kill counter. Only active when Id is used.
-      <name>: <bool>   Monster name and whether the monster is added or removed from the list.
-
----------------------------------------
+      `<name>`: `<bool>`   Monster name and whether the monster is added or removed from the list.
 
 Drops: Quest item drop targets.
 

@@ -1,18 +1,10 @@
-//===== rAthena Documentation ================================
-//= rAthena Monster Availability Database Reference
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20191213
-//===== Description: =========================================
-//= Explanation of the mob_avail.yml file and structure.
-//============================================================
+# rAthena Monster Availability Database Reference
 
----------------------------------------
+Explanation of the mob_avail.yml file and structure.
+
+*Last updated 20191213 by rAthena Dev Team (upstream `doc/` header)*
 
 Mob: The AEGIS name of the monster.
-
----------------------------------------
 
 Sprite: The name of the sprite the monster will be changed to.
 
@@ -31,78 +23,62 @@ Example:
 
 These constants can be found in src/map/script_constants.hpp.
 
----------------------------------------
-
 Sex: The sex to be displayed if the Sprite is a player.
 
 Valid types:
-	Female
-	Male
 
----------------------------------------
+```
+Female
+Male
+```
 
 HairStyle: The hair style ID to be displayed if the Sprite is a player.
 
----------------------------------------
-
 HairColor: The hair color ID to be displayed if the Sprite is a player.
-
----------------------------------------
 
 ClothColor: The cloth color ID to be displayed if the Sprite is a player.
 
----------------------------------------
-
 Weapon: The AEGIS name of the item to be displayed if the Sprite is a player.
-
----------------------------------------
 
 Shield: The AEGIS name of the item to be displayed if the Sprite is a player.
 
----------------------------------------
-
 HeadTop: The AEGIS name of the item to be displayed if the Sprite is a player.
-
----------------------------------------
 
 HeadMid: The AEGIS name of the item to be displayed if the Sprite is a player.
 
----------------------------------------
-
 HeadLow: The AEGIS name of the item to be displayed if the Sprite is a player.
 
----------------------------------------
-
 PetEquip: The AEGIS name of the item to be displayed if the Mob is a valid pet.
-
----------------------------------------
 
 Options: The view option to be applied to the Mob.
 
 Valid types:
-	Sight
-	Cart1
-	Falcon
-	Riding
-	Cart2
-	Cart3
-	Cart4
-	Cart5
-	Orcish
-	Wedding
-	Ruwach
-	Flying
-	Xmas
-	Transform
-	Summer
-	Dragon1
-	Wug
-	WugRider
-	MadoGear
-	Dragon2
-	Dragon3
-	Dragon4
-	Dragon5
-	Hanbok
-	Oktoberfest
-	Summer2
+
+```
+Sight
+Cart1
+Falcon
+Riding
+Cart2
+Cart3
+Cart4
+Cart5
+Orcish
+Wedding
+Ruwach
+Flying
+Xmas
+Transform
+Summer
+Dragon1
+Wug
+WugRider
+MadoGear
+Dragon2
+Dragon3
+Dragon4
+Dragon5
+Hanbok
+Oktoberfest
+Summer2
+```

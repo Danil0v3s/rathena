@@ -50,9 +50,9 @@ objects, `e_`/`s_` prefixes for enums/structs, `UPPER_CASE` for macros and enum 
 
 Upstream rathena/rathena is not clang-formatted, so a plain `git merge upstream/master` would
 conflict on every line upstream touched since the reformat. `tools/merge-upstream.sh` avoids
-that: it formats upstream's tree with this repository's `.clang-format` on a temporary branch,
-commits that, and merges the *formatted* upstream. Both sides of the merge then differ only by
-the real code changes.
+that: it formats upstream's tree with this repository's `.clang-format` (and converts upstream's
+`doc/*.txt` to Markdown with `tools/doc2md.py`) on a temporary branch, commits that, and merges the
+*formatted* upstream. Both sides of the merge then differ only by the real changes.
 
 ```sh
 tools/merge-upstream.sh            # fetches upstream/master, formats it, merges it

@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Merges rathena/rathena master into the current branch.
 #
-# The fork is clang-formatted and upstream is not, so a plain merge would
-# conflict on every line upstream touched. This script formats upstream's
-# tree with the fork's .clang-format first and merges *that*, so the merge
-# only has to reconcile real code changes.
+# The fork is clang-formatted and its docs are Markdown; upstream is neither,
+# so a plain merge would conflict on every line upstream touched. This script
+# formats upstream's tree with the fork's .clang-format and converts its
+# doc/*.txt with tools/doc2md.py first, and merges *that*, so the merge only
+# has to reconcile real changes.
 #
 #   tools/merge-upstream.sh              merge upstream/master
 #   tools/merge-upstream.sh <ref>        merge another upstream ref
@@ -24,17 +25,20 @@ if git rev-parse --verify --quiet "$tmp" > /dev/null; then
 else
 	git checkout -q -b "$tmp" "upstream/$ref"
 	# format with the fork's rules, not whatever upstream may have
-	git checkout -q "$target" -- .clang-format tools/format.sh
+	tools="tools/format.sh tools/doc2md.py"
+	git checkout -q "$target" -- .clang-format $tools
 	tools/format.sh
-	# put upstream's own version of the two files back (or drop them if upstream has none)
-	git reset -q -- .clang-format tools/format.sh
-	for f in .clang-format tools/format.sh; do
+	tools/doc2md.py --all --delete
+	# put upstream's own version of the tool files back (or drop them if upstream has none)
+	git reset -q -- .clang-format $tools
+	for f in .clang-format $tools; do
 		git checkout -q -- "$f" 2> /dev/null || rm -f "$f"
 	done
-	git add -A src
+	git add -A src doc
 	git commit -q -m "clang-format upstream $(git rev-parse --short "upstream/$ref")"
 	git checkout -q "$target"
 fi
 
-git merge "$tmp"
+# converted docs can be less than 50% similar to their .txt source; lower the rename threshold
+git merge -X find-renames=30% "$tmp"
 echo "merged $tmp into $target; delete it with: git branch -D $tmp"

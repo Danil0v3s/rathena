@@ -1,53 +1,40 @@
-//===== rAthena Documentation ================================
-//= Skill Database Structure
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20220126
-//===== Description: =========================================
-//= Explanation of the skill_db.yml file and structure.
-//============================================================
+# Skill Database Structure
 
----------------------------------------
+Explanation of the skill_db.yml file and structure.
+
+*Last updated 20220126 by rAthena Dev Team (upstream `doc/` header)*
 
 Id: Unique skill ID.
 
----------------------------------------
-
 Name: Skill Aegis name.
-
----------------------------------------
 
 Description: Skill description.
 
----------------------------------------
-
 MaxLevel: Max skill level.
-
----------------------------------------
 
 Type: Skill type.
 
+```
 None	- No specific type. (Default)
 Weapon	- Weapon type damage.
 Magic	- Magic type damage.
 Misc	- Misc type damage.
-
----------------------------------------
+```
 
 TargetType: Skill target type.
 
+```
 Passive	- Passive skill. (Default)
 Attack	- Damage enemies.
 Ground	- Ground placement skill.
 Self	- Self cast skill.
 Support	- Friendly cast skill.
 Trap	- Trap cast skill.
-
----------------------------------------
+```
 
 DamageFlags: Skill damage properties.
 
+```
 NoDamage		- No damage skill. (Default)
 Splash			- Has splash area.
 SplashSplit		- Damage should be split among targets.
@@ -59,11 +46,11 @@ IgnoreDefCard	- Skill ignores target's defense cards.
 IgnoreLongCard	- Skill ignores caster's long range damage cards.
 Critical		- Skill can critical.
 SimpleDefense	- (Renewal-only) Physical damage is flatly reduced by DEF+DEF2. RES is ignored.
-
----------------------------------------
+```
 
 Flags: Skill information flags.
 
+```
 IsQuest						- Quest skill.
 IsNpc						- NPC skill.
 IsWedding					- Wedding skill.
@@ -106,8 +93,7 @@ ShowScale					- Shows AoE area while casting
 IgnoreGtb					- Not blocked by Golden Thief Bug card.
 Toggleable					- Skill can be toggled on and off. When toggled off the skill doesn't consume HP/SP.
 IgnoreNonCritAtkBonus		- Skill ignores the bonus of bNonCritAtkRate
-
----------------------------------------
+```
 
 Range: Skill range. Combo skills do not check for range when used. If range is < 5 the skill is considered melee-range.
 
@@ -128,15 +114,13 @@ Sequence Map Form
     - Level: 5
       Size: 3
 
----------------------------------------
-
 Hit: Skill hit type.
 
+```
 Normal		- Passive/No damage skill. (Default)
 Single		- Single hit.
 Multi_Hit	- Multiple hits.
-
----------------------------------------
+```
 
 HitCount: Skill hit count. When positive the damage is increased by hits. Negative values the number of hits without increasing the total damage.
 
@@ -157,8 +141,6 @@ Sequence Map Form
     - Level: 5
       Count: 10
 
----------------------------------------
-
 Element: Skill element.
 
 Neutral (Default)
@@ -171,9 +153,12 @@ Holy
 Dark
 Ghost
 Undead
+
+```
 Weapon	- Uses weapon element.
 Endowed	- Uses endowed element.
 Random	- Uses random element.
+```
 
 Can be defined in scalar form or sequence map form:
 Scalar Form
@@ -192,13 +177,16 @@ Sequence Map Form
     - Level: 5
       Element: Poison
 
----------------------------------------
-
 SplashArea: Skill splash area of effect.
 
+```
 -1	- Screen-wide.
  0	- No splash.
+```
+
 All other values follow the formula: value * 2 + 1
+
+```
  1	- 3x3
  2	- 5x5
  3	- 7x7
@@ -214,6 +202,7 @@ All other values follow the formula: value * 2 + 1
  13	- 27x27
  14	- 29x29
  15	- 31x31
+```
 
 Can be defined in scalar form or sequence map form:
 Scalar Form
@@ -231,8 +220,6 @@ Sequence Map Form
       Area: 2
     - Level: 5
       Area: 3
-
----------------------------------------
 
 ActiveInstance: Maximum amount of active skill instances that can be on the ground.
 
@@ -253,8 +240,6 @@ Sequence Map Form
     - Level: 5
       Max: 3
 
----------------------------------------
-
 Knockback: Amount of tiles the skill knockbacks.
 
 Can be defined in scalar form or sequence map form:
@@ -274,14 +259,19 @@ Sequence Map Form
     - Level: 5
       Amount: 3
 
----------------------------------------
-
 CopyFlags: Determines if the skill is copyable.
 
+```
 Skill				- Type of skill that can copy.
+```
+
   Plagiarism
   Reproduce
+
+```
 RemoveRequirement	- Ability to remove skill cast requirement.
+```
+
   HpCost
   SpCost
   HpRateCost
@@ -296,29 +286,24 @@ RemoveRequirement	- Ability to remove skill cast requirement.
   ItemCost
   Equipment
 
----------------------------------------
-
 NoNearNPC: Determines if the skill can be used near a NPC.
 
+```
 AdditionalRange	- Number of cells from an NPC where the skill can be cast.
 	If zero this will read the splash range value.
 	If that is also zero then Unit Range + Unit Layout Range will be used.
 
 Type			- Type of NPC that will block the skill.
+```
+
 WarpPortal
 Shop
 Npc
 Tomb
 
----------------------------------------
-
 CastCancel: Cancel cast when hit.
 
----------------------------------------
-
 CastDefenseReduction: Defense reduction rate during skill cast.
-
----------------------------------------
 
 CastTime: Time to cast the skill in milliseconds.
 
@@ -339,8 +324,6 @@ Sequence Map Form
     - Level: 5
       Time: 5000
 
----------------------------------------
-
 AfterCastActDelay: Time the character cannot use skills in milliseconds.
 
 Can be defined in scalar form or sequence map form:
@@ -359,8 +342,6 @@ Sequence Map Form
       Time: 4000
     - Level: 5
       Time: 5000
-
----------------------------------------
 
 AfterCastWalkDelay: Time before the character can move again in milliseconds.
 
@@ -381,8 +362,6 @@ Sequence Map Form
     - Level: 5
       Time: 5000
 
----------------------------------------
-
 Duration1: Duration of the skill in milliseconds.
 
 Can be defined in scalar form or sequence map form:
@@ -401,8 +380,6 @@ Sequence Map Form
       Time: 4000
     - Level: 5
       Time: 5000
-
----------------------------------------
 
 Duration2:  Duration of the skill in milliseconds.
 
@@ -423,8 +400,6 @@ Sequence Map Form
     - Level: 5
       Time: 5000
 
----------------------------------------
-
 Cooldown: Time before the character can use the same skill again in milliseconds.
 
 Can be defined in scalar form or sequence map form:
@@ -443,8 +418,6 @@ Sequence Map Form
       Time: 4000
     - Level: 5
       Time: 5000
-
----------------------------------------
 
 FixedCastTime: Time that is fixed during cast of the skill in milliseconds. A value of -1 will use 20% of CastTime as FixedCastTime. See battle_config::default_fixed_castrate to adjust the rate.
 
@@ -465,25 +438,23 @@ Sequence Map Form
     - Level: 5
       Time: 5000
 
----------------------------------------
-
 CastTimeFlags: Effects of the skill's cast time.
 
+```
 IgnoreDex		- Cast time not affected by DEX.
 IgnoreStatus	- Cast time not affected by statuses (Suffragium, etc).
 IgnoreItemBonus	- Cast time not affected by item bonuses.
-
----------------------------------------
+```
 
 CastDelayFlags: Effects of the skill's delay.
 
+```
 IgnoreDex		- Delay not affected by DEX.
 IgnoreStatus	- Delay not affected by statuses (Suffragium, etc).
 IgnoreItemBonus	- Delay not affected by item bonuses.
+```
 
 IgnoreDex only makes sense when battle_config::delay_dependon_dex is enabled.
-
----------------------------------------
 
 Requires: List of requirements to cast the skill.
 
@@ -506,8 +477,6 @@ Sequence Map Form
     - Level: 5
       Amount: 50
 
-------------------
-
 SpCost: SP required to cast.
 
 Can be defined in scalar form or sequence map form:
@@ -526,8 +495,6 @@ Sequence Map Form
       Amount: 40
     - Level: 5
       Amount: 50
-
-------------------
 
 ApCost: AP required to cast.
 
@@ -548,8 +515,6 @@ Sequence Map Form
     - Level: 5
       Amount: 50
 
-------------------
-
 HpRateCost: HP rate required to cast. If positive, uses current HP, else uses Max HP.
 
 Can be defined in scalar form or sequence map form:
@@ -568,8 +533,6 @@ Sequence Map Form
       Amount: 40
     - Level: 5
       Amount: 50
-
-------------------
 
 SpRateCost: SP rate required to cast. If positive, uses current SP, else uses Max SP.
 
@@ -590,8 +553,6 @@ Sequence Map Form
     - Level: 5
       Amount: 50
 
-------------------
-
 ApRateCost: AP rate required to cast. If positive, uses current AP, else uses Max AP.
 
 Can be defined in scalar form or sequence map form:
@@ -610,8 +571,6 @@ Sequence Map Form
       Amount: 40
     - Level: 5
       Amount: 50
-
-------------------
 
 MaxHpTrigger: Maximum amount of HP to cast the skill.
 
@@ -632,8 +591,6 @@ Sequence Map Form
     - Level: 5
       Amount: 50
 
-------------------
-
 ZenyCost: Zeny required to cast.
 
 Can be defined in scalar form or sequence map form:
@@ -652,8 +609,6 @@ Sequence Map Form
       Amount: 40
     - Level: 5
       Amount: 50
-
-------------------
 
 Weapon: Weapon required to cast.
 
@@ -683,8 +638,6 @@ Grenade
 Huuma
 2hStaff
 
-------------------
-
 Ammo: Ammo required to cast.
 
 None (Default)
@@ -697,8 +650,6 @@ Shuriken
 Kunai
 Cannonball
 Throwweapon
-
-------------------
 
 AmmoAmount: Ammo amount required to cast.
 
@@ -719,10 +670,9 @@ Sequence Map Form
     - Level: 5
       Amount: 5
 
-------------------
-
 State: Special state required to cast.
 
+```
 None				- No special state required.
 Hidden				- Requires OPTION_HIDE, OPTION_CLOAK, or OPTION_CHASEWALK.
 Riding				- Requires OPTION_RIDING or OPTION_DRAGON.
@@ -743,14 +693,11 @@ Sunstance			- Requires Sun/Universe Stance status be active.
 Moonstance			- Requires Moon/Universe Stance status be active.
 Starstance			- Requires Star/Universe Stance status be active.
 Universestance		- Requires Universe Stance status be active.
-
-------------------
+```
 
 Status: Status change required to cast.
 
 For a full list, see src/map/status.hpp::sc_type.
-
-------------------
 
 SphereCost: Spirit sphere required to cast.
 
@@ -770,8 +717,6 @@ Sequence Map Form
       Amount: 4
     - Level: 5
       Amount: 5
-
-------------------
 
 ItemCost: Item required to cast. If the Level is supplied, then the ItemCost becomes skill level dependent.
 
@@ -793,12 +738,10 @@ Levels 1 - 5 have no item cost but levels 6 - 10 require a Blue Gemstone.
       Amount: 1
       Level: 10
 
-# All levels require a Blue Gemstone.
+\# All levels require a Blue Gemstone.
   ItemCost:
     - Item: Blue_Gemstone
       Amount: 1
-
-------------------
 
 GiveAp: AP given on successful casting.
 
@@ -819,11 +762,7 @@ Sequence Map Form
     - Level: 5
       Amount: 50
 
-------------------
-
 Equipment: Equipped item required to cast.
-
----------------------------------------
 
 Unit: Skill unit values.
 
@@ -831,24 +770,26 @@ Id: Skill unit ID.
 
 For a full list, see src/map/skill.hpp::e_skill_unit_id.
 
-------------------
-
 AlternateId: Alternate skill unit ID.
 
 For a full list, see src/map/skill.hpp::e_skill_unit_id.
 
-------------------
-
 Layout: Skill unit layout.
 
+```
 -1	- Screen-wide.
  0	- No splash.
+```
+
 All other values follow the formula: value * 2 + 1
+
+```
  1	- 3x3
  2	- 5x5
  3	- 7x7
  4	- 9x9
  5	- 11x11
+```
 
 Can be defined in scalar form or sequence map form:
 Scalar Form
@@ -866,8 +807,6 @@ Sequence Map Form
       Size: 4
     - Level: 5
       Size: 5
-
-------------------
 
 Range: Skill unit range.
 
@@ -888,14 +827,11 @@ Sequence Map Form
     - Level: 5
       Size: 5
 
-------------------
-
 Interval: Skill unit interval in milliseconds.
-
-------------------
 
 Target: Skill unit target type.
 
+```
 Friend		- Targets Party, Guild, Guild Allies, and neutral players.
 Party		- Targets Party.
 Ally		- Targets Party and Guild and Guild Allies.
@@ -904,11 +840,11 @@ All			- Targets all. (Default)
 Enemy		- Targets enemy.
 Self		- Targets self.
 SameGuild	- Targets Guild but not Guild Allies.
-
-------------------
+```
 
 Flag: Skill unit flags.
 
+```
 None				- No flags.
 NoEnemy				- If battle_config::defunit_not_enemy is enabled, the Target is changed to Friend.
 NoReiteration		- Spell cannot be stacked.
@@ -928,7 +864,6 @@ CrazyWeedImmune		- Immune to GN_CRAZYWEED.
 RemovedByFireRain	- Removed by RL_FIRE_RAIN.
 KnockbackGroup		- Knock back a whole skill group (by default, skill unit is knocked back by each unit).
 HiddenTrap			- Hidden trap. See battle_config::traps_setting to enable this flag.
-
-------------------
+```
 
 Status: Status Change that is associated to the skill. The status is used in association with the status.yml database.

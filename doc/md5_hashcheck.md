@@ -1,12 +1,8 @@
-//===== rAthena Documentation ================================
-//= MD5 Hash Check
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20140208
-//===== Description: =========================================
-//= This file outlines the login server's MD5 hash check.
-//============================================================
+# MD5 Hash Check
+
+This file outlines the login server's MD5 hash check.
+
+*Last updated 20140208 by rAthena Dev Team (upstream `doc/` header)*
 
 The login server is able to perform a check of the client's MD5 hash.
 This will ensure that a user has not tampered with the client and that
@@ -25,7 +21,7 @@ The server-side settings for the hash check are located in
 // Client MD5 hash check
 // If turned on, the login server will check if the client's hash matches
 // the value below, and will not connect tampered clients.
-// Note: see 'doc/md5_hashcheck.txt' for more details.
+// Note: see 'doc/md5_hashcheck.md' for more details.
 client_hash_check: off
 
 // Client MD5 hashes
@@ -35,7 +31,7 @@ client_hash_check: off
 // equal to the given value will be able to log in regardless of hash (and even
 // if their client does not send a hash at all.)
 // Format: group_id, hash
-// Note: see 'doc/md5_hashcheck.txt' for more details.
+// Note: see 'doc/md5_hashcheck.md' for more details.
 client_hash: 0, 113e195e6c051bb1cfb12a644bb084c5
 client_hash: 10, cb1ea78023d337c38e8ba5124e2338ae
 client_hash: 99, disabled

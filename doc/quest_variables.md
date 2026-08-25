@@ -1,18 +1,14 @@
-//===== rAthena Documentation ================================
-//= Permanent Quest Variables
-//===== By: ==================================================
-//= Lupus
-//===== Last Updated: ========================================
-//= 20120826
-//===== Description: =========================================
-//= This file should help to understand and manage bit-wise 
-//= quest variables. You can store up to 31 boolean value into 
-//= a single variable.
-//============================================================
+# Permanent Quest Variables
 
-Variable: MISC_QUEST
---------------------------------------------------------------
+This file should help to understand and manage bit-wise
+quest variables. You can store up to 31 boolean value into
+a single variable.
 
+*Last updated 20120826 by Lupus (upstream `doc/` header)*
+
+### Variable: MISC_QUEST
+
+```
 Quest:		Juice Maker Quest
 Info:		How to make juices. This bit keeps final state of the quest.
 How to set:	set MISC_QUEST, MISC_QUEST | 1;
@@ -97,12 +93,13 @@ Quest:		Access to the Turtle Island
 Info:		Reward: ~1 OCA, OVB, GB.
 How to set:	set MISC_QUEST, MISC_QUEST | 65536;
 How to check:	if (MISC_QUEST & 65536) {}
+```
 
+### Variable: MISC_QUEST2
 
-Variable: MISC_QUEST2
---------------------------------------------------------------
-
+```
 Quest:		-
 Info:		-
 How to set:	set MISC_QUEST2, MISC_QUEST2 | ?;
 How to check:	if (MISC_QUEST2 & ?) {}
+```

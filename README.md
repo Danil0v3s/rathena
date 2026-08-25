@@ -102,6 +102,12 @@ cmake --build --preset msvs --config Debug           # or open the solution in V
 The solution is generated, not committed: it embeds absolute paths and the project lists are globbed,
 so re-run the preset after adding or removing source files.
 
+### Documentation
+
+The reference documentation lives in [`doc/`](doc/) as Markdown and is published at
+<https://danil0v3s.github.io/rathena/> on every push to `master`. Preview it locally with
+`pip install 'mkdocs-material>=9,<10' && mkdocs serve`.
+
 ## 3. Troubleshooting
 
 If you're having problems with starting your server, the first thing you should

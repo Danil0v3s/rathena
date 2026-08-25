@@ -7,15 +7,15 @@ use File::Basename;
 use Getopt::Long;
 
 my $sHelp	= 0;
-my $sAtcf = "../doc/atcommands.txt";
-my $sSctf = "../doc/script_commands.txt";
+my $sAtcf = "../doc/atcommands.md";
+my $sSctf = "../doc/script_commands.md";
 my $sLeftOverChk      = 0;
 my $sCmd = "chk";
 my $sValidCmd = "ls|chk";
 my $sTarget	= "All";
 my $sValidTarget = "All|Script|Atc";
-my $sInc_atcf = "../doc/atcommands2.txt";
-my $sInc_scrtf = "../doc/script_commands2.txt";
+my $sInc_atcf = "../doc/atcommands2.md";
+my $sInc_scrtf = "../doc/script_commands2.md";
 
 my($filename, $dir, $suffix) = fileparse($0);
 chdir $dir; #put ourself like was called in tool folder
@@ -62,14 +62,14 @@ sub Main { my ($sCmd,$sTarget) = @_;
 	if($sTarget=~/both|all/i){ #both is keep as backard compatibility here cf check-doc.sh
 		$sTarget = "script|atc";
 	}
-	if($sTarget=~/script/i){ #find which script commands are missing from doc/script_commands.txt
+	if($sTarget=~/script/i){ #find which script commands are missing from doc/script_commands.md
 		my $raSct_cmd = Script_GetCmd();
 		if($sCmd =~ /ls/i) {
 			print "The list of script-commands found are = \n[ @$raSct_cmd ] \n\n";
 		}
 		if($sCmd =~ /chk/i) { Script_Chk($raSct_cmd); }
 	}
-	if($sTarget=~/atc/i){ #find which atcommands are missing from doc/atcommands.txt
+	if($sTarget=~/atc/i){ #find which atcommands are missing from doc/atcommands.md
 		my $raAct_cmd = Atc_GetCmd();
 		if($sCmd =~ /ls/i) {
 			print "The list of atcommands found are = \n[ @$raAct_cmd ] \n\n";
@@ -131,19 +131,25 @@ sub Script_Chk { my ($raDef_sct) = @_;
 			print "Couldn't open file '$sSct_docf'.\n";
 			next;
 		}
+		# Every documented command is a "### name" heading followed by a fenced block with one
+		# signature per line; grouped commands (getitem2/3/4, ...) only appear in that block.
+		my $sInEntry = 0;
+		my $sInFence = 0;
 		while(<FILE_DOC>){
-			next if($_ =~ /^\*\*|^\*\s|^\s+/); #discard **, * foo, foo
-			next if(/^\s+/);
-			if($_ =~ /^\*/){
-				my @line = split(' ',$_);
-				@line = split('\(',$line[0]);
-				@line = split('\<',$line[0]);
-				$line[0] =~ s/\(|\{|\*|\r|\s|\;|\)|\"|\,//g; #todo please harmonize command definition for easier parse
-
-				next if($line[0] eq "Name" || $line[0] eq "" || $line[0] eq "function"
-				|| $line[0] eq "if" || $line[0] eq "while" || $line[0] eq "do"  || $line[0] eq "for" ); #exception list
-
-				push(@aDoc_sct,$line[0]);
+			my @aNames = ();
+			if($_ =~ /^### ([A-Za-z_][A-Za-z0-9_]*)\s*$/){
+				push(@aNames,$1);
+				$sInEntry = 1; $sInFence = 0;
+			}
+			elsif($sInEntry){
+				if($_ =~ /^```/){ if($sInFence){ $sInEntry = 0; } $sInFence = !$sInFence; next; }
+				if($sInFence){ push(@aNames,$1) if($_ =~ /^([A-Za-z_][A-Za-z0-9_]*)/); }
+				elsif($_ !~ /^\s*$/){ $sInEntry = 0; } #prose without a signature block
+			}
+			foreach my $sName (@aNames){
+				next if($sName eq "Name" || $sName eq "" || $sName eq "function"
+				|| $sName eq "if" || $sName eq "while" || $sName eq "do"  || $sName eq "for" ); #exception list
+				push(@aDoc_sct,$sName);
 			}
 		}
 		close FILE_DOC;
@@ -213,15 +219,18 @@ sub Atc_Chk {  my ($raDef_act) = @_;
 			print "Couldn't open file '$sAct_docf'.\n";
 			next;
 		}
+		# Same layout as the script commands: "### @name" heading plus a fenced block of signatures.
+		my $sInEntry = 0;
+		my $sInFence = 0;
 		while(<FILE_DOC>){
-			next if($_ =~ /^\*\*|^\*\s|^\s+/); #discard **, * foo, foo
-			next if(/^\s+/);
-			if($_ =~ /^\@/){
-				my @line = split(' ',$_);
-				@line = split('\(',$line[0]);
-				@line = split('\<',$line[0]);
-				$line[0] =~ s/\(|\{|\@|\r|\s|\;|\)|\"|\,//g; #todo please harmonize command definition for easier parse
-				push(@aDoc_act,$line[0]);
+			if($_ =~ /^### \@([A-Za-z0-9_]+)\s*$/){
+				push(@aDoc_act,$1);
+				$sInEntry = 1; $sInFence = 0;
+			}
+			elsif($sInEntry){
+				if($_ =~ /^```/){ if($sInFence){ $sInEntry = 0; } $sInFence = !$sInFence; next; }
+				if($sInFence){ push(@aDoc_act,$1) if($_ =~ /^\@([A-Za-z0-9_]+)/); }
+				elsif($_ !~ /^\s*$/){ $sInEntry = 0; }
 			}
 		}
 		close FILE_DOC;

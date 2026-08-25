@@ -1,16 +1,11 @@
-//===== rAthena Documentation ================================
-//= rAthena Map Cache Builder and Format Documentation
-//===== By: ==================================================
-//= DracoRPG
-//===== Last Updated: ========================================
-//= 20070724
-//===== Description: =========================================
-//= A complete manual for rAthena's map cache generator as 
-//= well as a reference on the map cache format used.
-//============================================================
+# rAthena Map Cache Builder and Format Documentation
 
-Preface:
--------------------------------------------------------------------------------
+A complete manual for rAthena's map cache generator as
+well as a reference on the map cache format used.
+
+*Last updated 20070724 by DracoRPG (upstream `doc/` header)*
+
+### Preface
 
 Since SVN revision ~10000, the map-server no longer knows how to read GRFs directly. It reads maps from a
 "map cache" file that contains all and only the useful data about the maps. A map cache containing every official
@@ -18,8 +13,7 @@ kRO Sakray map currently supported by rAthena is provided as a default.
 If you have custom maps or want to minimize the size of your map cache because your server does not load all of them
 (multi-map-server or light test server), you can use the map cache builder to generate a new one fitting your needs.
 
-Map cache builder manual:
--------------------------------------------------------------------------------
+### Map cache builder manual
 
 The source code for the map cache builder is located in src/tool/. It can be built using "make tools" if you use the Makefile
 or using the "mapcache" project under Visual Studio. Named "mapcache", the executable will be in your rAthena main folder.
@@ -51,18 +45,16 @@ Here are the command-line arguments you can provide to the map cache builder to 
  -rebuild
    Allows to force the rebuild mode (map cache will be overwritten even if it already exists)
 
-
-Map cache format reference:
--------------------------------------------------------------------------------
+### Map cache format reference
 
 The file is written as little-endian, even on big-endian systems, for cross-compatibility reasons. Appropriate conversions
 are done when generating it, so don't worry about it.
 The first 6 bytes are a main header:
-<unsigned int> file size
-<unsigned short> number of maps
+`<unsigned int>` file size
+`<unsigned short>` number of maps
 Then maps are stored one right after another:
-<12-characters-long string> map name
-<short> X size
-<short> Y size
-<long> compressed cell data length
-<variable> compressed cell data
+`<12-characters-long string>` map name
+`<short>` X size
+`<short>` Y size
+`<long>` compressed cell data length
+`<variable>` compressed cell data
