@@ -5,4 +5,3 @@
 
 SkillEnergyCoat::SkillEnergyCoat() : StatusSkillImpl(MG_ENERGYCOAT) {
 }
-

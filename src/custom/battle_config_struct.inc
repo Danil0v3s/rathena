@@ -11,4 +11,3 @@
  * Format:
  *	 <datatype> name;
  **/
-

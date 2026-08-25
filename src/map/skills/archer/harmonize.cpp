@@ -9,11 +9,11 @@
 SkillHarmonize::SkillHarmonize() : SkillImpl(MI_HARMONIZE) {
 }
 
-void SkillHarmonize::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillHarmonize::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	sc_type type = skill_get_sc(getSkillId());
 	int32 duration = skill_get_time(getSkillId(), skill_lv);
 
-	if( src != target ) {
+	if (src != target) {
 		clif_skill_nodamage(src, *src, getSkillId(), skill_lv, sc_start(src, src, type, 100, skill_lv, duration));
 	}
 

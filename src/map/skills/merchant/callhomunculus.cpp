@@ -16,7 +16,7 @@ void SkillCallHomunculus::castendNoDamageId(block_list* src, block_list* target,
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sd && !hom_call(sd))
-		clif_skill_fail( *sd, getSkillId() );
+		clif_skill_fail(*sd, getSkillId());
 #ifdef RENEWAL
 	else if (sd && hom_is_active(sd->hd))
 		skill_area_temp[0] = 1; // Already passed pre-cast checks

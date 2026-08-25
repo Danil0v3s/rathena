@@ -13,14 +13,14 @@
 SkillGroundGravitation::SkillGroundGravitation() : SkillImpl(HN_GROUND_GRAVITATION) {
 }
 
-void SkillGroundGravitation::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillGroundGravitation::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	sc_start(src, target, skill_get_sc(getSkillId()), 100, 0, skill_get_time2(getSkillId(), skill_lv));
 }
 
-void SkillGroundGravitation::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillGroundGravitation::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
-	const map_session_data* sd = BL_CAST( BL_PC, src );
+	const status_change* sc = status_get_sc(src);
+	const map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (mflag & SKILL_ALTDMG_FLAG) {
 		// Initial damage
@@ -42,17 +42,17 @@ void SkillGroundGravitation::calculateSkillRatio(const Damage *wd, const block_l
 		skillratio += skillratio * 50 / 100;
 }
 
-void SkillGroundGravitation::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillGroundGravitation::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	if (flag & 1)
 		skill_attack(skill_get_type(getSkillId()), src, src, target, getSkillId(), skill_lv, tick, flag);
 }
 
 void SkillGroundGravitation::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
-	map_session_data* sd = BL_CAST( BL_PC, src );
+	map_session_data* sd = BL_CAST(BL_PC, src);
 
-	if( map_getcell(src->m, x, y, CELL_CHKLANDPROTECTOR) ) {
-		if( sd != nullptr ){
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+	if (map_getcell(src->m, x, y, CELL_CHKLANDPROTECTOR)) {
+		if (sd != nullptr) {
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 		}
 
 		flag |= SKILL_NOCONSUME_REQ;
@@ -65,7 +65,7 @@ void SkillGroundGravitation::castendPos2(block_list* src, int32 x, int32 y, uint
 	skill_unitsetting(src, getSkillId(), skill_lv, x, y, flag);
 
 	for (int32 i = 1; i <= (skill_get_time(getSkillId(), skill_lv) / skill_get_unit_interval(getSkillId())); i++) {
-		skill_addtimerskill(src, tick + (t_tick)i*skill_get_unit_interval(getSkillId()), 0, x, y, getSkillId(), skill_lv, 0, flag);
+		skill_addtimerskill(src, tick + (t_tick)i * skill_get_unit_interval(getSkillId()), 0, x, y, getSkillId(), skill_lv, 0, flag);
 	}
 }
 

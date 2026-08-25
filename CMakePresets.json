@@ -1,0 +1,81 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "dev",
+      "displayName": "Ninja, Release",
+      "description": "Default developer build. Dependencies are resolved through vcpkg (auto-bootstrapped into ./.vcpkg unless VCPKG_ROOT is set).",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "debug",
+      "displayName": "Ninja, Debug",
+      "inherits": "dev",
+      "binaryDir": "${sourceDir}/build-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "make",
+      "displayName": "Unix Makefiles, Release",
+      "description": "Same as 'dev' but generates Makefiles; use when ninja is not installed.",
+      "inherits": "dev",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build-make"
+    },
+    {
+      "name": "msvs",
+      "displayName": "Visual Studio 2022",
+      "description": "Generates build-msvs/rAthena.sln. Open it in Visual Studio or build with 'cmake --build --preset msvs --config <Debug|Release>'.",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build-msvs",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "msvs-2026",
+      "displayName": "Visual Studio 2026",
+      "inherits": "msvs",
+      "description": "Same as 'msvs' for Visual Studio 2026 (generator 'Visual Studio 18 2026', needs CMake 4.2+).",
+      "generator": "Visual Studio 18 2026",
+      "binaryDir": "${sourceDir}/build-msvs"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "dev",
+      "configurePreset": "dev"
+    },
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "make",
+      "configurePreset": "make"
+    },
+    {
+      "name": "msvs",
+      "configurePreset": "msvs",
+      "configuration": "Release"
+    },
+    {
+      "name": "msvs-2026",
+      "configurePreset": "msvs-2026",
+      "configuration": "Release"
+    }
+  ]
+}

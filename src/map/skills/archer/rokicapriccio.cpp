@@ -23,8 +23,7 @@ void SkillRokiCapriccio::castendNoDamageId(block_list* src, block_list* target, 
 		// Is it a chance to inflect so and so, or seprate chances for inflicting each status? [Rytech]
 		sc_start(src, target, SC_CONFUSION, 4 * skill_lv, skill_lv, skill_get_time(getSkillId(), skill_lv));
 		sc_start(src, target, SC_HANDICAPSTATE_MISFORTUNE, success_chance, skill_lv, skill_get_time2(getSkillId(), skill_lv));
-	}
-	else if (sd) {
+	} else if (sd) {
 		clif_skill_nodamage(target, *target, getSkillId(), skill_lv);
 
 		sd->skill_id_song = getSkillId();

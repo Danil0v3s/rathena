@@ -163,7 +163,7 @@
 #include "windattributechange.cpp"
 
 std::unique_ptr<const SkillImpl> SkillFactoryNpc::create(const e_skill skill_id) const {
-	switch( skill_id ){
+	switch (skill_id) {
 		case NPC_ACIDBREATH:
 			return std::make_unique<SkillAcidBreath>();
 		case NPC_AGIUP:

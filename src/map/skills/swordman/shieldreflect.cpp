@@ -16,7 +16,7 @@ void SkillShieldReflect::castendNoDamageId(block_list* src, block_list* target, 
 
 	if (tsc && tsc->getSCE(SC_DARKCROW)) { // SC_DARKCROW prevents using reflecting skills
 		if (sd)
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 		return;
 	}
 

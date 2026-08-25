@@ -13,12 +13,12 @@
 SkillKunaiRefraction::SkillKunaiRefraction() : SkillImpl(SS_KUNAIKUSSETSU) {
 }
 
-void SkillKunaiRefraction::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillKunaiRefraction::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 	const map_session_data* sd = BL_CAST(BL_PC, src);
 
 	skillratio += -100 + 300 + 450 * skill_lv;
-	skillratio += pc_checkskill( sd, SS_KUNAIKAITEN ) * 10 * skill_lv;
+	skillratio += pc_checkskill(sd, SS_KUNAIKAITEN) * 10 * skill_lv;
 	skillratio += 5 * sstatus->pow;
 	RE_LVL_DMOD(100);
 }

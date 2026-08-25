@@ -10,7 +10,7 @@
 SkillChangeLocation::SkillChangeLocation() : SkillImpl(NPC_MOVE_COORDINATE) {
 }
 
-void SkillChangeLocation::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillChangeLocation::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	int16 px = target->x, py = target->y;
 	if (!skill_check_unit_movepos(0, target, src->x, src->y, 1, 1)) {
 		flag |= SKILL_NOCONSUME_REQ;
@@ -18,7 +18,7 @@ void SkillChangeLocation::castendNoDamageId(block_list *src, block_list *target,
 	}
 
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
-	clif_skill_damage( *src, *target, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE );
+	clif_skill_damage(*src, *target, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE);
 	clif_blown(target);
 
 	// If caster is not a boss, switch coordinates with the target

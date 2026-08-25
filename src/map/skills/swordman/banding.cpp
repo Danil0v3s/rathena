@@ -13,9 +13,9 @@ void SkillBanding::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_l
 	std::shared_ptr<s_skill_unit_group> sg;
 	status_change* sc = status_get_sc(src);
 
-	if( sc && sc->getSCE(SC_BANDING) )
-		status_change_end(src,SC_BANDING);
-	else if( (sg = skill_unitsetting(src,getSkillId(),skill_lv,src->x,src->y,0)) != nullptr )
-		sc_start4(src,src,SC_BANDING,100,skill_lv,0,0,sg->group_id,skill_get_time(getSkillId(),skill_lv));
-	clif_skill_nodamage(src,*src,getSkillId(),skill_lv);
+	if (sc && sc->getSCE(SC_BANDING))
+		status_change_end(src, SC_BANDING);
+	else if ((sg = skill_unitsetting(src, getSkillId(), skill_lv, src->x, src->y, 0)) != nullptr)
+		sc_start4(src, src, SC_BANDING, 100, skill_lv, 0, 0, sg->group_id, skill_get_time(getSkillId(), skill_lv));
+	clif_skill_nodamage(src, *src, getSkillId(), skill_lv);
 }

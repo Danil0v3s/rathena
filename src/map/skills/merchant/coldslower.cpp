@@ -13,8 +13,8 @@
 SkillColdSlower::SkillColdSlower() : SkillImplRecursiveDamageSplash(NC_COLDSLOWER) {
 }
 
-void SkillColdSlower::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
-	status_change *tsc = status_get_sc(target);
+void SkillColdSlower::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+	status_change* tsc = status_get_sc(target);
 
 	// Status chances are applied officially through a check
 	// The skill first trys to give the frozen status to targets that are hit
@@ -32,6 +32,6 @@ void SkillColdSlower::castendPos2(block_list* src, int32 x, int32 y, uint16 skil
 	// Cast center might be relevant later (e.g. for knockback direction)
 	skill_area_temp[4] = x;
 	skill_area_temp[5] = y;
-	int32 i = skill_get_splash(getSkillId(),skill_lv);
-	map_foreachinarea(skill_area_sub,src->m,x-i,y-i,x+i,y+i,BL_CHAR|BL_SKILL,src,getSkillId(),skill_lv,tick,flag|BCT_ENEMY|1,skill_castend_damage_id);
+	int32 i = skill_get_splash(getSkillId(), skill_lv);
+	map_foreachinarea(skill_area_sub, src->m, x - i, y - i, x + i, y + i, BL_CHAR | BL_SKILL, src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
 }

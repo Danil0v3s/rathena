@@ -10,4 +10,3 @@
  * Format:
  *	 { "name", &battle_config.<variable name>, <default value>, <minimum value>, <maximum value> },
  **/
-

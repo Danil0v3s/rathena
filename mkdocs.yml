@@ -1,0 +1,94 @@
+site_name: rAthena
+site_description: rAthena server documentation (Danil0v3s fork)
+site_url: https://danil0v3s.github.io/rathena/
+repo_url: https://github.com/Danil0v3s/rathena
+repo_name: Danil0v3s/rathena
+edit_uri: edit/master/doc/
+docs_dir: doc
+site_dir: build-docs
+strict: true
+
+exclude_docs: |
+  model/
+  yaml/sql/
+
+theme:
+  name: material
+  logo: logo.png
+  favicon: logo.png
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.details
+
+hooks:
+  - tools/mkdocs_hooks.py
+
+nav:
+  - Home: index.md
+  - Scripting:
+    - Script commands: script_commands/   # expanded per section by tools/mkdocs_hooks.py
+    - Item bonuses: item_bonus.md
+    - Quest variables: quest_variables.md
+    - Whisper system: whisper_sys.md
+    - Effects: effect_list.md
+    - Status changes: status_change.md
+    - Sample scripts: sample/
+  - Server:
+    - Atcommands: atcommands.md
+    - Permissions: permissions.md
+    - Mapflags: mapflags.md
+    - WoE times: woe_time_explanation.md
+    - MD5 hash check: md5_hashcheck.md
+    - Map cache: map_cache.md
+    - Achievements: achievements.md
+  - Databases:
+    - Item database: item_db.md
+    - Item groups: item_group.md
+    - Mob database: mob_db.md
+    - Mob modes: mob_db_mode_list.md
+    - Mob availability: mob_avail.md
+    - Mob item ratios: mob_item_ratio.md
+    - Mob power skills: mob_skill_db_powerskill.md
+    - Skill database: skill_db.md
+    - Status: status.md
+    - Quest database: quest_db.md
+    - Captcha database: captcha_db.md
+    - Job system: ea_job_system.md
+  - Development:
+    - Source overview: source_doc.md
+    - Code style: code_style.md
+    - Map server generator: map_server_generator.md
+    - Packet notation: packet_struct_notation.md
+    - Inter-server packets: packet_interserv.md
+    - Client packets: packet_client.md

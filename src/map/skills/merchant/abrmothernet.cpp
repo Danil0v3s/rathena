@@ -14,7 +14,7 @@ void SkillAbrMotherNet::castendNoDamageId(block_list* src, block_list* target, u
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	sc_start(src, target, skill_get_sc(getSkillId()), 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
 
-	mob_data *md = mob_once_spawn_sub(src, src->m, src->x, src->y, "--ja--", MOBID_ABR_MOTHER_NET, "", SZ_SMALL, AI_ABR);
+	mob_data* md = mob_once_spawn_sub(src, src->m, src->x, src->y, "--ja--", MOBID_ABR_MOTHER_NET, "", SZ_SMALL, AI_ABR);
 
 	if (md) {
 		md->master_id = src->id;

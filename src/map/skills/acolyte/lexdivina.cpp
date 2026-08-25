@@ -17,6 +17,6 @@ void SkillLexDivina::castendNoDamageId(block_list* src, block_list* target, uint
 	if (tsce)
 		status_change_end(target, type);
 	else
-		skill_addtimerskill(src, tick+1000, target->id, 0, 0, getSkillId(), skill_lv, 100, flag);
+		skill_addtimerskill(src, tick + 1000, target->id, 0, 0, getSkillId(), skill_lv, 100, flag);
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 }

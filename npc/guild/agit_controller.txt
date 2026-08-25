@@ -9,7 +9,7 @@
 //= rAthena Project; RO Episode 4+
 //===== Description: =========================================
 //= Auto-start for War of Emperium FE.
-//= For instructions, see doc/woe_time_explanation.txt.
+//= For instructions, see doc/woe_time_explanation.md.
 //===== Additional Comments: =================================
 //= 1.1a changed OnInit to OnAgitInit.[kobra_k88]
 //= 1.2 added gettime checks. removed $AgitStarted var.[kobra_k88]

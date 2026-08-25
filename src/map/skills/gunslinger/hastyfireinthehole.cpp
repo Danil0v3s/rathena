@@ -14,16 +14,16 @@ SkillHastyFireInTheHole::SkillHastyFireInTheHole() : WeaponSkillImpl(NW_HASTY_FI
 
 void SkillHastyFireInTheHole::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
 	int32 i = skill_get_splash(getSkillId(), skill_lv);
-	if (flag & 1){
+	if (flag & 1) {
 		i++;
 	}
-	if (flag & 2){
+	if (flag & 2) {
 		i++;
 	}
 	map_foreachinallarea(skill_area_sub,
-		src->m, x - i, y - i, x + i, y + i, BL_CHAR,
-		src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1,
-		skill_castend_damage_id);
+	    src->m, x - i, y - i, x + i, y + i, BL_CHAR,
+	    src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1,
+	    skill_castend_damage_id);
 	if (!(flag & 1)) {
 		skill_addtimerskill(src, tick + 300, 0, x, y, getSkillId(), skill_lv, 0, flag | 1 | SKILL_NOCONSUME_REQ);
 		skill_addtimerskill(src, tick + 600, 0, x, y, getSkillId(), skill_lv, 0, flag | 3 | SKILL_NOCONSUME_REQ);
@@ -44,18 +44,18 @@ void SkillHastyFireInTheHole::modifyElement(const Damage& dmg, const block_list&
 	const status_change* sc = status_get_sc(&src);
 
 	// Night Watch Grenade Fragment elementals
-	if( sc != nullptr ){
-		if( sc->hasSCE( SC_GRENADE_FRAGMENT_1 ) ){
+	if (sc != nullptr) {
+		if (sc->hasSCE(SC_GRENADE_FRAGMENT_1)) {
 			element = ELE_WATER;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_2 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_2)) {
 			element = ELE_WIND;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_3 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_3)) {
 			element = ELE_EARTH;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_4 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_4)) {
 			element = ELE_FIRE;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_5 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_5)) {
 			element = ELE_DARK;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_6 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_6)) {
 			element = ELE_HOLY;
 		}
 	}

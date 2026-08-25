@@ -11,10 +11,10 @@
 SkillCresciveBolt::SkillCresciveBolt() : WeaponSkillImpl(WH_CRESCIVE_BOLT) {
 }
 
-void SkillCresciveBolt::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillCresciveBolt::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 	const status_data* tstatus = status_get_status_data(*target);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 
 	skillratio += -100 + 500 + 1300 * skill_lv;
 	skillratio += 5 * sstatus->con;
@@ -32,13 +32,13 @@ void SkillCresciveBolt::calculateSkillRatio(const Damage *wd, const block_list *
 	}
 }
 
-void SkillCresciveBolt::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *sc = status_get_sc(src);
+void SkillCresciveBolt::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* sc = status_get_sc(src);
 
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	WeaponSkillImpl::castendDamageId(src, target, skill_lv, tick, flag);
-	if( sc && sc->getSCE(SC_CRESCIVEBOLT) )
-		sc_start(src, src, SC_CRESCIVEBOLT, 100, min( 3, 1 + sc->getSCE(SC_CRESCIVEBOLT)->val1 ), skill_get_time(getSkillId(), skill_lv));
+	if (sc && sc->getSCE(SC_CRESCIVEBOLT))
+		sc_start(src, src, SC_CRESCIVEBOLT, 100, min(3, 1 + sc->getSCE(SC_CRESCIVEBOLT)->val1), skill_get_time(getSkillId(), skill_lv));
 	else
 		sc_start(src, src, SC_CRESCIVEBOLT, 100, 1, skill_get_time(getSkillId(), skill_lv));
 }

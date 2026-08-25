@@ -1,0 +1,55 @@
+name: Configure and build with CMake
+description: >
+  Configures rAthena with a CMakePresets.json preset (dependencies come from
+  vcpkg in manifest mode, bootstrapped automatically by CMakeLists.txt) and
+  builds the requested targets. vcpkg's binary cache is persisted with
+  actions/cache so dependencies are only compiled when vcpkg.json changes.
+
+inputs:
+  preset:
+    description: Configure/build preset name (dev, debug, make, msvs)
+    required: false
+    default: dev
+  cmake-args:
+    description: Extra arguments for the configure step, e.g. -DENABLE_PRERE=ON
+    required: false
+    default: ''
+  targets:
+    description: Space separated list of targets to build (empty = everything)
+    required: false
+    default: ''
+  config:
+    description: Build configuration for multi-config generators (msvs preset)
+    required: false
+    default: ''
+  cache-key:
+    description: Extra discriminator for the vcpkg binary cache key (e.g. compiler)
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - uses: lukka/get-cmake@latest
+
+    - name: Cache vcpkg binary packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/vcpkg/archives
+          ~/AppData/Local/vcpkg/archives
+        key: vcpkg-${{ runner.os }}-${{ inputs.cache-key }}-${{ hashFiles('vcpkg.json') }}
+        restore-keys: |
+          vcpkg-${{ runner.os }}-${{ inputs.cache-key }}-
+
+    - name: Configure (${{ inputs.preset }})
+      shell: bash
+      run: cmake --preset ${{ inputs.preset }} ${{ inputs.cmake-args }}
+
+    - name: Build
+      shell: bash
+      run: |
+        args=(--build --preset "${{ inputs.preset }}" --parallel)
+        if [ -n "${{ inputs.config }}" ]; then args+=(--config "${{ inputs.config }}"); fi
+        if [ -n "${{ inputs.targets }}" ]; then args+=(--target ${{ inputs.targets }}); fi
+        cmake "${args[@]}"

@@ -15,8 +15,8 @@ void SkillStatusRecovery::castendNoDamageId(block_list* src, block_list* target,
 	status_change* tsc = status_get_sc(target);
 	mob_data* dstmd = BL_CAST(BL_MOB, target);
 
-	if(status_isimmune(target)) {
-		clif_skill_nodamage(src,*target,getSkillId(), skill_lv, false);
+	if (status_isimmune(target)) {
+		clif_skill_nodamage(src, *target, getSkillId(), skill_lv, false);
 		return;
 	}
 	if (battle_check_undead(tstatus->race, tstatus->def_ele))
@@ -42,5 +42,5 @@ void SkillStatusRecovery::castendNoDamageId(block_list* src, block_list* target,
 		status_change_end(target, SC_NETHERWORLD);
 		status_change_end(target, SC_NORECOVER_STATE);
 	}
-	clif_skill_nodamage(src,*target, getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 }

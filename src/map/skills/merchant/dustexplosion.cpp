@@ -11,12 +11,12 @@
 SkillDustExplosion::SkillDustExplosion() : SkillImplRecursiveDamageSplash(BO_DUST_EXPLOSION) {
 }
 
-void SkillDustExplosion::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillDustExplosion::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 
 	skillratio += -100 + 500 + 620 * skill_lv;
-	skillratio += 5 * sstatus->pow;	// !TODO: check POW ratio
+	skillratio += 5 * sstatus->pow; // !TODO: check POW ratio
 	if (sc != nullptr && sc->hasSCE(SC_RESEARCHREPORT))
 		skillratio += 50 + 210 * skill_lv;
 	RE_LVL_DMOD(100);

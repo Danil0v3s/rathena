@@ -10,14 +10,14 @@
 SkillSilvervineRootTwist::SkillSilvervineRootTwist() : SkillImpl(SU_SV_ROOTTWIST) {
 }
 
-void SkillSilvervineRootTwist::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *tsc = status_get_sc(target);
+void SkillSilvervineRootTwist::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* tsc = status_get_sc(target);
 	sc_type type = skill_get_sc(getSkillId());
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	if (sd && status_get_class_(target) == CLASS_BOSS) {
-		clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL_TOTARGET );
+		clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL_TOTARGET);
 		return;
 	}
 	if (tsc != nullptr && tsc->hasSCE(type)) // Refresh the status only if it's already active.

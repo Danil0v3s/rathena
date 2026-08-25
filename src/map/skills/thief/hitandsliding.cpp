@@ -38,7 +38,7 @@ void SkillHitAndSliding::castendDamageId(block_list* src, block_list* target, ui
 		WeaponSkillImpl::castendDamageId(src, target, skill_lv, tick, flag);
 	} else { //Is this the right behavior? [Haydrich]
 		if (sd != nullptr)
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 	}
 
 	// Trigger skill animation

@@ -74,7 +74,7 @@
 #include "windcharm.cpp"
 
 std::unique_ptr<const SkillImpl> SkillFactoryNinja::create(const e_skill skill_id) const {
-	switch( skill_id ){
+	switch (skill_id) {
 		case KG_KAGEHUMI:
 			return std::make_unique<SkillShadowTrampling>();
 		case KG_KAGEMUSYA:

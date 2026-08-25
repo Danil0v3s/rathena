@@ -12,11 +12,11 @@
 SkillExorcismOfMaliciousSoul::SkillExorcismOfMaliciousSoul() : SkillImplRecursiveDamageSplash(SOA_EXORCISM_OF_MALICIOUS_SOUL) {
 }
 
-void SkillExorcismOfMaliciousSoul::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillExorcismOfMaliciousSoul::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
-	const status_change *tsc = status_get_sc(target);
-	const map_session_data* sd = BL_CAST( BL_PC, src );
+	const status_change* sc = status_get_sc(src);
+	const status_change* tsc = status_get_sc(target);
+	const map_session_data* sd = BL_CAST(BL_PC, src);
 
 	skillratio += -100 + 150 * skill_lv;
 	skillratio += pc_checkskill(sd, SOA_SOUL_MASTERY) * 2;
@@ -30,15 +30,15 @@ void SkillExorcismOfMaliciousSoul::calculateSkillRatio(const Damage *wd, const b
 	RE_LVL_DMOD(100);
 }
 
-void SkillExorcismOfMaliciousSoul::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	map_session_data* sd = BL_CAST( BL_PC, src );
+void SkillExorcismOfMaliciousSoul::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	map_session_data* sd = BL_CAST(BL_PC, src);
 
-	if( sd != nullptr ){
+	if (sd != nullptr) {
 		// Remove old souls if any exist.
 		sd->soulball_old = sd->soulball;
-		pc_delsoulball( *sd, sd->soulball, 0 );
+		pc_delsoulball(*sd, sd->soulball, 0);
 	}
 
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }

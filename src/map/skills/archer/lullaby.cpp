@@ -10,9 +10,9 @@
 SkillLullaby::SkillLullaby() : SkillImpl(BD_LULLABY) {
 }
 
-void SkillLullaby::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillLullaby::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 #ifndef RENEWAL
-	status_change *sc = status_get_sc(src);
+	status_change* sc = status_get_sc(src);
 	status_data* sstatus = status_get_status_data(*src);
 
 	if (sc != nullptr && sc->getSCE(SC_DANCING) != nullptr) {
@@ -30,7 +30,7 @@ void SkillLullaby::applyAdditionalEffects(block_list *src, block_list *target, u
 #endif
 }
 
-void SkillLullaby::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillLullaby::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 #ifdef RENEWAL
 	skill_castend_song(src, getSkillId(), skill_lv, tick);
 #endif
@@ -38,7 +38,7 @@ void SkillLullaby::castendNoDamageId(block_list *src, block_list *target, uint16
 
 void SkillLullaby::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
 #ifndef RENEWAL
-	flag|=1;//Set flag to 1 to prevent deleting ammo (it will be deleted on group-delete).
-	skill_unitsetting(src,getSkillId(),skill_lv,x,y,0);
+	flag |= 1; //Set flag to 1 to prevent deleting ammo (it will be deleted on group-delete).
+	skill_unitsetting(src, getSkillId(), skill_lv, x, y, 0);
 #endif
 }

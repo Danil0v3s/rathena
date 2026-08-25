@@ -10,8 +10,8 @@
 SkillMission::SkillMission() : SkillImpl(TK_MISSION) {
 }
 
-void SkillMission::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 &flag) const {
-	map_session_data *sd = BL_CAST(BL_PC, src);
+void SkillMission::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sd) {
 		if (sd->mission_mobid && (sd->mission_count || rnd() % 100)) {

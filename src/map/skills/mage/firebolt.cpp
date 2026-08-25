@@ -9,8 +9,8 @@
 SkillFireBolt::SkillFireBolt() : SkillImpl(MG_FIREBOLT) {
 }
 
-void SkillFireBolt::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
-	const status_change *sc = status_get_sc(src);
+void SkillFireBolt::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
+	const status_change* sc = status_get_sc(src);
 
 	if (sc) {
 		if (sc->getSCE(SC_FLAMETECHNIC_OPTION))
@@ -23,7 +23,7 @@ void SkillFireBolt::calculateSkillRatio(const Damage *wd, const block_list *src,
 	}
 }
 
-void SkillFireBolt::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 &flag) const {
+void SkillFireBolt::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_attack(BF_MAGIC, src, src, target, getSkillId(), skill_lv, tick, flag);
 }
 

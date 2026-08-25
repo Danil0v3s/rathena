@@ -15,7 +15,7 @@
 SkillPsychicStream::SkillPsychicStream() : SkillImplRecursiveDamageSplash(EM_PSYCHIC_STREAM) {
 }
 
-void SkillPsychicStream::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillPsychicStream::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 1750 + 3850 * skill_lv;
@@ -30,14 +30,13 @@ void SkillPsychicStream::splashSearch(block_list* src, block_list* target, uint1
 	uint8 dir = DIR_NORTHEAST;
 
 	if (target->x != src->x || target->y != src->y)
-		dir = map_calc_dir(target, src->x, src->y);	// dir based on target as we move player based on target location
+		dir = map_calc_dir(target, src->x, src->y); // dir based on target as we move player based on target location
 
 	if (skill_check_unit_movepos(0, src, target->x + dirx[dir], target->y + diry[dir], 1, 1)) {
 		clif_blown(src);
 		skill_attack(BF_MAGIC, src, src, target, getSkillId(), skill_lv, tick, flag);
 		clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
-	}
-	else {
+	} else {
 		if (sd != nullptr)
 			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 

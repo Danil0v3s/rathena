@@ -14,9 +14,9 @@ void SkillVaporize::castendNoDamageId(block_list* src, block_list* target, uint1
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sd) {
-		if (hom_vaporize(sd,HOM_ST_REST))
+		if (hom_vaporize(sd, HOM_ST_REST))
 			clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 		else
-			clif_skill_fail( *sd, getSkillId() );
+			clif_skill_fail(*sd, getSkillId());
 	}
 }

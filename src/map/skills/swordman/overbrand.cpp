@@ -13,7 +13,7 @@ SkillOverBrand::SkillOverBrand() : SkillImplRecursiveDamageSplash(LG_OVERBRAND) 
 }
 
 void SkillOverBrand::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }
 
@@ -21,7 +21,7 @@ void SkillOverBrand::calculateSkillRatio(const Damage* wd, const block_list* src
 	const map_session_data* sd = BL_CAST(BL_PC, src);
 	const status_change* sc = status_get_sc(src);
 
-	if(sc && sc->getSCE(SC_OVERBRANDREADY))
+	if (sc && sc->getSCE(SC_OVERBRANDREADY))
 		skillratio += -100 + 500 * skill_lv;
 	else
 		skillratio += -100 + 350 * skill_lv;

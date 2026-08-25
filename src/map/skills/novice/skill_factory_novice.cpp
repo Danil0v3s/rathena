@@ -22,7 +22,7 @@
 #include "spiralpiercemax.cpp"
 
 std::unique_ptr<const SkillImpl> SkillFactoryNovice::create(const e_skill skill_id) const {
-	switch( skill_id ){
+	switch (skill_id) {
 		case HN_BREAKINGLIMIT:
 			return std::make_unique<StatusSkillImpl>(skill_id);
 		case HN_DOUBLEBOWLINGBASH:

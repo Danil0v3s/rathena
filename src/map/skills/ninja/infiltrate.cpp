@@ -16,7 +16,7 @@
 SkillInfiltrate::SkillInfiltrate() : SkillImpl(SS_SHIMIRU) {
 }
 
-void SkillInfiltrate::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillInfiltrate::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 700 * skill_lv;
@@ -24,10 +24,10 @@ void SkillInfiltrate::calculateSkillRatio(const Damage *wd, const block_list *sr
 	RE_LVL_DMOD(100);
 }
 
-void SkillInfiltrate::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillInfiltrate::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
-	struct unit_data *ud = unit_bl2ud(src);
+	struct unit_data* ud = unit_bl2ud(src);
 
 	if (!check_distance_bl(src, target, 0)) {
 		uint8 dir = map_calc_dir(src, target->x, target->y);
@@ -47,13 +47,13 @@ void SkillInfiltrate::castendDamageId(block_list *src, block_list *target, uint1
 		else
 			y = 0;
 
-		if (battle_check_target(src, target, BCT_ENEMY) > 0 && unit_movepos(src, target->x + x, target->y + y, 2, true)) {// Display movement + animation.
-			dir = dir < 4 ? dir+4 : dir-4; // change direction [Celest]
-			unit_setdir(target,dir);
+		if (battle_check_target(src, target, BCT_ENEMY) > 0 && unit_movepos(src, target->x + x, target->y + y, 2, true)) { // Display movement + animation.
+			dir = dir < 4 ? dir + 4 : dir - 4;                                                                             // change direction [Celest]
+			unit_setdir(target, dir);
 			clif_blown(src);
 		} else {
 			if (sd != nullptr) {
-				clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL_TARGET_SHADOW_SPACE );
+				clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL_TARGET_SHADOW_SPACE);
 			}
 			return;
 		}
@@ -68,15 +68,15 @@ void SkillInfiltrate::castendDamageId(block_list *src, block_list *target, uint1
 		int16 dx = src->x - su->x;
 		int16 dy = src->y - su->y;
 
-		for( size_t count = 0; count < 1000; count++ ){
-			if (map_foreachincell(skill_shimiru_check_cell, src->m, su->x + dx, su->y + dy, BL_CHAR|BL_SKILL) == 0)
+		for (size_t count = 0; count < 1000; count++) {
+			if (map_foreachincell(skill_shimiru_check_cell, src->m, su->x + dx, su->y + dy, BL_CHAR | BL_SKILL) == 0)
 				break;
 			dx += rnd() % 3 - 1;
 			dy += rnd() % 3 - 1;
 		}
 
 		if (sug->skill_id == SS_SHINKIROU)
-			skill_unit_move_unit_group(sg, src->m, dx,dy);
+			skill_unit_move_unit_group(sg, src->m, dx, dy);
 	}
 
 	skill_attack(skill_get_type(getSkillId()), src, src, target, getSkillId(), skill_lv, tick, flag);

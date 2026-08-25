@@ -9,12 +9,11 @@
 SkillAntidote::SkillAntidote() : SkillImpl(GC_ANTIDOTE) {
 }
 
-void SkillAntidote::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *tsc = status_get_sc(target);
+void SkillAntidote::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* tsc = status_get_sc(target);
 
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
-	if( tsc )
-	{
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
+	if (tsc) {
 		status_change_end(target, SC_PARALYSE);
 		status_change_end(target, SC_PYREXIA);
 		status_change_end(target, SC_DEATHHURT);

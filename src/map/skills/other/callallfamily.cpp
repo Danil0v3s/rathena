@@ -13,11 +13,11 @@ void SkillCallAllFamily::castendNoDamageId(block_list* src, block_list* target, 
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sd) {
-		map_session_data *p_sd = pc_get_partner(sd);
-		map_session_data *c_sd = pc_get_child(sd);
+		map_session_data* p_sd = pc_get_partner(sd);
+		map_session_data* c_sd = pc_get_child(sd);
 
 		if (!p_sd && !c_sd) { // Fail if no family members are found
-			clif_skill_fail( *sd, getSkillId() );
+			clif_skill_fail(*sd, getSkillId());
 			flag |= SKILL_NOCONSUME_REQ;
 			return;
 		}

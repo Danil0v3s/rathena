@@ -15,8 +15,8 @@ int32 inter_pet_delete(int32 pet_id);
 
 int32 inter_pet_parse_frommap(int32 fd);
 int32 inter_pet_sql_init(void);
-  //extern char pet_txt[256];
+//extern char pet_txt[256];
 
-int32 inter_pet_tosql(int32 pet_id, struct s_pet *p);
+int32 inter_pet_tosql(int32 pet_id, struct s_pet* p);
 
 #endif /* INT_PET_HPP */

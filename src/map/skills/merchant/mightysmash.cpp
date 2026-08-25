@@ -12,14 +12,14 @@ SkillMightySmash::SkillMightySmash() : SkillImplRecursiveDamageSplash(MT_MIGHTY_
 }
 
 void SkillMightySmash::modifyDamageData(Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv) const {
-	const status_change *sc = status_get_sc(&src);
+	const status_change* sc = status_get_sc(&src);
 
 	if (sc != nullptr && sc->hasSCE(SC_AXE_STOMP))
 		dmg.div_ = 7;
 }
 
 void SkillMightySmash::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }
 

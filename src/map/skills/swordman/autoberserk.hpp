@@ -7,8 +7,7 @@
 
 #include "../../battle.hpp"
 
-class SkillAutoBerserk : public SkillImpl
-{
+class SkillAutoBerserk : public SkillImpl {
 public:
 	SkillAutoBerserk();
 

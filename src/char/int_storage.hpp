@@ -13,6 +13,6 @@ void inter_storage_sql_final(void);
 
 bool inter_storage_parse_frommap(int32 fd);
 
-bool guild_storage_tosql(int32 guild_id, struct s_storage *p);
+bool guild_storage_tosql(int32 guild_id, struct s_storage* p);
 
 #endif /* INT_STORAGE_HPP */

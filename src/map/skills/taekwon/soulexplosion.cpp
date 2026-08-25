@@ -10,7 +10,7 @@
 SkillSoulExplosion::SkillSoulExplosion() : SkillImpl(SP_SOULEXPLOSION) {
 }
 
-void SkillSoulExplosion::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillSoulExplosion::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	// Remove soul link when hit.
 	status_change_end(target, SC_SPIRIT);
 	status_change_end(target, SC_SOULGOLEM);
@@ -19,16 +19,16 @@ void SkillSoulExplosion::applyAdditionalEffects(block_list *src, block_list *tar
 	status_change_end(target, SC_SOULFAIRY);
 }
 
-void SkillSoulExplosion::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillSoulExplosion::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	status_data* tstatus = status_get_status_data(*target);
-	status_change *tsc = status_get_sc(target);
-	map_session_data* sd = BL_CAST( BL_PC, src );
+	status_change* tsc = status_get_sc(target);
+	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (!(tsc && (tsc->getSCE(SC_SPIRIT) || tsc->getSCE(SC_SOULGOLEM) || tsc->getSCE(SC_SOULSHADOW) || tsc->getSCE(SC_SOULFALCON) || tsc->getSCE(SC_SOULFAIRY))) || tstatus->hp < 10 * tstatus->max_hp / 100) { // Requires target to have a soul link and more then 10% of MaxHP.
 		// With this skill requiring a soul link, and the target to have more then 10% if MaxHP, I wonder
-		// if the cooldown still happens after it fails. Need a confirm. [Rytech] 
+		// if the cooldown still happens after it fails. Need a confirm. [Rytech]
 		if (sd)
-			clif_skill_fail( *sd, getSkillId() );
+			clif_skill_fail(*sd, getSkillId());
 		return;
 	}
 

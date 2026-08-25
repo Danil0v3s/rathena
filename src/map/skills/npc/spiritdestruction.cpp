@@ -10,7 +10,7 @@
 SkillSpiritDestruction::SkillSpiritDestruction() : WeaponSkillImpl(NPC_MENTALBREAKER) {
 }
 
-void SkillSpiritDestruction::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillSpiritDestruction::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	//SP Damage 12%/16%/25%/50%/100% of MaxSP
 	int32 rate;
 	switch (skill_lv) {

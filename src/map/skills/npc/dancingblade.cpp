@@ -8,6 +8,6 @@
 SkillDancingBlade::SkillDancingBlade() : SkillImpl(NPC_DANCINGBLADE) {
 }
 
-void SkillDancingBlade::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillDancingBlade::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_addtimerskill(src, tick + status_get_amotion(src), target->id, 0, 0, NPC_DANCINGBLADE_ATK, skill_lv, 0, 0);
 }

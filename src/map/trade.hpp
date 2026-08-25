@@ -17,12 +17,12 @@ enum e_ack_trade_response : uint8 {
 	TRADE_ACK_BUSY
 };
 
-void trade_traderequest(map_session_data *sd, map_session_data *target_sd);
-void trade_tradeack(map_session_data *sd,int32 type);
-void trade_tradeadditem(map_session_data *sd,int16 index,int16 amount);
-void trade_tradeaddzeny(map_session_data *sd,int32 amount);
-void trade_tradeok(map_session_data *sd);
-void trade_tradecancel(map_session_data *sd);
-void trade_tradecommit(map_session_data *sd);
+void trade_traderequest(map_session_data* sd, map_session_data* target_sd);
+void trade_tradeack(map_session_data* sd, int32 type);
+void trade_tradeadditem(map_session_data* sd, int16 index, int16 amount);
+void trade_tradeaddzeny(map_session_data* sd, int32 amount);
+void trade_tradeok(map_session_data* sd);
+void trade_tradecancel(map_session_data* sd);
+void trade_tradecommit(map_session_data* sd);
 
 #endif /* TRADE_HPP */

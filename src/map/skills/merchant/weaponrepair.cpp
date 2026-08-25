@@ -13,6 +13,6 @@ void SkillWeaponRepair::castendNoDamageId(block_list* src, block_list* target, u
 	map_session_data* sd = BL_CAST(BL_PC, src);
 	map_session_data* dstsd = BL_CAST(BL_PC, target);
 
-	if(sd && dstsd)
-		clif_item_repair_list( *sd, *dstsd, skill_lv );
+	if (sd && dstsd)
+		clif_item_repair_list(*sd, *dstsd, skill_lv);
 }

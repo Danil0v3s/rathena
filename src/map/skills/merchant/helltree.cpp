@@ -10,11 +10,11 @@
 SkillHellTree::SkillHellTree() : SkillImpl(BO_HELLTREE) {
 }
 
-void SkillHellTree::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillHellTree::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	sc_start(src, target, skill_get_sc(getSkillId()), 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
 
-	mob_data *md = mob_once_spawn_sub(src, src->m, src->x, src->y, "--ja--", MOBID_BIONIC_HELLTREE, "", SZ_SMALL, AI_BIONIC);
+	mob_data* md = mob_once_spawn_sub(src, src->m, src->x, src->y, "--ja--", MOBID_BIONIC_HELLTREE, "", SZ_SMALL, AI_BIONIC);
 
 	if (md) {
 		md->master_id = src->id;

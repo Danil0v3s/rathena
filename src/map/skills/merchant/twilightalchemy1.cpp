@@ -14,9 +14,9 @@ void SkillTwilightAlchemy1::castendNoDamageId(block_list* src, block_list* targe
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sd) {
-		clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+		clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 		//Prepare 200 White Potions.
 		if (!skill_produce_mix(sd, getSkillId(), ITEMID_WHITE_POTION, 0, 0, 0, 200, -1))
-			clif_skill_fail( *sd, getSkillId() );
+			clif_skill_fail(*sd, getSkillId());
 	}
 }

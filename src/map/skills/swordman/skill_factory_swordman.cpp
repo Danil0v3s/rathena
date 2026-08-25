@@ -90,7 +90,7 @@
 #include "windcutter.cpp"
 
 std::unique_ptr<const SkillImpl> SkillFactorySwordman::create(const e_skill skill_id) const {
-	switch( skill_id ){
+	switch (skill_id) {
 		case CR_AUTOGUARD:
 			return std::make_unique<StatusSkillImpl>(skill_id, true);
 		case CR_DEFENDER:

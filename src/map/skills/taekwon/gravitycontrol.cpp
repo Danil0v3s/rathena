@@ -10,7 +10,7 @@
 SkillGravityControl::SkillGravityControl() : SkillImpl(SJ_GRAVITYCONTROL) {
 }
 
-void SkillGravityControl::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillGravityControl::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	status_data* sstatus = status_get_status_data(*src);
 	status_data* tstatus = status_get_status_data(*target);
 	map_session_data* dstsd = BL_CAST(BL_PC, target);

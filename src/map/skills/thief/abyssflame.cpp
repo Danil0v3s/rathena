@@ -18,7 +18,7 @@ void SkillAbyssFlame::castendDamageId(block_list* src, block_list* target, uint1
 		clif_skill_damage(*src, *target, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE);
 		skill_attack(BF_MAGIC, src, src, target, getSkillId(), skill_lv, tick, flag);
 	} else {
-		map_foreachinrange(skill_area_sub, src, skill_get_splash(getSkillId(), skill_lv), BL_CHAR | BL_SKILL, src, getSkillId(), skill_lv, tick, (flag | BCT_ENEMY | SD_SPLASH | 1 ) & ~BCT_SELF, skill_castend_damage_id);
+		map_foreachinrange(skill_area_sub, src, skill_get_splash(getSkillId(), skill_lv), BL_CHAR | BL_SKILL, src, getSkillId(), skill_lv, tick, (flag | BCT_ENEMY | SD_SPLASH | 1) & ~BCT_SELF, skill_castend_damage_id);
 		skill_castend_damage_id(src, target, ABC_ABYSS_FLAME_ATK, skill_lv, tick, flag);
 	}
 }

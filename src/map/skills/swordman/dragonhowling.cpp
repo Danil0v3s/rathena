@@ -19,6 +19,6 @@ void SkillDragonHowling::castendNoDamageId(block_list* src, block_list* target, 
 		skill_area_temp[2] = 0;
 		clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 		map_foreachinallrange(skill_area_sub, src, skill_get_splash(getSkillId(), skill_lv), BL_CHAR,
-			src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | SD_PREAMBLE | 1, skill_castend_nodamage_id);
+		    src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | SD_PREAMBLE | 1, skill_castend_nodamage_id);
 	}
 }

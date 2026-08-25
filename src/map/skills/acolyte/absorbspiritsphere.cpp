@@ -19,23 +19,24 @@ void SkillAbsorbSpiritSphere::castendNoDamageId(block_list* src, block_list* tar
 
 	int32 i = 0;
 	if (dstsd && (battle_check_target(src, target, BCT_SELF) > 0 || battle_check_target(src, target, BCT_ENEMY) > 0) && // Only works on self and enemies
-		(dstsd->class_&MAPID_FIRSTMASK) != MAPID_GUNSLINGER ) { // split the if for readability, and included gunslingers in the check so that their coins cannot be removed [Reddozen]
+	    (dstsd->class_ & MAPID_FIRSTMASK) != MAPID_GUNSLINGER) {                                                        // split the if for readability, and included gunslingers in the check so that their coins cannot be removed [Reddozen]
 		if (dstsd->spiritball > 0) {
 			i = dstsd->spiritball * 7;
-			pc_delspiritball(dstsd,dstsd->spiritball,0);
+			pc_delspiritball(dstsd, dstsd->spiritball, 0);
 		}
 		if (dstsd->spiritcharm_type != CHARM_TYPE_NONE && dstsd->spiritcharm > 0) {
 			i += dstsd->spiritcharm * 7;
-			pc_delspiritcharm(dstsd,dstsd->spiritcharm,dstsd->spiritcharm_type);
+			pc_delspiritcharm(dstsd, dstsd->spiritcharm, dstsd->spiritcharm_type);
 		}
-	} else if (dstmd && !status_has_mode(tstatus,MD_STATUSIMMUNE) && rnd() % 100 < 20) { // check if target is a monster and not status immune, for the 20% chance to absorb 2 SP per monster's level [Reddozen]
+	} else if (dstmd && !status_has_mode(tstatus, MD_STATUSIMMUNE) && rnd() % 100 < 20) { // check if target is a monster and not status immune, for the 20% chance to absorb 2 SP per monster's level [Reddozen]
 		i = 2 * dstmd->level;
-		mob_target(dstmd,src,0);
+		mob_target(dstmd, src, 0);
 	} else {
 		if (sd)
-			clif_skill_fail( *sd, getSkillId() );
+			clif_skill_fail(*sd, getSkillId());
 		return;
 	}
-	if (i) status_heal(src, 0, i, 3);
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv,i != 0);
+	if (i)
+		status_heal(src, 0, i, 3);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv, i != 0);
 }

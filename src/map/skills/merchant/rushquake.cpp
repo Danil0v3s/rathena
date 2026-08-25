@@ -24,19 +24,19 @@ void SkillRushQuake::calculateSkillRatio(const Damage* wd, const block_list* src
 }
 
 void SkillRushQuake::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
-	sc_start( src, target, SC_RUSH_QUAKE1, 100, skill_lv, skill_get_time( getSkillId(), skill_lv ) );
+	sc_start(src, target, SC_RUSH_QUAKE1, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
 }
 
 void SkillRushQuake::splashSearch(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 flag) const {
 	// Jump to the target before attacking.
-	if( skill_check_unit_movepos( 5, src, target->x, target->y, 0, 1 ) ){
-		skill_blown( src, src, 1, direction_opposite( static_cast<enum directions>( map_calc_dir( target, src->x, src->y ) ) ), BLOWN_NONE);
+	if (skill_check_unit_movepos(5, src, target->x, target->y, 0, 1)) {
+		skill_blown(src, src, 1, direction_opposite(static_cast<enum directions>(map_calc_dir(target, src->x, src->y))), BLOWN_NONE);
 	}
-	clif_skill_nodamage( src, *target, getSkillId(), skill_lv); // Trigger animation
-	clif_blown( src );
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv); // Trigger animation
+	clif_blown(src);
 
 	// TODO: does this buff start before or after dealing damage? [Muh]
-	sc_start( src, src, SC_RUSH_QUAKE2, 100, skill_lv, skill_get_time2( getSkillId(), skill_lv ) );
+	sc_start(src, src, SC_RUSH_QUAKE2, 100, skill_lv, skill_get_time2(getSkillId(), skill_lv));
 
 	SkillImplRecursiveDamageSplash::splashSearch(src, target, skill_lv, tick, flag);
 }

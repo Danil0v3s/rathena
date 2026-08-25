@@ -213,7 +213,7 @@ sub RunCompilation { my($sBaseDir,$sTarget) = @_;
 	chdir "$sBaseDir/..";
 	if($^O =~ "linux"){
 		print "Recompiling...\n";
-		system('./configure && make clean server');
+		system('cmake --preset make && cmake --build --preset make --parallel --clean-first --target login-server char-server map-server web-server generate-import-files');
 		if($sTarget =~ "All|Restart") {
 			print "Restarting...\n";
 			system('./athena-start restart');

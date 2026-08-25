@@ -10,7 +10,7 @@
 SkillMercenaryArrowShower::SkillMercenaryArrowShower() : SkillImplRecursiveDamageSplash(MA_SHOWER) {
 }
 
-void SkillMercenaryArrowShower::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillMercenaryArrowShower::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 #ifdef RENEWAL
 	base_skillratio += 50 + 10 * skill_lv;
 #else

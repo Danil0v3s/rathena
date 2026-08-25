@@ -16,7 +16,7 @@ void SkillReparatio::castendNoDamageId(block_list* src, block_list* target, uint
 
 	if (target->type != BL_PC) { // Only works on players.
 		if (sd)
-			clif_skill_fail( *sd, getSkillId() );
+			clif_skill_fail(*sd, getSkillId());
 		return;
 	}
 

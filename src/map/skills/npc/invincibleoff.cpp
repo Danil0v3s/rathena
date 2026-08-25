@@ -9,7 +9,7 @@
 SkillInvincibleOff::SkillInvincibleOff() : SkillImpl(NPC_INVINCIBLEOFF) {
 }
 
-void SkillInvincibleOff::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillInvincibleOff::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	status_change_end(target, SC_INVINCIBLE);
 }

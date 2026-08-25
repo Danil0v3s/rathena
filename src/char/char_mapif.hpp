@@ -6,9 +6,9 @@
 
 #include <common/cbasetypes.hpp>
 
-int32 chmapif_sendall(unsigned char *buf, uint32 len);
-int32 chmapif_sendallwos(int32 sfd, unsigned char *buf, uint32 len);
-int32 chmapif_send(int32 fd, unsigned char *buf, uint32 len);
+int32 chmapif_sendall(unsigned char* buf, uint32 len);
+int32 chmapif_sendallwos(int32 sfd, unsigned char* buf, uint32 len);
+int32 chmapif_send(int32 fd, unsigned char* buf, uint32 len);
 int32 chmapif_send_fame_list(int32 fd);
 void chmapif_update_fame_list(int32 type, int32 index, int32 fame);
 void chmapif_sendall_playercount(int32 users);

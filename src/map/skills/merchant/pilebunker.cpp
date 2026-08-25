@@ -10,8 +10,8 @@
 SkillPileBunker::SkillPileBunker() : WeaponSkillImpl(NC_PILEBUNKER) {
 }
 
-void SkillPileBunker::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
-	if( rnd()%100 < 25 + 15*skill_lv ) {
+void SkillPileBunker::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+	if (rnd() % 100 < 25 + 15 * skill_lv) {
 		status_change_end(target, SC_KYRIE);
 		status_change_end(target, SC_ASSUMPTIO);
 		status_change_end(target, SC_STEELBODY);
@@ -26,7 +26,7 @@ void SkillPileBunker::applyAdditionalEffects(block_list *src, block_list *target
 	}
 }
 
-void SkillPileBunker::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillPileBunker::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	skillratio += 200 + 100 * skill_lv + status_get_str(src);
 	RE_LVL_DMOD(100);
 }

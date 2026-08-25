@@ -25,7 +25,7 @@ void SkillImperialCross::calculateSkillRatio(const Damage* wd, const block_list*
 
 	skillratio += -100 + 1650 + 1350 * skill_lv;
 	skillratio += pc_checkskill(sd, IG_SPEAR_SWORD_M) * 25;
-	skillratio += 5 * sstatus->pow;	// !TODO: check POW ratio
+	skillratio += 5 * sstatus->pow; // !TODO: check POW ratio
 
 	if (sc != nullptr && sc->getSCE(SC_SPEAR_SCAR))
 		skillratio += 100 + 300 * skill_lv;

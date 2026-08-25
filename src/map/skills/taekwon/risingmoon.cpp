@@ -15,17 +15,17 @@ SkillRisingMoon::SkillRisingMoon() : SkillImplRecursiveDamageSplash(SKE_RISING_M
 void SkillRisingMoon::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	status_change* sc = status_get_sc(src);
 
-	if( sc == nullptr || ( sc->getSCE( SC_RISING_MOON ) == nullptr && sc->getSCE( SC_MIDNIGHT_MOON ) == nullptr && sc->getSCE( SC_DAWN_MOON ) == nullptr ) ){
+	if (sc == nullptr || (sc->getSCE(SC_RISING_MOON) == nullptr && sc->getSCE(SC_MIDNIGHT_MOON) == nullptr && sc->getSCE(SC_DAWN_MOON) == nullptr)) {
 		sc_start(src, src, SC_RISING_MOON, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
-	}else if( sc->getSCE( SC_MIDNIGHT_MOON ) == nullptr && sc->getSCE( SC_DAWN_MOON ) == nullptr ){
+	} else if (sc->getSCE(SC_MIDNIGHT_MOON) == nullptr && sc->getSCE(SC_DAWN_MOON) == nullptr) {
 		sc_start(src, src, SC_MIDNIGHT_MOON, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
-	}else if( sc->getSCE( SC_DAWN_MOON ) == nullptr ){
+	} else if (sc->getSCE(SC_DAWN_MOON) == nullptr) {
 		sc_start(src, src, SC_DAWN_MOON, 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
-	}else if( sc->getSCE( SC_RISING_SUN ) != nullptr ){
+	} else if (sc->getSCE(SC_RISING_SUN) != nullptr) {
 		status_change_end(target, SC_DAWN_MOON);
 	}
 
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }
 

@@ -10,16 +10,16 @@
 SkillStarEmperorAdvent::SkillStarEmperorAdvent() : SkillImplRecursiveDamageSplash(SJ_STAREMPEROR) {
 }
 
-void SkillStarEmperorAdvent::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillStarEmperorAdvent::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	sc_start(src, target, SC_SILENCE, 50 + 10 * skill_lv, skill_lv, skill_get_time(getSkillId(), skill_lv));
 }
 
-void SkillStarEmperorAdvent::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillStarEmperorAdvent::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += 700 + 200 * skill_lv;
 }
 
-void SkillStarEmperorAdvent::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *sc = status_get_sc(src);
+void SkillStarEmperorAdvent::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* sc = status_get_sc(src);
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sc && sc->getSCE(SC_DIMENSION)) {
@@ -32,6 +32,6 @@ void SkillStarEmperorAdvent::castendNoDamageId(block_list *src, block_list *targ
 		status_change_end(src, SC_DIMENSION);
 	}
 
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }

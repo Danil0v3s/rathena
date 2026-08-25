@@ -12,7 +12,7 @@
 SkillCatnipMeteor::SkillCatnipMeteor() : SkillImpl(SU_CN_METEOR) {
 }
 
-void SkillCatnipMeteor::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillCatnipMeteor::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 200 + 100 * skill_lv;
@@ -48,33 +48,32 @@ void SkillCatnipMeteor::castendPos2(block_list* src, int32 x, int32 y, uint16 sk
 void SkillCatnipMeteor::modifyElement(const Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv, int32& element, int32 flag) const {
 	const status_change* sc = status_get_sc(&src);
 
-	if( sc != nullptr && !sc->empty() ){
-		if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_1 ) ){
+	if (sc != nullptr && !sc->empty()) {
+		if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_1)) {
 			element = ELE_WATER;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_2 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_2)) {
 			element = ELE_WIND;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_3 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_3)) {
 			element = ELE_EARTH;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_4 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_4)) {
 			element = ELE_FIRE;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_5 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_5)) {
 			element = ELE_DARK;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_6 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_6)) {
 			element = ELE_HOLY;
 		}
 	}
 }
 
-
 // SU_CN_METEOR2
 SkillCatnipMeteor2::SkillCatnipMeteor2() : SkillImpl(SU_CN_METEOR2) {
 }
 
-void SkillCatnipMeteor2::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillCatnipMeteor2::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	sc_start(src, target, SC_CURSE, 20, skill_lv, skill_get_time2(getSkillId(), skill_lv));
 }
 
-void SkillCatnipMeteor2::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillCatnipMeteor2::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 200 + 100 * skill_lv;
@@ -87,18 +86,18 @@ void SkillCatnipMeteor2::calculateSkillRatio(const Damage *wd, const block_list 
 void SkillCatnipMeteor2::modifyElement(const Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv, int32& element, int32 flag) const {
 	const status_change* sc = status_get_sc(&src);
 
-	if( sc != nullptr && !sc->empty() ){
-		if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_1 ) ){
+	if (sc != nullptr && !sc->empty()) {
+		if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_1)) {
 			element = ELE_WATER;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_2 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_2)) {
 			element = ELE_WIND;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_3 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_3)) {
 			element = ELE_EARTH;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_4 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_4)) {
 			element = ELE_FIRE;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_5 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_5)) {
 			element = ELE_DARK;
-		}else if( sc->hasSCE( SC_COLORS_OF_HYUN_ROK_6 ) ){
+		} else if (sc->hasSCE(SC_COLORS_OF_HYUN_ROK_6)) {
 			element = ELE_HOLY;
 		}
 	}
