@@ -37,9 +37,8 @@ jobs:
             os: windows-2025
           - preset: msvs-2026
             os: windows-latest
-        exclude:
-          - preset: ${{ github.event_name == 'workflow_dispatch' && inputs.preset == 'msvs-2026' && 'msvs' || 'none' }}
-          - preset: ${{ github.event_name == 'workflow_dispatch' && inputs.preset == 'msvs' && 'msvs-2026' || 'none' }}
+    # a manual run generates only the chosen preset, a push generates both
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.preset == matrix.preset }}
 
     steps:
       - uses: actions/checkout@v4
