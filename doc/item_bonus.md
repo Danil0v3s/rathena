@@ -96,7 +96,7 @@ Skill (sk): see 'db/(pre-)re/skill_db.yml' (NOTE: Both skill IDs and names, in q
 Monster id (mid): see 'db/(pre-)re/mob_db.yml'
 Item id (iid): see 'db/item_db.yml'
 Item group (ig): see 'db/(pre-)re/item_group_db.yml' and the constants in 'src/map/script_constants.hpp', prefixed with IG_*
-Weapon type (w): see 'doc/item_db.txt' -> SubType
+Weapon type (w): see 'doc/item_db.md' -> SubType
 ```
 
 ### Bonuses

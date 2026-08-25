@@ -69,7 +69,7 @@ We have 3 types of communication:
      This is the only kind of communication which doesn't use packets (currently).
      It's only done in localhost from console to servs (a way to input args in servs runtime).
 
-The packet notation and structure are well defined in 'doc/packet_struct_notation.txt'.
+The packet notation and structure are well defined in 'doc/packet_struct_notation.md'.
 
 Note that scripts and atcommands are another kind of interface, as they allow
 users to input data into the serv.

@@ -7326,7 +7326,7 @@ specialeffect <effect number>{,<send_target>{,"<NPC Name>"}};
 
 This command will display special effect with the given number, centered on the
 specified NPCs coordinates, if any. For a full list of special effect numbers
-known see 'doc/effect_list.txt'. Some effect numbers are known not to work in
+known see 'doc/effect_list.md'. Some effect numbers are known not to work in
 some client releases. (Notably, rain is absent from any client executables
 released after April 2005.)
 
@@ -9806,7 +9806,7 @@ all (an item script) the effect will be centered on the character who's RID got
 attached to the script, if any. For usable item scripts, this command will
 create an effect centered on the player using the item.
 
-A full list of known effects is found in 'doc/effect_list.txt'. The list of
+A full list of known effects is found in 'doc/effect_list.md'. The list of
 those that actually work may differ greatly between client versions.
 
 ### soundeffect
@@ -10688,16 +10688,16 @@ Notes:
     - *_MAPID: this refers to the map_data index (from src/map/map.cpp), not the mapindex_db index (from src/common/mapindex.cpp)
 		-- For 'setunitdata', map name can also be passed in as a valid value instead of map ID
 	- *_SPEED: 20 - 1000
-	- *_MODE: see doc/mob_db_mode_list.txt
+	- *_MODE: see doc/mob_db_mode_list.md
 	- *_LOOKDIR: north (0), northwest (1), west (2), etc
 	- *_CANMOVETICK: seconds * 1000 the unit will be unable to move
 	- *_DMGIMMUNE: unit will be immune to damage (1), or will receive damage (0)
 	- *_HUNGER: 0 - 100
 	- *_INTIMACY: 0 - 1000
 	- *_LIFETIME: seconds * 1000 the unit will be 'alive' for
-	- *_AMOTION: see doc/mob_db.txt
-	- *_ADELAY: see doc/mob_db.txt
-	- *_DMOTION: see doc/mob_db.txt
+	- *_AMOTION: see doc/mob_db.md
+	- *_ADELAY: see doc/mob_db.md
+	- *_DMOTION: see doc/mob_db.md
 	- *_BODY2: enable (1) the alternate display, or disable (0)
 	- *_TARGETID: when set to 0 the unit will release the target and stop attacking
 

@@ -1161,7 +1161,7 @@ val1:
 ```
 desc: Change armor element
 val1: Element level
-val2: Element (see doc/item_bonus.txt)
+val2: Element (see doc/item_bonus.md)
 ```
 
 ### SC_RICHMANKIM

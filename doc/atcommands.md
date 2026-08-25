@@ -247,7 +247,7 @@ New warp NPC 'my_warp_sample' created.
 ```
 
 Creates a visual effect on or around the character.
-A list of IDs and descriptions of the effects can be found in '/doc/effect_list.txt'.
+A list of IDs and descriptions of the effects can be found in '/doc/effect_list.md'.
 
 ### @misceffect
 

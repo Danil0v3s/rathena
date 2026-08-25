@@ -8,7 +8,7 @@ See packet_client.txt for communication to client (C).
 
 This file provides information about rAthena's packets, ordered by number.
 This assumes knowledge of packet notation, which is detailed in
-'doc/packet_struct_notation.txt'.
+'doc/packet_struct_notation.md'.
 
 The format of this file is as follows:
 
