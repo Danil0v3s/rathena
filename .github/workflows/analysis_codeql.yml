@@ -11,6 +11,13 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/**'
+      - 'tools/ci/**'
+      - 'src/**'
+      - '**/CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'vcpkg.json'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 

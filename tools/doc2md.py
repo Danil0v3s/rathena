@@ -44,6 +44,12 @@ def is_code(line):
     return line.startswith("\t") or "\t" in line or line.startswith("    ")
 
 
+def looks_like_prose(text):
+    """A sentence rather than code or a key/value line."""
+    t = text.strip()
+    return len(t.split()) >= 5 and ";" not in t and "//" not in t and not re.match(r"^\S+\s*=", t)
+
+
 def is_dashes(line):
     return len(line) >= 3 and set(line) == {"-"}
 
@@ -93,6 +99,8 @@ DEFAULT_STYLE = (re.compile(r"^\*(?![*\s])"), False, True)
 SUBSECTION_RE = re.compile(r"^\*{1,2}\s+(\S.*)$")
 # 'nothing  - A permanent variable ...', '"#"  - ...', 'BaseClass - ...': hand-made definition lists
 DEFINITION_RE = re.compile(r"^(\S[^\s\t]{0,19})\s+-\s+(\S.*)$")
+TABLE_RULE_RE = re.compile(r"^\s*-{3,}(\s+-{3,})+\s*$")
+LIST_ITEM_RE = re.compile(r"^\s*(- |\d+[.)] )")
 OPERATOR_LINE_RE = re.compile(r"^([-+*])\s+-\s")
 
 
@@ -137,16 +145,66 @@ def convert(text, entry_style, converted_names):
     while i < n:
         line = lines[i].rstrip("\r")
 
-        # section banner: ===== / |Title| / =====
-        if is_equals(line) and i + 2 < n and lines[i + 1].startswith("|") and lines[i + 1].rstrip().endswith("|") and is_equals(lines[i + 2].rstrip()):
+        # section banner: ===== / |Title| / =====   (indented banners are sub-sections)
+        if is_equals(line.strip()) and i + 2 < n and lines[i + 1].strip().startswith("|") and lines[i + 1].rstrip().endswith("|") and is_equals(lines[i + 2].strip()):
             heading = lines[i + 1].strip().strip("|").strip()
             m = re.match(r"^(\d+(?:\.\d+)*)\.-?\s*(.*?)\.?$", heading)
             if m:
                 heading = f"{m.group(1)}. {m.group(2)}"
             blank()
-            out.append(f"## {heading}")
+            out.append(("### " if line.startswith((" ", "\t")) else "## ") + heading)
             out.append("")
             i += 3
+            continue
+
+        # aligned table: a header line followed by an underline row with one dash group per column
+        if i + 2 < n and TABLE_RULE_RE.match(lines[i + 1]) and lines[i + 2].strip() and line.strip() and not is_dashes(line.strip()):
+            rule = lines[i + 1].rstrip("\r")
+            starts = [m.start() for m in re.finditer(r"-{3,}", rule)]
+            def cells(text):
+                text = text.rstrip("\r").expandtabs(8)
+                return [text[a:b].strip() for a, b in zip(starts, starts[1:] + [None])]
+            header = cells(line)
+            rows = []
+            j = i + 2
+            while j < n and lines[j].strip() and not TABLE_RULE_RE.match(lines[j]) and not is_equals(lines[j].strip()):
+                row = cells(lines[j])
+                if rows and row and not row[0] and any(row):
+                    # continuation line: append to the last filled cell of the previous row
+                    k = max(idx for idx, c in enumerate(row) if c)
+                    rows[-1][k] = (rows[-1][k] + " " + row[k]).strip()
+                else:
+                    rows.append(row)
+                j += 1
+            blank()
+            esc = lambda c: prose(c, converted_names).replace("|", "\\|")
+            out.append("| " + " | ".join(esc(c) for c in header) + " |")
+            out.append("|" + "|".join("---" for _ in header) + "|")
+            for row in rows:
+                out.append("| " + " | ".join(esc(c) for c in row) + " |")
+            out.append("")
+            i = j
+            continue
+
+        # continuation of a list item or definition item: indented lines right after it (no blank line)
+        if line.startswith(("    ", "\t")) and out and (LIST_ITEM_RE.match(out[-1]) or out[-1].startswith("  ")) and lines[i - 1].strip() != "" and looks_like_prose(line):
+            out.append("  " + prose(line.strip(), converted_names))
+            i += 1
+            continue
+
+        # 'Useful functions:' / 'aggregation:' followed by 2-3 space indented code lines
+        if re.match(r"^ {2,3}\S", line) and not looks_like_prose(line) and not LIST_ITEM_RE.match(line) and (lines[i - 1].rstrip().endswith(":") or (out and out[-1] == "```" and False)):
+            block = []
+            j = i
+            while j < n and re.match(r"^ {2,}\S", lines[j]) and not looks_like_prose(lines[j]):
+                block.append(lines[j].rstrip("\r").strip())
+                j += 1
+            blank()
+            out.append("```")
+            out.extend(block)
+            out.append("```")
+            out.append("")
+            i = j
             continue
 
         # continuation of a definition item: indented lines right after it (no blank line)

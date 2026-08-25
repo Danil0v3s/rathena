@@ -1455,7 +1455,11 @@ Unequip all items from a player.
 ```
 
 Give or remove a cart to a player and also change the cart skin based on ID:
-  0: remove cart
+
+```
+0: remove cart
+```
+
 1-5: normal carts
 6-9: new carts (available for PACKETVER >= 20120201)
 

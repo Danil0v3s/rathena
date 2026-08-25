@@ -349,12 +349,8 @@ for 'Map' type 16 will be applied.
 
 This mapflag can also be used to adjust the damage of one skill by a percentage:
  - skill_name:
-
-```
-Name of the skill in 'db/(pre-)re/skill_db.yml' (ex. SM_BASH).
-To adjust all skill damage, write "all" (without quotes).
-```
-
+  Name of the skill in 'db/(pre-)re/skill_db.yml' (ex. SM_BASH).
+  To adjust all skill damage, write "all" (without quotes).
  - caster: the groups for which the adjustment takes effect. (bitmask)
 
 ```
