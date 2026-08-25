@@ -11,6 +11,12 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/workflows/docs.yml'
+      - 'doc/**'
+      - 'mkdocs.yml'
+      - 'tools/mkdocs_hooks.py'
+      - 'tools/doc2md.py'
   pull_request:
     paths:
       - '.github/workflows/docs.yml'
