@@ -11,11 +11,11 @@
 SkillMysteryPowder::SkillMysteryPowder() : SkillImplRecursiveDamageSplash(BO_MYSTERY_POWDER) {
 }
 
-void SkillMysteryPowder::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillMysteryPowder::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 1500 + 4000 * skill_lv;
-	skillratio += 5 * sstatus->pow;	// !TODO: check POW ratio
+	skillratio += 5 * sstatus->pow; // !TODO: check POW ratio
 	RE_LVL_DMOD(100);
 }
 

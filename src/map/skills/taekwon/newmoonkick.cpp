@@ -9,14 +9,14 @@
 SkillNewMoonKick::SkillNewMoonKick() : SkillImplRecursiveDamageSplash(SJ_NEWMOONKICK) {
 }
 
-void SkillNewMoonKick::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillNewMoonKick::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += 600 + 100 * skill_lv;
 }
 
-void SkillNewMoonKick::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillNewMoonKick::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	sc_type type = skill_get_sc(getSkillId());
-	status_change *tsc = status_get_sc(target);
-	status_change_entry *tsce = (tsc != nullptr && type != SC_NONE) ? tsc->getSCE(type) : nullptr;
+	status_change* tsc = status_get_sc(target);
+	status_change_entry* tsce = (tsc != nullptr && type != SC_NONE) ? tsc->getSCE(type) : nullptr;
 
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 

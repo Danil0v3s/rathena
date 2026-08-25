@@ -9,7 +9,7 @@
 SkillNpcRun::SkillNpcRun() : SkillImpl(NPC_RUN) {
 }
 
-void SkillNpcRun::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillNpcRun::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	mob_data* md = BL_CAST(BL_MOB, src);
 
 	if (md) {

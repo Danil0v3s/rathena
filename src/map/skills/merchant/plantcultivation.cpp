@@ -11,18 +11,17 @@ SkillPlantCultivation::SkillPlantCultivation() : SkillImpl(CR_CULTIVATION) {
 }
 
 void SkillPlantCultivation::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
-	map_session_data* sd = BL_CAST( BL_PC, src );
+	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sd) {
-		if( map_count_oncell(src->m,x,y,BL_CHAR,0) > 0 )
-		{
-			clif_skill_fail( *sd, getSkillId() );
+		if (map_count_oncell(src->m, x, y, BL_CHAR, 0) > 0) {
+			clif_skill_fail(*sd, getSkillId());
 			flag |= SKILL_NOCONSUME_REQ;
 			return;
 		}
-		clif_skill_poseffect( *src, getSkillId(), skill_lv, x, y, tick );
-		if (rnd()%100 < 50) {
-			clif_skill_fail( *sd, getSkillId() );
+		clif_skill_poseffect(*src, getSkillId(), skill_lv, x, y, tick);
+		if (rnd() % 100 < 50) {
+			clif_skill_fail(*sd, getSkillId());
 		} else {
 			TBL_MOB* md = nullptr;
 			int32 t, mob_id;
@@ -49,11 +48,10 @@ void SkillPlantCultivation::castendPos2(block_list* src, int32 x, int32 y, uint1
 			md = mob_once_spawn_sub(src, src->m, x, y, "--ja--", mob_id, "", SZ_SMALL, AI_NONE);
 			if (!md)
 				return;
-			if ((t = skill_get_time(getSkillId(), skill_lv)) > 0)
-			{
-				if( md->deletetimer != INVALID_TIMER )
+			if ((t = skill_get_time(getSkillId(), skill_lv)) > 0) {
+				if (md->deletetimer != INVALID_TIMER)
 					delete_timer(md->deletetimer, mob_timer_delete);
-				md->deletetimer = add_timer (tick + t, mob_timer_delete, md->id, 0);
+				md->deletetimer = add_timer(tick + t, mob_timer_delete, md->id, 0);
 			}
 			mob_spawn(md);
 		}

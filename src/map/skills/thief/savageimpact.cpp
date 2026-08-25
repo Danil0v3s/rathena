@@ -17,14 +17,14 @@ void SkillSavageImpact::modifyDamageData(Damage& dmg, const block_list& src, con
 	dmg.div_ = dmg.div_ + dmg.miscflag;
 }
 
-void SkillSavageImpact::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillSavageImpact::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 
 	skillratio += -100 + 130 * skill_lv;
 	skillratio += 5 * sstatus->pow;
 
-	if( sc != nullptr && sc->hasSCE( SC_SHADOW_EXCEED ) ){
+	if (sc != nullptr && sc->hasSCE(SC_SHADOW_EXCEED)) {
 		skillratio += 30 * skill_lv;
 		skillratio += 2 * sstatus->pow;
 	}
@@ -33,15 +33,15 @@ void SkillSavageImpact::calculateSkillRatio(const Damage *wd, const block_list *
 }
 
 void SkillSavageImpact::splashSearch(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 flag) const {
-	if( status_change *sc = status_get_sc(src); sc != nullptr && sc->hasSCE( SC_CLOAKINGEXCEED ) ){
+	if (status_change* sc = status_get_sc(src); sc != nullptr && sc->hasSCE(SC_CLOAKINGEXCEED)) {
 		skill_area_temp[0] = 2;
-		status_change_end( src, SC_CLOAKINGEXCEED );
+		status_change_end(src, SC_CLOAKINGEXCEED);
 	}
 
-	uint8 dir = DIR_NORTHEAST;	// up-right when src is on the same cell of target
+	uint8 dir = DIR_NORTHEAST; // up-right when src is on the same cell of target
 
 	if (target->x != src->x || target->y != src->y)
-		dir = map_calc_dir(target, src->x, src->y);	// dir based on target as we move player based on target location
+		dir = map_calc_dir(target, src->x, src->y); // dir based on target as we move player based on target location
 
 	// Move the player 1 cell near the target, between the target and the player
 	if (skill_check_unit_movepos(5, src, target->x + dirx[dir], target->y + diry[dir], 0, 1))

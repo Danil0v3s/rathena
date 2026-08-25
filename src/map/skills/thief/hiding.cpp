@@ -9,10 +9,10 @@
 SkillHiding::SkillHiding() : SkillImpl(TF_HIDING) {
 }
 
-void SkillHiding::castendNoDamageId(block_list *src, block_list *bl, uint16 skill_lv, t_tick tick, int32 &flag) const {
+void SkillHiding::castendNoDamageId(block_list* src, block_list* bl, uint16 skill_lv, t_tick tick, int32& flag) const {
 	sc_type type = skill_get_sc(getSkillId());
-	status_change *tsc = status_get_sc(bl);
-	status_change_entry *tsce = tsc ? tsc->getSCE(SC_HIDING) : nullptr;
+	status_change* tsc = status_get_sc(bl);
+	status_change_entry* tsce = tsc ? tsc->getSCE(SC_HIDING) : nullptr;
 
 	if (tsce) {
 		clif_skill_nodamage(src, *bl, getSkillId(), -1, status_change_end(bl, type)); // Hide skill-scream animation.

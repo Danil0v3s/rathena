@@ -11,16 +11,16 @@
 SkillShadowStab::SkillShadowStab() : WeaponSkillImpl(SHC_SHADOW_STAB) {
 }
 
-void SkillShadowStab::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillShadowStab::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 650 * skill_lv;
-	skillratio += 5 * sstatus->pow;	// TODO : check pow ratio
+	skillratio += 5 * sstatus->pow; // TODO : check pow ratio
 
 	RE_LVL_DMOD(100);
 }
 
-void SkillShadowStab::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillShadowStab::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	status_change_end(src, SC_CLOAKING);
 	status_change_end(src, SC_CLOAKINGEXCEED);
 

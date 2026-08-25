@@ -10,9 +10,9 @@
 SkillGentleTouchCure::SkillGentleTouchCure() : SkillImpl(SR_GENTLETOUCH_CURE) {
 }
 
-void SkillGentleTouchCure::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillGentleTouchCure::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	mob_data* dstmd = BL_CAST(BL_MOB, target);
-	status_change *tsc = status_get_sc(target);
+	status_change* tsc = status_get_sc(target);
 
 	uint32 heal;
 
@@ -23,7 +23,7 @@ void SkillGentleTouchCure::castendNoDamageId(block_list *src, block_list *target
 		status_heal(target, heal, 0, 0);
 	}
 
-	if( tsc != nullptr && !tsc->empty() && rnd_chance( ( skill_lv * 5 + ( status_get_dex( src ) + status_get_lv( src ) ) / 4 ) - rnd_value( 1, 10 ), 100 ) ){
+	if (tsc != nullptr && !tsc->empty() && rnd_chance((skill_lv * 5 + (status_get_dex(src) + status_get_lv(src)) / 4) - rnd_value(1, 10), 100)) {
 		status_change_end(target, SC_STONE);
 		status_change_end(target, SC_FREEZE);
 		status_change_end(target, SC_STUN);
@@ -33,5 +33,5 @@ void SkillGentleTouchCure::castendNoDamageId(block_list *src, block_list *target
 		status_change_end(target, SC_HALLUCINATION);
 	}
 
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 }

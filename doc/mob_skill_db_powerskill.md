@@ -1,14 +1,10 @@
-//===== rAthena Documentation ================================
-//= rAthena Monster Powerskill Reference
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20200104
-//===== Description: =========================================
-//= Reference for monster level 10 skills.
-//============================================================
+# rAthena Monster Powerskill Reference
 
-When a monster uses a level 10 skill on Aegis, it will be much stronger than the 
+Reference for monster level 10 skills.
+
+*Last updated 20200104 by rAthena Dev Team (upstream `doc/` header)*
+
+When a monster uses a level 10 skill on Aegis, it will be much stronger than the
 normal player version. On rAthena we reflect this by giving the monster a skill
 level above the maximum player skill level.
 The following list explains the skill specialities and the corresponding level
@@ -18,9 +14,8 @@ Note: The "SkillDatabase::parseNode" template has a linear determination feature
 where it will attempt to fill the values from the last level defined to MAX_SKILL_LEVEL.
 If it can't determine a trend it will fill with the last level defined.
 
--------------------------------------------------------------------------------
-Skill | rAthena Lv | Explanation
--------------------------------------------------------------------------------
+### Skill | rAthena Lv | Explanation
+
 6,SM_PROVOKE          |10| Reduces DEF by 100%. No ATK bonus.
 7,SM_MAGNUM           |25| 9x9 AoE. 600% damage at all ranges.
 15,MG_FROSTDIVER      |40| 500% damage. 100% base chance.

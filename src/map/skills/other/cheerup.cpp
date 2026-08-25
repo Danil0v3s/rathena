@@ -16,18 +16,18 @@ void SkillCheerUp::castendNoDamageId(block_list* src, block_list* target, uint16
 	map_session_data* dstsd = BL_CAST(BL_PC, target);
 
 	if (sd) {
-		map_session_data *f_sd = pc_get_father(sd);
-		map_session_data *m_sd = pc_get_mother(sd);
+		map_session_data* f_sd = pc_get_father(sd);
+		map_session_data* m_sd = pc_get_mother(sd);
 
 		if (!f_sd && !m_sd && !dstsd) { // Fail if no family members are found
-			clif_skill_fail( *sd, getSkillId() );
+			clif_skill_fail(*sd, getSkillId());
 			flag |= SKILL_NOCONSUME_REQ;
 			return;
 		}
-		if (flag&1) { // Buff can only be given to parents in 7x7 AoE around baby
+		if (flag & 1) { // Buff can only be given to parents in 7x7 AoE around baby
 			if (dstsd == f_sd || dstsd == m_sd)
 				StatusSkillImpl::castendNoDamageId(src, target, skill_lv, tick, flag);
 		} else
-			map_foreachinrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), BL_PC, src, getSkillId(), skill_lv, tick, flag|BCT_ALL|1, skill_castend_nodamage_id);
+			map_foreachinrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), BL_PC, src, getSkillId(), skill_lv, tick, flag | BCT_ALL | 1, skill_castend_nodamage_id);
 	}
 }

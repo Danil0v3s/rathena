@@ -22,67 +22,67 @@ struct npc_data;
 
 namespace rathena::scripting {
 
-class ScriptHostImpl;
+	class ScriptHostImpl;
 
-class ScriptHost {
-public:
-    static ScriptHost& instance();
+	class ScriptHost {
+	public:
+		static ScriptHost& instance();
 
-    // Initialize the V8 platform + create the isolate + create the
-    // context + bind registrars. Idempotent. Call once at map boot.
-    void init();
+		// Initialize the V8 platform + create the isolate + create the
+		// context + bind registrars. Idempotent. Call once at map boot.
+		void init();
 
-    // Evaluate `entry_path` (a JS bundle). All registerNpc() calls in
-    // the bundle's module-evaluation phase populate the NPC registry.
-    // Safe to call multiple times — replaces previous registrations.
-    void load_entry_point(const std::string& entry_path);
+		// Evaluate `entry_path` (a JS bundle). All registerNpc() calls in
+		// the bundle's module-evaluation phase populate the NPC registry.
+		// Safe to call multiple times — replaces previous registrations.
+		void load_entry_point(const std::string& entry_path);
 
-    // Click dispatch. Returns true if a TS handler ran (the legacy
-    // run_script() should be skipped). False = no TS handler for this
-    // NPC, fall through to the legacy engine.
-    bool dispatch_npc_click(map_session_data& sd, npc_data& nd);
+		// Click dispatch. Returns true if a TS handler ran (the legacy
+		// run_script() should be skipped). False = no TS handler for this
+		// NPC, fall through to the legacy engine.
+		bool dispatch_npc_click(map_session_data& sd, npc_data& nd);
 
-    // Resume dispatch (after a menu / next / close packet arrives).
-    // Returns true if the player is in a TS dialog and the resume
-    // was handled. False = not a TS dialog, fall through.
-    bool dispatch_npc_resume(map_session_data& sd, int npc_id, bool closing);
+		// Resume dispatch (after a menu / next / close packet arrives).
+		// Returns true if the player is in a TS dialog and the resume
+		// was handled. False = not a TS dialog, fall through.
+		bool dispatch_npc_resume(map_session_data& sd, int npc_id, bool closing);
 
-    // Resume a session whose pending kind is Sleep — fired from an
-    // rAthena timer callback after the ms duration has elapsed. Looks
-    // up by account_id and resolves the suspended promise with `undefined`.
-    void dispatch_sleep_resume(int account_id);
+		// Resume a session whose pending kind is Sleep — fired from an
+		// rAthena timer callback after the ms duration has elapsed. Looks
+		// up by account_id and resolves the suspended promise with `undefined`.
+		void dispatch_sleep_resume(int account_id);
 
-    // Fire a registered TS event-label callback ("NpcName::OnLabel").
-    // Returns true if a handler was registered + invoked. Used by
-    // ctx.doevent / ctx.addTimer fires.
-    bool dispatch_event(const std::string& event_target,
-                       map_session_data* attached_sd);
+		// Fire a registered TS event-label callback ("NpcName::OnLabel").
+		// Returns true if a handler was registered + invoked. Used by
+		// ctx.doevent / ctx.addTimer fires.
+		bool dispatch_event(const std::string& event_target,
+		    map_session_data* attached_sd);
 
-    // Tear down. Disposes the isolate + platform. Call once at shutdown.
-    void shutdown();
+		// Tear down. Disposes the isolate + platform. Call once at shutdown.
+		void shutdown();
 
-    ScriptHost(const ScriptHost&) = delete;
-    ScriptHost& operator=(const ScriptHost&) = delete;
+		ScriptHost(const ScriptHost&) = delete;
+		ScriptHost& operator=(const ScriptHost&) = delete;
 
-private:
-    ScriptHost();
-    ~ScriptHost();
-    std::unique_ptr<ScriptHostImpl> impl_;
-};
+	private:
+		ScriptHost();
+		~ScriptHost();
+		std::unique_ptr<ScriptHostImpl> impl_;
+	};
 
 } // namespace rathena::scripting
 
 // C-friendly hooks for map.cpp / npc.cpp so they don't need to know
 // about the C++ class. Map them straight to ScriptHost::instance().
 extern "C" {
-    void script_host_init();
-    void script_host_load_entry(const char* entry_path);
-    // Walks the registered NPCs and creates them in the world.
-    // Call AFTER do_init_npc() so npcname_db / map mapid tables are ready.
-    void script_host_spawn_npcs();
-    void script_host_shutdown();
-    bool script_host_dispatch_npc_click(map_session_data* sd, npc_data* nd);
-    bool script_host_dispatch_npc_resume(map_session_data* sd, int npc_id, bool closing);
+void script_host_init();
+void script_host_load_entry(const char* entry_path);
+// Walks the registered NPCs and creates them in the world.
+// Call AFTER do_init_npc() so npcname_db / map mapid tables are ready.
+void script_host_spawn_npcs();
+void script_host_shutdown();
+bool script_host_dispatch_npc_click(map_session_data* sd, npc_data* nd);
+bool script_host_dispatch_npc_resume(map_session_data* sd, int npc_id, bool closing);
 }
 
 #endif // HAVE_TS_SCRIPTING

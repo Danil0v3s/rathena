@@ -49,7 +49,7 @@
 #include "weaponenchantment.cpp"
 
 std::unique_ptr<const SkillImpl> SkillFactoryOther::create(const e_skill skill_id) const {
-	switch( skill_id ){
+	switch (skill_id) {
 		case ABR_BATTLE_BUSTER:
 			return std::make_unique<SkillBattleBuster>();
 		case ABR_DUAL_CANNON_FIRE:

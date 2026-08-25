@@ -11,14 +11,14 @@
 SkillCrossSlash::SkillCrossSlash() : SkillImplRecursiveDamageSplash(SHC_CROSS_SLASH) {
 }
 
-void SkillCrossSlash::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillCrossSlash::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 
 	skillratio += -100 + 300 * skill_lv;
 	skillratio += 5 * sstatus->pow;
 
-	if( sc != nullptr && sc->getSCE( SC_SHADOW_EXCEED ) ) {
+	if (sc != nullptr && sc->getSCE(SC_SHADOW_EXCEED)) {
 		skillratio += 60 * skill_lv;
 		skillratio += 2 * sstatus->pow;
 	}

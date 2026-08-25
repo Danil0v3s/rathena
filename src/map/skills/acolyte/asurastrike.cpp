@@ -15,7 +15,7 @@ SkillAsuraStrike::SkillAsuraStrike() : WeaponSkillImpl(MO_EXTREMITYFIST) {
 
 void SkillAsuraStrike::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	int16 x, y, i = 3; // Move 3 cells (From caster)
-	int16 dir = map_calc_dir(src,target->x,target->y);
+	int16 dir = map_calc_dir(src, target->x, target->y);
 
 #ifdef RENEWAL
 	map_session_data* sd = BL_CAST(BL_PC, src);
@@ -54,8 +54,8 @@ void SkillAsuraStrike::calculateSkillRatio(const Damage* wd, const block_list* s
 
 	base_skillratio += 700 + sstatus->sp * 10;
 #ifdef RENEWAL
-	if (wd->miscflag&1)
+	if (wd->miscflag & 1)
 		base_skillratio *= 2; // More than 5 spirit balls active
 #endif
-	base_skillratio = min(500000,base_skillratio); //We stop at roughly 50k SP for overflow protection
+	base_skillratio = min(500000, base_skillratio); //We stop at roughly 50k SP for overflow protection
 }

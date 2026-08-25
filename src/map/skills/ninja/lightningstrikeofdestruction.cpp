@@ -10,7 +10,7 @@
 SkillLightningStrikeOfDestruction::SkillLightningStrikeOfDestruction() : SkillImpl(NJ_RAIGEKISAI) {
 }
 
-void SkillLightningStrikeOfDestruction::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillLightningStrikeOfDestruction::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	const map_session_data* sd = BL_CAST(BL_PC, src);
 
 #ifdef RENEWAL
@@ -18,7 +18,7 @@ void SkillLightningStrikeOfDestruction::calculateSkillRatio(const Damage *wd, co
 #else
 	base_skillratio += 60 + 40 * skill_lv;
 #endif
-	if(sd && sd->spiritcharm_type == CHARM_TYPE_WIND && sd->spiritcharm > 0)
+	if (sd && sd->spiritcharm_type == CHARM_TYPE_WIND && sd->spiritcharm > 0)
 		base_skillratio += 20 * sd->spiritcharm;
 }
 
@@ -26,5 +26,5 @@ void SkillLightningStrikeOfDestruction::castendPos2(block_list* src, int32 x, in
 	//Set flag to 1 to prevent deleting ammo (it will be deleted on group-delete).
 	flag |= 1;
 
-	skill_unitsetting(src,getSkillId(),skill_lv,x,y,0);
+	skill_unitsetting(src, getSkillId(), skill_lv, x, y, 0);
 }

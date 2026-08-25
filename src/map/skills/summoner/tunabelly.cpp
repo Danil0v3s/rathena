@@ -10,7 +10,7 @@
 SkillTunaBelly::SkillTunaBelly() : SkillImpl(SU_TUNABELLY) {
 }
 
-void SkillTunaBelly::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillTunaBelly::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	mob_data* dstmd = BL_CAST(BL_MOB, target);
 
 	uint32 heal = 0;

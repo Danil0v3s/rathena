@@ -32,16 +32,15 @@
 #include "partybooking_controller.hpp"
 #include "userconfig_controller.hpp"
 
-
 using namespace rathena;
 using namespace rathena::server_core;
 using namespace rathena::server_web;
 
-#define WEB_MAX_MSG 30				/// Max number predefined in msg_conf
-static char* msg_table[WEB_MAX_MSG];	/// Web Server messages_conf
+#define WEB_MAX_MSG 30 /// Max number predefined in msg_conf
+static char* msg_table[WEB_MAX_MSG]; /// Web Server messages_conf
 
-struct Web_Config web_config {};
-struct Inter_Config inter_config {};
+struct Web_Config web_config{};
+struct Inter_Config inter_config{};
 std::shared_ptr<httplib::Server> http_server;
 
 std::string login_server_ip = "127.0.0.1";
@@ -51,7 +50,7 @@ std::string login_server_pw = "";
 std::string login_server_db = "ragnarok";
 
 std::string char_server_ip = "127.0.0.1";
-uint16  char_server_port = 3306;
+uint16 char_server_port = 3306;
 std::string char_server_id = "ragnarok";
 std::string char_server_pw = "";
 std::string char_server_db = "ragnarok";
@@ -70,10 +69,10 @@ std::string web_server_db = "ragnarok";
 
 std::string default_codepage = "";
 
-Sql * login_handle = nullptr;
-Sql * char_handle = nullptr;
-Sql * map_handle = nullptr;
-Sql * web_handle = nullptr;
+Sql* login_handle = nullptr;
+Sql* char_handle = nullptr;
+Sql* map_handle = nullptr;
+Sql* web_handle = nullptr;
 
 char login_table[32] = "login";
 char guild_emblems_table[32] = "guild_emblems";
@@ -85,21 +84,21 @@ char partybookings_table[32] = "party_bookings";
 char guild_db_table[32] = "guild";
 char char_db_table[32] = "char";
 
-int32 parse_console(const char * buf) {
+int32 parse_console(const char* buf) {
 	return 1;
 }
 
 std::thread svr_thr;
 
 /// Msg_conf tayloring
-int32 web_msg_config_read(char *cfgName){
-	return _msg_config_read(cfgName,WEB_MAX_MSG,msg_table);
+int32 web_msg_config_read(char* cfgName) {
+	return _msg_config_read(cfgName, WEB_MAX_MSG, msg_table);
 }
-const char* web_msg_txt(int32 msg_number){
-	return _msg_txt(msg_number,WEB_MAX_MSG,msg_table);
+const char* web_msg_txt(int32 msg_number) {
+	return _msg_txt(msg_number, WEB_MAX_MSG, msg_table);
 }
-void web_do_final_msg(void){
-	_do_final_msg(WEB_MAX_MSG,msg_table);
+void web_do_final_msg(void) {
+	_do_final_msg(WEB_MAX_MSG, msg_table);
 }
 /// Set and read Configurations
 
@@ -119,10 +118,10 @@ bool web_config_read(const char* cfgName, bool normal) {
 	while (fgets(line, sizeof(line), fp)) {
 		if (line[0] == '/' && line[1] == '/')
 			continue;
-		
+
 		if (sscanf(line, "%31[^:]: %1023[^\r\n]", w1, w2) < 2)
 			continue;
-		
+
 		// Config that loaded only when server started, not by reloading config file
 		if (normal) {
 			if (!strcmpi(w1, "bind_ip")) {
@@ -141,8 +140,7 @@ bool web_config_read(const char* cfgName, bool normal) {
 			msg_silent = atoi(w2);
 			if (msg_silent) /* only bother if we have actually this enabled */
 				ShowInfo("Console Silent Setting: %d\n", msg_silent);
-		}
-		else if (!strcmpi(w1, "console_msg_log"))
+		} else if (!strcmpi(w1, "console_msg_log"))
 			console_msg_log = atoi(w2);
 		else if (!strcmpi(w1, "console_log_filepath"))
 			safestrncpy(console_log_filepath, w2, sizeof(console_log_filepath));
@@ -170,38 +168,37 @@ void set_cors_headers(Response& res, const std::string& origin) {
 	res.set_header("Access-Control-Allow-Headers", "Content-Type, Authorization");
 }
 
-static httplib::Server::HandlerResponse cors_handler(const httplib::Request& req, httplib::Response& res) {  
+static httplib::Server::HandlerResponse cors_handler(const httplib::Request& req, httplib::Response& res) {
 	if (web_config.allowed_origin_cors.empty()) {
 		// CORS not allowed
 		return httplib::Server::HandlerResponse::Unhandled;
 	}
-    std::string origin = req.get_header_value("Origin");  
-  
-    if (origin.empty())  
-        return httplib::Server::HandlerResponse::Unhandled;
+	std::string origin = req.get_header_value("Origin");
+
+	if (origin.empty())
+		return httplib::Server::HandlerResponse::Unhandled;
 
 	if (origin != web_config.allowed_origin_cors)
 		return httplib::Server::HandlerResponse::Unhandled;
 
-    set_cors_headers(res, origin);  
-    return httplib::Server::HandlerResponse::Unhandled;  
-}  
+	set_cors_headers(res, origin);
+	return httplib::Server::HandlerResponse::Unhandled;
+}
 
 /*==========================================
  * read config file
  *------------------------------------------*/
-int32 inter_config_read(const char* cfgName)
-{
+int32 inter_config_read(const char* cfgName) {
 	char line[1024];
 	FILE* fp;
 
 	fp = fopen(cfgName, "r");
-	if(fp == nullptr) {
+	if (fp == nullptr) {
 		ShowError("File not found: %s\n", cfgName);
 		return 1;
 	}
 
-	while(fgets(line, sizeof(line), fp)) {
+	while (fgets(line, sizeof(line), fp)) {
 		char w1[24], w2[1024];
 
 		if (line[0] == '/' && line[1] == '/')
@@ -214,47 +211,47 @@ int32 inter_config_read(const char* cfgName)
 			inter_config.emblem_woe_change = atoi(w2);
 		else if (!strcmpi(w1, "emblem_transparency_limit"))
 			inter_config.emblem_woe_change = config_switch(w2) == 1;
-		else if(!strcmpi(w1,"login_server_ip"))
+		else if (!strcmpi(w1, "login_server_ip"))
 			login_server_ip = w2;
-		else if(!strcmpi(w1,"login_server_port"))
-			login_server_port = (uint16)strtoul( w2, nullptr, 10 );
-		else if(!strcmpi(w1,"login_server_id"))
+		else if (!strcmpi(w1, "login_server_port"))
+			login_server_port = (uint16)strtoul(w2, nullptr, 10);
+		else if (!strcmpi(w1, "login_server_id"))
 			login_server_id = w2;
-		else if(!strcmpi(w1,"login_server_pw"))
+		else if (!strcmpi(w1, "login_server_pw"))
 			login_server_pw = w2;
-		else if(!strcmpi(w1,"login_server_db"))
+		else if (!strcmpi(w1, "login_server_db"))
 			login_server_db = w2;
-		else if(!strcmpi(w1,"char_server_ip"))
+		else if (!strcmpi(w1, "char_server_ip"))
 			char_server_ip = w2;
-		else if(!strcmpi(w1,"char_server_port"))
-			char_server_port = (uint16)strtoul( w2, nullptr, 10 );
-		else if(!strcmpi(w1,"char_server_id"))
+		else if (!strcmpi(w1, "char_server_port"))
+			char_server_port = (uint16)strtoul(w2, nullptr, 10);
+		else if (!strcmpi(w1, "char_server_id"))
 			char_server_id = w2;
-		else if(!strcmpi(w1,"char_server_pw"))
+		else if (!strcmpi(w1, "char_server_pw"))
 			char_server_pw = w2;
-		else if(!strcmpi(w1,"char_server_db"))
+		else if (!strcmpi(w1, "char_server_db"))
 			char_server_db = w2;
-		else if(!strcmpi(w1,"map_server_ip"))
+		else if (!strcmpi(w1, "map_server_ip"))
 			map_server_ip = w2;
-		else if(!strcmpi(w1,"map_server_port"))
-			map_server_port = (uint16)strtoul( w2, nullptr, 10 );
-		else if(!strcmpi(w1,"map_server_id"))
+		else if (!strcmpi(w1, "map_server_port"))
+			map_server_port = (uint16)strtoul(w2, nullptr, 10);
+		else if (!strcmpi(w1, "map_server_id"))
 			map_server_id = w2;
-		else if(!strcmpi(w1,"map_server_pw"))
+		else if (!strcmpi(w1, "map_server_pw"))
 			map_server_pw = w2;
-		else if(!strcmpi(w1,"map_server_db"))
+		else if (!strcmpi(w1, "map_server_db"))
 			map_server_db = w2;
-		else if(!strcmpi(w1,"web_server_ip"))
+		else if (!strcmpi(w1, "web_server_ip"))
 			web_server_ip = w2;
-		else if(!strcmpi(w1,"web_server_port"))
-			web_server_port = (uint16)strtoul( w2, nullptr, 10 );
-		else if(!strcmpi(w1,"web_server_id"))
+		else if (!strcmpi(w1, "web_server_port"))
+			web_server_port = (uint16)strtoul(w2, nullptr, 10);
+		else if (!strcmpi(w1, "web_server_id"))
 			web_server_id = w2;
-		else if(!strcmpi(w1,"web_server_pw"))
+		else if (!strcmpi(w1, "web_server_pw"))
 			web_server_pw = w2;
-		else if(!strcmpi(w1,"web_server_db"))
+		else if (!strcmpi(w1, "web_server_db"))
 			web_server_db = w2;
-		else if(!strcmpi(w1,"default_codepage"))
+		else if (!strcmpi(w1, "default_codepage"))
 			default_codepage = w2;
 		else if (!strcmpi(w1, "user_configs"))
 			safestrncpy(user_configs_table, w2, sizeof(user_configs_table));
@@ -274,16 +271,15 @@ int32 inter_config_read(const char* cfgName)
 			safestrncpy(guild_db_table, w2, sizeof(guild_db_table));
 		else if (!strcmpi(w1, "char_db"))
 			safestrncpy(char_db_table, w2, sizeof(char_db_table));
-		else if(!strcmpi(w1,"import"))
+		else if (!strcmpi(w1, "import"))
 			inter_config_read(w2);
 	}
 	fclose(fp);
 
-	ShowInfo ("Done reading %s.\n", cfgName);
+	ShowInfo("Done reading %s.\n", cfgName);
 
 	return 0;
 }
-
 
 void web_set_defaults() {
 	web_config.web_ip = "0.0.0.0";
@@ -298,7 +294,6 @@ void web_set_defaults() {
 	inter_config.emblem_woe_change = true;
 }
 
-
 /// Constructor destructor and signal handlers
 
 int32 web_sql_init(void) {
@@ -308,7 +303,7 @@ int32 web_sql_init(void) {
 
 	if (SQL_ERROR == Sql_Connect(login_handle, login_server_id.c_str(), login_server_pw.c_str(), login_server_ip.c_str(), login_server_port, login_server_db.c_str())) {
 		ShowError("Couldn't connect with uname='%s',host='%s',port='%hu',database='%s'\n",
-			login_server_id.c_str(), login_server_ip.c_str(), login_server_port, login_server_db.c_str());
+		    login_server_id.c_str(), login_server_ip.c_str(), login_server_port, login_server_db.c_str());
 		Sql_ShowDebug(login_handle);
 		Sql_Free(login_handle);
 		exit(EXIT_FAILURE);
@@ -325,7 +320,7 @@ int32 web_sql_init(void) {
 
 	if (SQL_ERROR == Sql_Connect(char_handle, char_server_id.c_str(), char_server_pw.c_str(), char_server_ip.c_str(), char_server_port, char_server_db.c_str())) {
 		ShowError("Couldn't connect with uname='%s',host='%s',port='%hu',database='%s'\n",
-			char_server_id.c_str(), char_server_ip.c_str(), char_server_port, char_server_db.c_str());
+		    char_server_id.c_str(), char_server_ip.c_str(), char_server_port, char_server_db.c_str());
 		Sql_ShowDebug(char_handle);
 		Sql_Free(char_handle);
 		exit(EXIT_FAILURE);
@@ -342,7 +337,7 @@ int32 web_sql_init(void) {
 
 	if (SQL_ERROR == Sql_Connect(map_handle, map_server_id.c_str(), map_server_pw.c_str(), map_server_ip.c_str(), map_server_port, map_server_db.c_str())) {
 		ShowError("Couldn't connect with uname='%s',host='%s',port='%hu',database='%s'\n",
-			map_server_id.c_str(), map_server_ip.c_str(), map_server_port, map_server_db.c_str());
+		    map_server_id.c_str(), map_server_ip.c_str(), map_server_port, map_server_db.c_str());
 		Sql_ShowDebug(map_handle);
 		Sql_Free(map_handle);
 		exit(EXIT_FAILURE);
@@ -359,7 +354,7 @@ int32 web_sql_init(void) {
 
 	if (SQL_ERROR == Sql_Connect(web_handle, web_server_id.c_str(), web_server_pw.c_str(), web_server_ip.c_str(), web_server_port, web_server_db.c_str())) {
 		ShowError("Couldn't connect with uname='%s',host='%s',port='%hu',database='%s'\n",
-			web_server_id.c_str(), web_server_ip.c_str(), web_server_port, web_server_db.c_str());
+		    web_server_id.c_str(), web_server_ip.c_str(), web_server_port, web_server_db.c_str());
 		Sql_ShowDebug(web_handle);
 		Sql_Free(web_handle);
 		exit(EXIT_FAILURE);
@@ -371,12 +366,10 @@ int32 web_sql_init(void) {
 			Sql_ShowDebug(web_handle);
 	}
 
-
 	return 0;
 }
 
-int32 web_sql_close(void)
-{
+int32 web_sql_close(void) {
 	ShowStatus("Close Login DB Connection....\n");
 	Sql_Free(login_handle);
 	login_handle = nullptr;
@@ -397,7 +390,7 @@ int32 web_sql_close(void)
  * web-server destructor
  *  dealloc..., function called at exit of the web-server
  */
-void WebServer::finalize(){
+void WebServer::finalize() {
 	ShowStatus("Terminating...\n");
 #ifdef WEB_SERVER_ENABLE
 	http_server->stop();
@@ -413,7 +406,7 @@ void WebServer::finalize(){
  *  Function called when the server has received a crash signal.
  *  current signal catch : SIGSEGV, SIGFPE
  */
-void WebServer::handle_crash(){
+void WebServer::handle_crash() {
 #ifdef WEB_SERVER_ENABLE
 	http_server->stop();
 	svr_thr.join();
@@ -423,27 +416,26 @@ void WebServer::handle_crash(){
 /*======================================================
  * Map-Server help options screen
  *------------------------------------------------------*/
-void display_helpscreen(bool do_exit)
-{
+void display_helpscreen(bool do_exit) {
 	ShowInfo("Usage: %s\n", SERVER_NAME);
-	if( do_exit )
+	if (do_exit)
 		exit(EXIT_SUCCESS);
 }
 
 // called just before sending repsonse
-void logger(const Request & req, const Response & res) {
+void logger(const Request& req, const Response& res) {
 	// make this a config
 	if (web_config.print_req_res) {
 		ShowDebug("Incoming Headers are:\n");
-		for (const auto & header : req.headers) {
+		for (const auto& header : req.headers) {
 			ShowDebug("\t%s: %s\n", header.first.c_str(), header.second.c_str());
 		}
 		ShowDebug("Incoming Pages are:\n");
-		for (const auto & file : req.files) {
+		for (const auto& file : req.files) {
 			ShowDebug("\t%s: %s\n", file.first.c_str(), file.second.content.c_str());
 		}
 		ShowDebug("Outgoing Headers are:\n");
-		for (const auto & header : res.headers) {
+		for (const auto& header : res.headers) {
 			ShowDebug("\t%s: %s\n", header.first.c_str(), header.second.c_str());
 		}
 		ShowDebug("Response status is: %d\n", res.status);
@@ -453,14 +445,13 @@ void logger(const Request & req, const Response & res) {
 	ShowInfo("%s [%s %s] %d\n", req.remote_addr.c_str(), req.method.c_str(), req.path.c_str(), res.status);
 }
 
-
-bool WebServer::initialize( int32 argc, char* argv[] ){
+bool WebServer::initialize(int32 argc, char* argv[]) {
 #ifndef WEB_SERVER_ENABLE
 	ShowStatus("The web-server is " CL_GREEN "stopping" CL_RESET " (PACKETVER too old to use).\n\n");
 	this->signal_shutdown();
 	return true;
 #else
-	INTER_CONF_NAME="conf/inter_athena.conf";
+	INTER_CONF_NAME = "conf/inter_athena.conf";
 
 	safestrncpy(console_log_filepath, "./log/web-msg_log.log", sizeof(console_log_filepath));
 
@@ -505,7 +496,7 @@ bool WebServer::initialize( int32 argc, char* argv[] ){
 	});
 
 	for (int32 i = 0; i < 10; i++) {
-		if( global_core->get_status() == e_core_status::STOPPING ){
+		if (global_core->get_status() == e_core_status::STOPPING) {
 			return true;
 		}
 
@@ -525,10 +516,10 @@ bool WebServer::initialize( int32 argc, char* argv[] ){
 #endif
 }
 
-void WebServer::handle_main( t_tick next ){
-	std::this_thread::sleep_for( std::chrono::milliseconds( next ) );
+void WebServer::handle_main(t_tick next) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(next));
 }
 
-int32 main( int32 argc, char *argv[] ){
-	return main_core<WebServer>( argc, argv );
+int32 main(int32 argc, char* argv[]) {
+	return main_core<WebServer>(argc, argv);
 }

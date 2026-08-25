@@ -36,7 +36,7 @@ void SkillServantWeaponPhantom::splashSearch(block_list* src, block_list* target
 	// Jump to the target before attacking.
 	if (skill_check_unit_movepos(5, src, target->x, target->y, 0, 1))
 		skill_blown(src, src, 1, (map_calc_dir(target, src->x, src->y) + 4) % 8, BLOWN_NONE);
-	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);// Trigger animation on servants.
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv); // Trigger animation on servants.
 	clif_blown(src);
 
 	// Deal no damage if no Servant Sign on Enemy

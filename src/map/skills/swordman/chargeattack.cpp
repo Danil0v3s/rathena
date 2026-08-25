@@ -14,7 +14,7 @@ SkillChargeAttack::SkillChargeAttack() : SkillImpl(KN_CHARGEATK) {
 }
 
 void SkillChargeAttack::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	bool path = path_search_long(nullptr, src->m, src->x, src->y, target->x, target->y,CELL_CHKWALL);
+	bool path = path_search_long(nullptr, src->m, src->x, src->y, target->x, target->y, CELL_CHKWALL);
 #ifdef RENEWAL
 	int32 dist = skill_get_blewcount(getSkillId(), skill_lv);
 #else
@@ -29,7 +29,7 @@ void SkillChargeAttack::castendDamageId(block_list* src, block_list* target, uin
 
 	// cause damage and knockback if the path to target was a straight one
 	if (path) {
-		if(skill_attack(BF_WEAPON, src, src, target, getSkillId(), skill_lv, tick, dist)) {
+		if (skill_attack(BF_WEAPON, src, src, target, getSkillId(), skill_lv, tick, dist)) {
 #ifdef RENEWAL
 			if (map_getmapdata(src->m)->getMapFlag(MF_PVP))
 				dist += 2; // Knockback is 4 on PvP maps

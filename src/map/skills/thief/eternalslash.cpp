@@ -12,30 +12,30 @@ SkillEternalSlash::SkillEternalSlash() : WeaponSkillImpl(SHC_ETERNAL_SLASH) {
 }
 
 void SkillEternalSlash::modifyDamageData(Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv) const {
-	const status_change *sc = status_get_sc(&src);
+	const status_change* sc = status_get_sc(&src);
 
 	if (sc != nullptr && sc->hasSCE(SC_E_SLASH_COUNT))
 		dmg.div_ = sc->getSCE(SC_E_SLASH_COUNT)->val1;
 }
 
-void SkillEternalSlash::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillEternalSlash::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 
 	skillratio += -100 + 300 * skill_lv + 2 * sstatus->pow;
 
-	if( sc != nullptr && sc->getSCE( SC_SHADOW_EXCEED ) ){
+	if (sc != nullptr && sc->getSCE(SC_SHADOW_EXCEED)) {
 		skillratio += 120 * skill_lv + sstatus->pow;
 	}
 
 	RE_LVL_DMOD(100);
 }
 
-void SkillEternalSlash::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *sc = status_get_sc(src);
+void SkillEternalSlash::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* sc = status_get_sc(src);
 
-	if( sc && sc->getSCE(SC_E_SLASH_COUNT) )
-		sc_start(src, src, SC_E_SLASH_COUNT, 100, min( 5, 1 + sc->getSCE(SC_E_SLASH_COUNT)->val1 ), skill_get_time(getSkillId(), skill_lv));
+	if (sc && sc->getSCE(SC_E_SLASH_COUNT))
+		sc_start(src, src, SC_E_SLASH_COUNT, 100, min(5, 1 + sc->getSCE(SC_E_SLASH_COUNT)->val1), skill_get_time(getSkillId(), skill_lv));
 	else
 		sc_start(src, src, SC_E_SLASH_COUNT, 100, 1, skill_get_time(getSkillId(), skill_lv));
 	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);

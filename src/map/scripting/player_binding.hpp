@@ -15,14 +15,14 @@ struct map_session_data;
 
 namespace rathena::scripting {
 
-// Populate an existing JS object with the player's identity / stats /
-// vitals / location snapshot. The object itself is created by V8 when
-// it instantiates the ctx.player ObjectTemplate (which carries the
-// stub methods); we just decorate it with live data.
-void populate_player_object(v8::Isolate* iso,
-                            v8::Local<v8::Context> ctx,
-                            v8::Local<v8::Object> obj,
-                            map_session_data& sd);
+	// Populate an existing JS object with the player's identity / stats /
+	// vitals / location snapshot. The object itself is created by V8 when
+	// it instantiates the ctx.player ObjectTemplate (which carries the
+	// stub methods); we just decorate it with live data.
+	void populate_player_object(v8::Isolate* iso,
+	    v8::Local<v8::Context> ctx,
+	    v8::Local<v8::Object> obj,
+	    map_session_data& sd);
 
 } // namespace rathena::scripting
 

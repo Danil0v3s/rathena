@@ -10,8 +10,8 @@
 SkillCurseExplosion::SkillCurseExplosion() : SkillImplRecursiveDamageSplash(SP_CURSEEXPLOSION) {
 }
 
-void SkillCurseExplosion::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
-	const status_change *tsc = status_get_sc(target);
+void SkillCurseExplosion::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
+	const status_change* tsc = status_get_sc(target);
 
 	if (tsc && tsc->getSCE(SC_SOULCURSE))
 		skillratio += -100 + 1200 + 300 * skill_lv;

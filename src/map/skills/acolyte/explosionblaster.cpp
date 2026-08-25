@@ -29,4 +29,3 @@ void SkillExplosionBlaster::calculateSkillRatio(const Damage* wd, const block_li
 
 	RE_LVL_DMOD(100);
 }
-

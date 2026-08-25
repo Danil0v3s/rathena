@@ -1,12 +1,8 @@
-//===== rAthena Documentation ================================
-//= Mob Item Ratio Database Structure
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20210624
-//===== Description: =========================================
-//= Explanation of the mob_item_ratio.yml file and structure.
-//============================================================
+# Mob Item Ratio Database Structure
+
+Explanation of the mob_item_ratio.yml file and structure.
+
+*Last updated 20210624 by rAthena Dev Team (upstream `doc/` header)*
 
 Item base drop rates defined in mob_db.yml will not get multiplied by global item_rate* values (aka drop rates) from
 conf/battle/drops.conf and instead, Ratio will be used (100 = 1x).
@@ -33,7 +29,7 @@ Body:
  - Item: Jellopy
    Ratio: 100
    List:
-     PORING: true
+  PORING: true
 
 Notes:
 - Does not override item_drop_*_min/max settings.

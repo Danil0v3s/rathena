@@ -19,9 +19,9 @@ void SkillSnap::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, 
 #if PACKETVER >= 20111005
 		clif_snap(src, src->x, src->y);
 #else
-		clif_skill_poseffect( *src, getSkillId(), skill_lv, src->x, src->y, tick );
+		clif_skill_poseffect(*src, getSkillId(), skill_lv, src->x, src->y, tick);
 #endif
 		if (sd)
-			skill_blockpc_start (*sd, MO_EXTREMITYFIST, 2000);
+			skill_blockpc_start(*sd, MO_EXTREMITYFIST, 2000);
 	}
 }

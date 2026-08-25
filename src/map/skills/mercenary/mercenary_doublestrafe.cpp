@@ -6,6 +6,6 @@
 SkillMercenaryDoubleStrafe::SkillMercenaryDoubleStrafe() : WeaponSkillImpl(MA_DOUBLE) {
 }
 
-void SkillMercenaryDoubleStrafe::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillMercenaryDoubleStrafe::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += 10 * (skill_lv - 1);
 }

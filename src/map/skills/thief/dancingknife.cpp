@@ -11,14 +11,14 @@
 SkillDancingKnife::SkillDancingKnife() : SkillImplRecursiveDamageSplash(SHC_DANCING_KNIFE) {
 }
 
-void SkillDancingKnife::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillDancingKnife::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 200 * skill_lv + 5 * sstatus->pow;
 	RE_LVL_DMOD(100);
 }
 
-void SkillDancingKnife::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillDancingKnife::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	sc_type type = skill_get_sc(getSkillId());
 
 	if (flag & 1) {

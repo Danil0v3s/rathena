@@ -9,5 +9,5 @@ class SkillWaterScreen : public SkillImpl {
 public:
 	SkillWaterScreen();
 
-	void castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const override;
+	void castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const override;
 };

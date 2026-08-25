@@ -15,27 +15,27 @@
 SkillSlingItem::SkillSlingItem() : SkillImpl(GN_SLINGITEM) {
 }
 
-void SkillSlingItem::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillSlingItem::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	map_session_data* sd = BL_CAST(BL_PC, src);
 	map_session_data* dstsd = BL_CAST(BL_PC, target);
 	int32 i = 0;
 
-	if( sd ) {
+	if (sd) {
 		i = sd->equip_index[EQI_AMMO];
-		if( i < 0 )
+		if (i < 0)
 			return; // No ammo.
 		t_itemid ammo_id = sd->inventory_data[i]->nameid;
-		if( ammo_id == 0 )
+		if (ammo_id == 0)
 			return;
 		sd->itemid = ammo_id;
-		if( itemdb_group.item_exists(IG_BOMB, ammo_id) ) {
-			if(battle_check_target(src,target,BCT_ENEMY) > 0) {// Only attack if the target is an enemy.
-				if( ammo_id == ITEMID_PINEAPPLE_BOMB )
-					map_foreachincell(skill_area_sub,target->m,target->x,target->y,BL_CHAR,src,GN_SLINGITEM_RANGEMELEEATK,skill_lv,tick,flag|BCT_ENEMY|1,skill_castend_damage_id);
+		if (itemdb_group.item_exists(IG_BOMB, ammo_id)) {
+			if (battle_check_target(src, target, BCT_ENEMY) > 0) { // Only attack if the target is an enemy.
+				if (ammo_id == ITEMID_PINEAPPLE_BOMB)
+					map_foreachincell(skill_area_sub, target->m, target->x, target->y, BL_CHAR, src, GN_SLINGITEM_RANGEMELEEATK, skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
 				else
-					skill_attack(BF_WEAPON,src,src,target,GN_SLINGITEM_RANGEMELEEATK,skill_lv,tick,flag);
+					skill_attack(BF_WEAPON, src, src, target, GN_SLINGITEM_RANGEMELEEATK, skill_lv, tick, flag);
 			} else //Otherwise, it fails, shows animation and removes items.
-				clif_skill_fail( *sd, GN_SLINGITEM_RANGEMELEEATK, USESKILL_FAIL );
+				clif_skill_fail(*sd, GN_SLINGITEM_RANGEMELEEATK, USESKILL_FAIL);
 		} else if (itemdb_group.item_exists(IG_THROWABLE, ammo_id)) {
 			switch (ammo_id) {
 				case ITEMID_HP_INC_POTS_TO_THROW: // MaxHP +(500 + Thrower BaseLv * 10 / 3) and heals 1% MaxHP
@@ -69,47 +69,45 @@ void SkillSlingItem::castendNoDamageId(block_list *src, block_list *target, uint
 			}
 		}
 	}
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);// This packet is received twice actually, I think it is to show the animation.
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv); // This packet is received twice actually, I think it is to show the animation.
 }
-
 
 // GN_SLINGITEM_RANGEMELEEATK
 SkillSlingItemAttack::SkillSlingItemAttack() : WeaponSkillImpl(GN_SLINGITEM_RANGEMELEEATK) {
 }
 
-void SkillSlingItemAttack::applyAdditionalEffects(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
+void SkillSlingItemAttack::applyAdditionalEffects(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32 attack_type, enum damage_lv dmg_lv) const {
 	status_data* sstatus = status_get_status_data(*src);
 	status_data* tstatus = status_get_status_data(*target);
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
-	if( sd ) {
-		switch( sd->itemid ) {	// Starting SCs here instead of do it in skill_additional_effect to simplify the code.
+	if (sd) {
+		switch (sd->itemid) { // Starting SCs here instead of do it in skill_additional_effect to simplify the code.
 			case ITEMID_COCONUT_BOMB:
-				sc_start(src,target, SC_STUN, 5 + sd->status.job_level / 2, skill_lv, 1000 * sd->status.job_level / 3);
-				sc_start2(src,target, SC_BLEEDING, 3 + sd->status.job_level / 2, skill_lv, src->id, 1000 * status_get_lv(src) / 4 + sd->status.job_level / 3);
+				sc_start(src, target, SC_STUN, 5 + sd->status.job_level / 2, skill_lv, 1000 * sd->status.job_level / 3);
+				sc_start2(src, target, SC_BLEEDING, 3 + sd->status.job_level / 2, skill_lv, src->id, 1000 * status_get_lv(src) / 4 + sd->status.job_level / 3);
 				break;
 			case ITEMID_MELON_BOMB:
 				sc_start4(src, target, SC_MELON_BOMB, 100, skill_lv, 20 + sd->status.job_level, 10 + sd->status.job_level / 2, 0, 1000 * status_get_lv(src) / 4);
 				break;
-			case ITEMID_BANANA_BOMB:
-				{
-					uint16 duration = (battle_config.banana_bomb_duration ? battle_config.banana_bomb_duration : 1000 * sd->status.job_level / 4);
+			case ITEMID_BANANA_BOMB: {
+				uint16 duration = (battle_config.banana_bomb_duration ? battle_config.banana_bomb_duration : 1000 * sd->status.job_level / 4);
 
-					sc_start(src,target, SC_BANANA_BOMB_SITDOWN, status_get_lv(src) + sd->status.job_level + sstatus->dex / 6 - status_get_lv(target) - tstatus->agi / 4 - tstatus->luk / 5, skill_lv, duration);
-					sc_start(src,target, SC_BANANA_BOMB, 100, skill_lv, 30000);
-					break;
-				}
+				sc_start(src, target, SC_BANANA_BOMB_SITDOWN, status_get_lv(src) + sd->status.job_level + sstatus->dex / 6 - status_get_lv(target) - tstatus->agi / 4 - tstatus->luk / 5, skill_lv, duration);
+				sc_start(src, target, SC_BANANA_BOMB, 100, skill_lv, 30000);
+				break;
+			}
 		}
 		sd->itemid = 0;
 	}
 }
 
-void SkillSlingItemAttack::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillSlingItemAttack::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const map_session_data* sd = BL_CAST(BL_PC, src);
 
-	if( sd ) {
-		switch( sd->itemid ) {
+	if (sd) {
+		switch (sd->itemid) {
 			case ITEMID_APPLE_BOMB:
 				skillratio += 200 + status_get_str(src) + status_get_dex(src);
 				break;

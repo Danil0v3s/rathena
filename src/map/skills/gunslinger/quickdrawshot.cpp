@@ -14,7 +14,7 @@ void SkillQuickDrawShot::modifyDamageData(Damage& dmg, const block_list& src, co
 	const map_session_data* sd = BL_CAST(BL_PC, &src);
 
 	dmg.div_ = 1;
-	
+
 	if (sd != nullptr) {
 		dmg.div_ += sd->status.job_level / 20;
 	}

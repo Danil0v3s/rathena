@@ -10,9 +10,9 @@
 SkillNpcFatalMenace::SkillNpcFatalMenace() : WeaponSkillImpl(NPC_FATALMENACE) {
 }
 
-void SkillNpcFatalMenace::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillNpcFatalMenace::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	// todo should it teleport the target ?
-	if( flag&1 )
+	if (flag & 1)
 		WeaponSkillImpl::castendDamageId(src, target, skill_lv, tick, flag);
 	else {
 		int16 x, y;
@@ -20,8 +20,8 @@ void SkillNpcFatalMenace::castendDamageId(block_list *src, block_list *target, u
 		// Destination area
 		skill_area_temp[4] = x;
 		skill_area_temp[5] = y;
-		map_foreachinrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), splash_target(src), src, getSkillId(), skill_lv, tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
-		skill_addtimerskill(src,tick + 800,src->id,x,y,getSkillId(),skill_lv,0,flag); // To teleport Self
-		clif_skill_damage( *src, *src, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE );
+		map_foreachinrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), splash_target(src), src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
+		skill_addtimerskill(src, tick + 800, src->id, x, y, getSkillId(), skill_lv, 0, flag); // To teleport Self
+		clif_skill_damage(*src, *src, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE);
 	}
 }

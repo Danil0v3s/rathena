@@ -13,7 +13,6 @@
 SkillHammerOfGod::SkillHammerOfGod() : SkillImplRecursiveDamageSplash(RL_HAMMER_OF_GOD) {
 }
 
-
 void SkillHammerOfGod::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	const map_session_data* sd = BL_CAST(BL_PC, src);
 	const status_change* tsc = status_get_sc(target);

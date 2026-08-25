@@ -12,7 +12,7 @@ SkillGrenadeFragment::SkillGrenadeFragment() : SkillImpl(NW_GRENADE_FRAGMENT) {
 void SkillGrenadeFragment::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	status_change_end(src, skill_get_sc(getSkillId()));
 	if (skill_lv < 7)
-		sc_start(src, target, (sc_type)(SC_GRENADE_FRAGMENT_1 -1 + skill_lv), 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
+		sc_start(src, target, (sc_type)(SC_GRENADE_FRAGMENT_1 - 1 + skill_lv), 100, skill_lv, skill_get_time(getSkillId(), skill_lv));
 	else if (skill_lv == 7) {
 		status_change_end(src, SC_GRENADE_FRAGMENT_1);
 		status_change_end(src, SC_GRENADE_FRAGMENT_2);

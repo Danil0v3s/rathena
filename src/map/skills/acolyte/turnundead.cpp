@@ -13,5 +13,5 @@ void SkillTurnUndead::castendDamageId(block_list* src, block_list* target, uint1
 
 	if (!battle_check_undead(tstatus->race, tstatus->def_ele))
 		return;
-	skill_attack(BF_MAGIC,src,src,target,getSkillId(), skill_lv, tick, flag);
+	skill_attack(BF_MAGIC, src, src, target, getSkillId(), skill_lv, tick, flag);
 }

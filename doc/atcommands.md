@@ -1,47 +1,44 @@
-//===== rAthena Documentation ================================
-//= Atcommand List
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20171011
-//===== Description: =========================================
-//= List of available atcommands and their functions.
-//============================================================
+# Atcommand List
+
+List of available atcommands and their functions.
+
+*Last updated 20171011 by rAthena Dev Team (upstream `doc/` header)*
 
 This file describes the usage of in-game commands and assumes that
 '/conf/atcommand_athena.conf' has the following:
-	atcommand_symbol : "@"
-	charcommand_symbol: "#"
+
+```
+atcommand_symbol : "@"
+charcommand_symbol: "#"
+```
 
 Some commands cannot be used from console or script command to prevent map-server crashed.
 See atcommand.cpp::atcommand_basecommands for restricted commands. Please tell us if any
 other atcommand that causes map-server crashed executed by console or script commands.
 
-To search for a command, write "@" before the command name (ex. @commands).
 The format of this file is as follows:
-	1. System Commands
-	2. Database Commands
-	3. Player Information Commands
-	4. Action Commands
-	5. Administrative Commands
-	6. Party Commands
-	7. Guild Commands
-	8. Pet Commands
-	9. Homunculus Commands
-	10. Channel Commands
-	11. Clan Commands
 
-======================
-| 1. System Commands |
-======================
+```
+1. System Commands
+2. Database Commands
+3. Player Information Commands
+4. Action Commands
+5. Administrative Commands
+6. Party Commands
+7. Guild Commands
+8. Pet Commands
+9. Homunculus Commands
+10. Channel Commands
+11. Clan Commands
+```
 
-@version
+## 1. System Commands
+
+### @version
 
 Displays SVN version of the server.
 
----------------------------------------
-
-@rates
+### @rates
 
 Displays the server rates.
 
@@ -51,67 +48,58 @@ Normal Drop Rates: Common 1.00x / Healing 1.00x / Usable 1.00x Equipment 1.00x /
 Boss Drop Rates:  Common 1.00x / Healing 1.00x / Usable 1.00x Equipment 1.00x / Card 1.00x
 Other Drop Rates: MvP 1.00x / Card-Based 1.00x / Treasure 1.00x
 
----------------------------------------
-
-@time
+### @time
 
 Displays the local server time, along with day/night information.
- 
----------------------------------------
 
-@uptime
+### @uptime
 
 Show server uptime since last map server restart.
 
 Output Example:
 Server Uptime: 3 days, 8 hours, 6 minutes, 4 seconds.
 
----------------------------------------
+<a name="refreshall"></a>
+### @refresh / @refreshall
 
+```
 @refresh
 @refreshall
+```
 
 Synchronizes the player's position on the client with the one stored on the server.
 Additionally, @refreshall will refresh all online players.
 
----------------------------------------
-
-@showexp
+### @showexp
 
 Toggles the display of experience gain messages.
 
----------------------------------------
-
-@showzeny
+### @showzeny
 
 Toggles the display of Zeny gain messages.
 Configuration for zeny being dropped by mobs is in '/conf/battle/monster.conf':
 zeny_from_mobs: yes
 
----------------------------------------
-
-@showdelay
+### @showdelay
 
 Shows or hides the red "Cannot use the skills" message.
 
 Output Example:
 [Storm Gust] Cannot use the skills.
 
----------------------------------------
-
-@noask
+### @noask
 
 Toggles automatic rejection of deals and invites.
 
----------------------------------------
-
-@noks
+### @noks
 
 Toggles Kill Steal Protection.
 
----------------------------------------
+### @font
 
+```
 @font <type 0-9>
+```
 
 Sets the client font.
 
@@ -127,72 +115,100 @@ Available types:
 -- 8: RixMagic
 -- 9: RixJJangu
 
----------------------------------------
+<a name="agitend"></a>
+### @agitstart / @agitend
 
+```
 @agitstart
 @agitend
+```
 
 Starts or ends War of Emperium [FE] by invoking scripts with the
 OnAgitStart/OnAgitEnd labels.
 
----------------------------------------
+<a name="agitend2"></a>
+### @agitstart2 / @agitend2
 
+```
 @agitstart2
 @agitend2
+```
 
 Starts or ends War of Emperium [SE] by invoking scripts with the
 OnAgitStart2/OnAgitEnd2 labels.
 
----------------------------------------
+<a name="agitend3"></a>
+### @agitstart3 / @agitend3
 
+```
 @agitstart3
 @agitend3
+```
 
 Starts or ends War of Emperium [TE] by invoking scripts with the
 OnAgitStart3/OnAgitEnd3 labels.
 
----------------------------------------
+<a name="pvpoff"></a>
+### @pvpon / @pvpoff
 
+```
 @pvpon
 @pvpoff
+```
 
 Enables or disables PvP (Player vs. Player) mode on a map.
 
----------------------------------------
+<a name="gvgoff"></a>
+### @gvgon / @gvgoff
 
+```
 @gvgon
 @gvgoff
+```
 
 Enables or disables GvG (Guild vs. Guild) mode on a map.
 
----------------------------------------
+<a name="skilloff"></a>
+### @skillon / @skilloff
 
+```
 @skillon
 @skilloff
+```
 
 Enables or disables skill usage on a map.
 
----------------------------------------
-
-@allowks
+### @allowks
 
 Toggles Kill Steal Protection on a map.
 
----------------------------------------
+<a name="night"></a>
+### @day / @night
 
+```
 @day
 @night
+```
 
 Sets the server to day or night mode.
 
----------------------------------------
+### @sound
 
+```
 @sound <filename>
+```
 
 Plays the specified sound.
 
----------------------------------------
+<a name="clouds"></a>
+<a name="clouds2"></a>
+<a name="fog"></a>
+<a name="fireworks"></a>
+<a name="sakura"></a>
+<a name="leaves"></a>
+### @snow / @clouds / @clouds2 / @fog / @fireworks / @sakura / @leaves
 
+```
 @snow
 @clouds
 @clouds2
@@ -200,89 +216,114 @@ Plays the specified sound.
 @fireworks
 @sakura
 @leaves
+```
 
 Toggles weather effects on your map.
 
----------------------------------------
-
-@clearweather
+### @clearweather
 
 Stops all weather effects. May require a map change or @refresh
 for the effect to stop client-side.
 
----------------------------------------
+### @mapflag
 
+```
 @mapflag <flag> <value 0-1>
+```
 
 Sets a mapflag for the current map (1 = On, 0 = Off).
 
----------------------------------------
+### @addwarp
 
+```
 @addwarp <map> <x> <y> <npc name>
+```
 
 Creates a warp portal on the character's current coordinates that lasts until the next reboot.
 The name parameter is mandatory and if it already exists, the server will automagically assign a name,
 and it will be displayed only once in the chat window.
 
 Example:
+
+### @addwarp
+
+```
 @addwarp prontera 50 50 my_warp_sample
+```
 
 Output:
 New warp NPC 'my_warp_sample' created.
 
----------------------------------------
+### @effect
 
+```
 @effect <effect ID>
+```
 
 Creates a visual effect on or around the character.
-A list of IDs and descriptions of the effects can be found in '/doc/effect_list.txt'.
+A list of IDs and descriptions of the effects can be found in '/doc/effect_list.md'.
 
----------------------------------------
+### @misceffect
 
+```
 @misceffect <effect ID>
+```
 
 Does some visual effect on the character.
 Possible effect IDs:
-	0 = base level up
-	1 = job level up
-	2 = refine failure
-	3 = refine success
-	4 = game over
-	5 = pharmacy success
-	6 = pharmacy failure
-	7 = base level up (super novice)
-	8 = job level up (super novice)
-	9 = base level up (taekwon)
 
----------------------------------------
+```
+0 = base level up
+1 = job level up
+2 = refine failure
+3 = refine success
+4 = game over
+5 = pharmacy success
+6 = pharmacy failure
+7 = base level up (super novice)
+8 = job level up (super novice)
+9 = base level up (taekwon)
+```
 
+### @displayskill
+
+```
 @displayskill <skill ID> {<skill level>}
+```
 
 Displays the animation of a skill without really using it (debug function).
 
----------------------------------------
+### @option
 
+```
 @option {<param 1> {<param 2> {<param 3>}}}
+```
 
 Adds visual effects to the attached character.
 If no parameter is specified, a list of available options will be returned.
 
----------------------------------------
+### @displaystatus
 
+```
 @displaystatus <status type> <flag> <tick> {<val1> {<val2> {<val3>}}}
+```
 
 Displays a status change without really applying it (debug function).
 
----------------------------------------
+### @send
 
+```
 @send <Hex Number> {<value>}
+```
 
 Used for testing packet sends from the client (debug function).
-Value: <type=B(default),W,L><number> or S<length>"<string>"
+Value: `<type=B(default),W,L>``<number>` or S`<length>`"`<string>`"
 
----------------------------------------
+### @mapinfo
 
+```
 @mapinfo {<type 0-3> {<map>}}
+```
 
 Displays information about the current map or the one specified.
 
@@ -298,46 +339,47 @@ Map Name: prontera | Players In Map: 1 | NPCs In Map: 127 | Chats In Map: 0
 ------ Map Flags ------
 Town Map
 Autotrade Enabled
-PvP Flags: 
-GvG Flags: 
-Teleport Flags: 
+PvP Flags:
+GvG Flags:
+Teleport Flags:
 No Exp Penalty: On | No Zeny Penalty: On
-Weather Flags: Displays Night | 
-Other Flags: NoBranch | Reset | 
-Other Flags: 
+Weather Flags: Displays Night |
+Other Flags: NoBranch | Reset |
+Other Flags:
 
----------------------------------------
-
-@gat
+### @gat
 
 Gives information about terrain/area (debug function).
 
-Output Example: 
+Output Example:
 prontera (x= 165, y= 202) 00 00 00 00 00
 prontera (x= 165, y= 201) 01 00 00 00 00
 prontera (x= 165, y= 200) 01 00 00 00 00
 prontera (x= 165, y= 199) 01 00 00 00 00
 prontera (x= 165, y= 198) 01 00 00 00 00
 
----------------------------------------
-
-@showrate
+### @showrate
 
 When VIP is enabled, the rate information always be shown when every player load map.
 Use this command to disable or enable that rate information.
 
----------------------------------------
+## 2. Database Commands
 
-========================
-| 2. Database Commands |
-========================
+### @mobinfo
 
+```
 @mobinfo <mob name/ID>
+```
 
 Displays monster information (rates, stats, drops, MVP data).
 
 Example:
+
+### @mobinfo
+
+```
 @mobinfo Poring
+```
 
 Output:
 Monster: 'Poring'/'Poring'/'PORING' (1002)
@@ -346,56 +388,73 @@ DEF:2 MDEF:5 STR:6 AGI:1 VIT:1 INT:1 DEX:6 LUK:5
 ATK:8~9 Range:1~10~12 Size:Medium Race:Plant Element:Water (Lv:1)
 Drops:
  - Jellopy 70.00% - Knife[4] 1.00% etc...
- 
----------------------------------------
 
+### @iteminfo
+
+```
 @iteminfo <item name/ID>
+```
 
 Displays item information (type, price, weight, drops).
 
 Example:
+
+### @iteminfo
+
+```
 @iteminfo Jellopy
+```
 
 Output:
 Item: 'Jellopy'/'Jellopy'[0] (909) Type: Etc. | Extra Effect: None
 NPC Buy:6z, Sell:3z | Weight: 1.0
 - Maximal monsters drop change: 75.00%
 
----------------------------------------
+### @whodrops
 
+```
 @whodrops <item name/ID>
+```
 
 Displays a list of mobs which drop the specified item.
-Only the highest drop rates are shown. 
+Only the highest drop rates are shown.
 
----------------------------------------
+### @autoloot
 
+```
 @autoloot {<%>}
+```
 
 Enables or disables autolooting items from killed mobs.
 If a percentage is given, only items dropped at that rate and below will be autolooted.
 
----------------------------------------
+### @alootid
 
+```
 @alootid <+/- item name/ID>
 @alootid reset
+```
 
 Starts or stops autolooting a specified item.
 Typing "reset" will clear the autoloot item list.
 By default, 10 items can be autolooted at one time.
 
----------------------------------------
+### @autoloottype
 
+```
 @autoloottype <+/- type name/ID>
 @autoloottype reset
+```
 
 Starts or stops autolooting a specified item type.
 Type List: healing = 0, usable = 2, etc = 3, weapon = 4, armor = 5, card = 6, petegg = 7, petarmor = 8, ammo = 10
 Typing "reset" will clear the autoloot item list.
 
----------------------------------------
+### @mobsearch
 
+```
 @mobsearch <monster name>
+```
 
 Locates and displays the position of a certain mob on the current map.
 
@@ -404,147 +463,180 @@ Output Example:
 2[154:188] Poring
 3[127:146] Poring
 
----------------------------------------
+### @idsearch
 
+```
 @idsearch <item name>
+```
 
 Looks up an item by name (or part of a name).
 
----------------------------------------
+### @showmobs
 
+```
 @showmobs <monster name/ID>
+```
 
 Locates and displays the position of a certain mob on your mini-map.
 This shows up as a small white cross (+).
 
----------------------------------------
-
-@whereis
+### @whereis
 
 Displays the maps in which monster normally spawns.
 This does not include mobs summoned by scripts.
 
----------------------------------------
+### @skillid
 
+```
 @skillid <skill name>
+```
 
 Looks up a skill by name (or part of a name).
 
----------------------------------------
+### @skilltree
 
+```
 @skilltree <skill ID> <target>
+```
 
 Lists requirements to obtain the specified skill on the target character.
 
----------------------------------------
+<a name="lostskill"></a>
+### @questskill / @lostskill
 
+```
 @questskill {<skill ID>}
 @lostskill {<skill ID>}
+```
 
 Permanently adds or removes the specified quest skill.
 If no skill ID is specified, a list of available skills will be returned.
 
----------------------------------------
+### @useskill
 
+```
 @useskill <skill ID> <skill level> <target>
+```
 
 Casts the specified skill.
 
 Example:
+
+### @useskill
+
+```
 @useskill 28 5 Char2
+```
+
 -> casts Level 5 Heal on player Char2
 
----------------------------------------
+## 3. Player Information Commands
 
-==================================
-| 3. Player Information Commands |
-==================================
-
-@commands
+### @commands
 
 Displays a list of @ commands available to the player.
 
----------------------------------------
-
-@charcommands
+### @charcommands
 
 Displays a list of # commands available to the player.
 
----------------------------------------
+### @help
 
+```
 @help <command>
+```
 
 Displays the help message for the specified command.
 
----------------------------------------
-
-@exp
+### @exp
 
 Displays current levels and % progress.
 
 Output Example:
 Base Level: 13 (3.323%) | Job Level: 10 (0.000%)
 
----------------------------------------
-
-@stats
+### @stats
 
 Displays the stats of the attached player in your chat bar.
 
----------------------------------------
+### @storagelist
 
+```
 @storagelist <player name>
+```
 
 Displays Kafra storage contents of the specified player.
 
----------------------------------------
+### @cartlist
 
+```
 @cartlist <player name>
+```
 
 Displays cart contents of the specified player.
 
----------------------------------------
-
-@itemlist
+### @itemlist
 
 Displays inventory contents of the attached player.
 
----------------------------------------
+<a name="who2"></a>
+<a name="who3"></a>
+### @who / @who2 / @who3
 
+```
 @who {<filter>}
 @who2 {<filter>}
 @who3 {<filter>}
+```
 
 Returns a list of online characters.
 If a filter is given, the list will be restricted to names containing the filter string.
+
+<a name="who2"></a>
+<a name="who3"></a>
+### @who / @who2 / @who3
+
+```
 @who will also return character positions.
 @who2 will also return job classes.
 @who3 will also return parties/guilds.
+```
 
----------------------------------------
+<a name="whomap2"></a>
+<a name="whomap3"></a>
+### @whomap / @whomap2 / @whomap3
 
+```
 @whomap {<map>}
 @whomap2 {<map>}
 @whomap3 {<map>}
+```
 
 Returns a list of online characters in a specific map.
 If a map is given, the list will be restricted to characters on the specified map.
+
+<a name="whomap2"></a>
+<a name="whomap3"></a>
+### @whomap / @whomap2 / @whomap3
+
+```
 @whomap will also return character positions.
 @whomap2 will also return job classes.
 @whomap3 will also return parties/guilds.
+```
 
----------------------------------------
+### @whogm
 
+```
 @whogm {<filter>}
+```
 
 Returns a list of GMs online.
 If a filter is given, the list will be restricted to names containing the filter string.
 For those who are higher GM level than yourself, only name is shown.
 For the rest, the command acts as a combination of @who+@who2+@who3.
 
----------------------------------------
-
-@users
+### @users
 
 Displays distribution of players on the server per map (% on each map which has players.)
 
@@ -553,29 +645,36 @@ prontera: 1 (50%)
 prt_fild01: 1 (50%)
 all: 2
 
----------------------------------------
+### @where
 
+```
 @where <player_name>
+```
 
 Locates a player on a map. The player must be online.
 
----------------------------------------
-
-@jailtime
+### @jailtime
 
 Displays remaining jail time.
 If @jail was used, the chat window will display "You have been jailed indefinitely".
 
----------------------------------------
+### @accinfo
 
+```
 @accinfo <player name/account id>
+```
 
 Searches for an account by ID or a character name, and outputs detailed information.
 Password will only be displayed for group levels lower than yours.
 To search partial names, "%" can be used as a wildcard.
 
 Example:
+
+### @accinfo
+
+```
 @accinfo Test%
+```
 
 Output:
 -- Account 2000001 --
@@ -588,102 +687,136 @@ This user has logged 27 times, the last time were at 2012-11-24 17:29:07
 [Slot/CID: 0/150001] Test1 | High Swordsman | Level: 99/50 | Off
 [Slot/CID: 1/150002] Test2 | Rune Knight | Level: 150/50 | On
 
-======================
-| 4. Action Commands |
-======================
+## 4. Action Commands
 
+### @me
+
+```
 @me <message>
+```
 
-Displays the text as a normal message with the format "*name <message>*" instead of "name: <message>".
+Displays the text as a normal message with the format "*name `<message>`*" instead of "name: `<message>`".
 
----------------------------------------
-
-@storage
+### @storage
 
 Opens your Kafra storage.
- 
----------------------------------------
 
-@mail
+### @mail
 
 Opens your mailbox.
 
----------------------------------------
-
-@auction
+### @auction
 
 Opens the auction window.
 
----------------------------------------
+<a name="identifyall"></a>
+### @identify / @identifyall
 
+```
 @identify
 @identifyall
+```
 
 Opens the Identification window if any unappraised items are in your inventory.
+
+### @identifyall
+
+```
 @identifyall will automatically identify all unappraised items in your inventory.
+```
 
----------------------------------------
+### @trade
 
+```
 @trade <player name>
+```
 
 Opens the trade window with the specified player.
 
----------------------------------------
-
-@autotrade
+### @autotrade
 
 Allows you continue vending offline, then logs off.
 The character will continue vending until you log in to that account again,
 all items are sold, or the mapserver closes.
 
----------------------------------------
+### @monster
 
+```
 @monster <monster name/ID> {<amount>}
-/monster <monster name>
+```
+
+/monster `<monster name>`
+
+<a name="monsterbig"></a>
+### @monstersmall / @monsterbig
+
+```
 @monstersmall <monster name/ID> {<amount>}
 @monsterbig <monster name/ID> {<amount>}
+```
 
 Spawns the specified monster.
 If an amount is given, that number will be spawned.
 Additionally, monster size can be adjusted.
 
----------------------------------------
+### @summon
 
+```
 @summon <monster name/ID> {<duration>}
+```
 
 Spawns mobs that treat you as their master.
 If a duration is specified, they will stay with you until the duration has ended.
 
----------------------------------------
+<a name="slaveclone"></a>
+<a name="evilclone"></a>
+### @clone / @slaveclone / @evilclone
 
+```
 @clone <player name/ID>
 @slaveclone <player name/ID>
 @evilclone <player name/ID>
+```
 
 Spawns a clone of the specified player.
+
+<a name="slaveclone"></a>
+<a name="evilclone"></a>
+### @clone / @slaveclone / @evilclone
+
+```
 @clone will spawn a supportive clone.
 @slaveclone will spawn a supportive clone that follows the creator around.
 @evilclone will spawn an aggressive clone.
+```
 
----------------------------------------
+### @item
 
+```
 @item <item name/ID>{:<item name/ID>:...} {<amount>}
-/item <item name>
+```
+
+/item `<item name>`
 
 Creates an item (or multiple items).
 
----------------------------------------
+### @item2
 
+```
 @item2 <item name/ID> <quantity> <identify_flag> <refine> <attribute> <card1> <card2> <card3> <card4>
+```
 
 Creates an item with the given parameters (the 'cards' can be any item).
 identify_flag: 0 = unidentified, 1 = identified
 attribute: 0 = not broken, 1 = broken
 
----------------------------------------
+<a name="itembound2"></a>
+### @itembound / @itembound2
 
+```
 @itembound <item name/ID>{:<item name/ID>:...} <amount> <bound type>
 @itembound2 <item name/ID> <quantity> <identify_flag> <refine> <attribute> <card1> <card2> <card3> <card4> <bound type>
+```
 
 Creates an item bounded to the character.
 The items cannot be dropped, sold, vended, auctioned, or mailed, and in some cases cannot be traded or stored.
@@ -694,25 +827,37 @@ Available types:
 -- 3: Party
 -- 4: Character
 
----------------------------------------
+### @delitem
 
+```
 @delitem <item name/ID> <amount>
+```
 
 Deletes the specified item from the player's inventory.
 
----------------------------------------
+### @produce
 
+```
 @produce <equip name/ID> <element> <# of Very's>
+```
 
 Creates a weapon with the given parameters.
 
 Example:
+
+### @produce
+
+```
 @produce 1602 1 2
+```
+
 -> crafts an item called "Very Very Strong Char's Ice Rod".
 
----------------------------------------
+### @refine
 
+```
 @refine <equip position> <+/- amount>
+```
 
 Refines an equipped item by the specified amount.
 0: All Equipment
@@ -733,9 +878,11 @@ Refines an equipped item by the specified amount.
 1048576: Shadow Right Accessory
 2097152: Shadow Left Accessory
 
----------------------------------------
+### @grade
 
+```
 @grade <equip position> <+/- amount>
+```
 
 Enchantgrade an equipped item by the specified amount.
 0: All Equipment
@@ -750,19 +897,21 @@ Enchantgrade an equipped item by the specified amount.
 256: Top Headgear
 512: Mid Headgear
 
----------------------------------------
-
-@repairall
+### @repairall
 
 Repairs all broken items in your inventory.
 
----------------------------------------
+### @dropall
 
+```
 @dropall {<item type>}
+```
 
 Drops all items based on the item type.
 
 Valid item types:
+
+```
     -1 = All Items (default)
      0 = Healing Items
      2 = Useable Items
@@ -773,18 +922,28 @@ Valid item types:
      7 = Pet Eggs
      8 = Pet Armors
      10 = Ammunition Items
+```
 
 Example:
 To drop all weapons in inventory...
+
+### @dropall
+
+```
 @dropall 5
+```
 
----------------------------------------
+### @stockall
 
+```
 @stockall {<item type>}
+```
 
 Transfer all items from cart to inventory based on the item type.
 
 Valid item types:
+
+```
     -1 = All (default)
      0 = Healing
      2 = Usable
@@ -795,198 +954,241 @@ Valid item types:
      7 = Pet Eggs
      8 = Pet Armors
      10 = Ammunition
+```
 
 Example:
 To transfer all weapons from cart to inventory...
+
+### @stockall
+
+```
 @stockall 5
+```
 
----------------------------------------
-
-@storeall
+### @storeall
 
 Places all inventory and equipped items directly into your Kafra Storage.
 
----------------------------------------
-
-@itemreset
+### @itemreset
 
 Deletes all inventory items (not equipped items).
 
----------------------------------------
+<a name="cleargstorage"></a>
+### @clearstorage / @cleargstorage
 
+```
 @clearstorage
 @cleargstorage
+```
 
 Deletes all items in storage (or guild storage).
 
----------------------------------------
-
-@clearcart
+### @clearcart
 
 Deletes all items in cart, but does not remove the cart.
 
----------------------------------------
+<a name="cleanmap"></a>
+### @cleanarea / @cleanmap
 
+```
 @cleanarea
 @cleanmap
+```
 
 Deletes floor items in sight range or across the entire map.
 
----------------------------------------
-
-@save
+### @save
 
 Sets your save point as your current map coordinates.
 
----------------------------------------
+### @memo
 
+```
 @memo {<position 0-2>}
+```
 
 Saves a warp point for the "Warp Portal" skill.
 If a number is not specified, the command will output all currently saved locations.
 Location "void" indicates an empty warp point.
 
----------------------------------------
-
-@load
+### @load
 
 Warps to your save point.
 
----------------------------------------
+### @jump
 
+```
 @jump {<x> <y>}
+```
 
 Warps to the given coordinates on the current map.
 If no coordinates are entered, a random location will be chosen.
 
----------------------------------------
+### @go
 
+```
 @go {<location name/ID>}
+```
 
 Warps to predefined locations in major cities.
 If no ID is given, all available maps will be displayed in the chat window.
 Locations and coordinates are stored in '/src/map/atcommand.cpp'.
 
 Restriction:
-	- Used from console
 
----------------------------------------
+```
+- Used from console
+```
 
+### @warp
+
+```
 @warp <map> {<x> <y>}
-/mm <map> {<x> <y>}
-/mapmove <map> {<x> <y>}
+```
+
+/mm `<map>` {`<x>` `<y>`}
+/mapmove `<map>` {`<x>` `<y>`}
 
 Warps to the specified map.
 If no coordinates are entered, a random location will be chosen.
 
 Restriction:
-	- Used from console
 
----------------------------------------
+```
+- Used from console
+```
 
+### @jumpto
+
+```
 @jumpto <player name/ID>
-/shift <player name>
+```
+
+/shift `<player name>`
+
+### @follow
+
+```
 @follow <player name>
+```
 
 Warps to the specified player.
 Additionally, @follow will track the player's movements until turned off.
 
----------------------------------------
+### @recall
 
+```
 @recall <player name>
-/summon <player name>
-@recallall
+```
+
+/summon `<player name>`
+
+### @recallall
 
 Warps a character to your position.
 Additionally, @recallall will recall the entire server.
 
----------------------------------------
+### @tonpc
 
+```
 @tonpc <npc name>
+```
 
 Warps to the specified npc.
 
----------------------------------------
-
-@killer
+### @killer
 
 Allows you to attack other players outside of PvP.
 
----------------------------------------
-
-@killable
+### @killable
 
 Allows other players to attack you outside of PvP.
 
----------------------------------------
+<a name="jlvl"></a>
+### @blvl / @jlvl
 
+```
 @blvl <+/- amount>
 @jlvl <+/- amount>
+```
 
 Changes base or job level by the specified amount.
 
 Restriction:
-	- Used from console
 
----------------------------------------
+```
+- Used from console
+```
 
+<a name="agi"></a>
+<a name="vit"></a>
+<a name="int"></a>
+<a name="dex"></a>
+<a name="luk"></a>
+### @str / @agi / @vit / @int / @dex / @luk
+
+```
 @str <+/- amount>
 @agi <+/- amount>
 @vit <+/- amount>
 @int <+/- amount>
 @dex <+/- amount>
 @luk <+/- amount>
+```
 
 Changes the specified stat of your character.
 
----------------------------------------
+### @allstats
 
+```
 @allstats {<+/- amount>}
+```
 
 Changes all stats of your character.
 If no amount is given, sets all stats to the maximum (default is 99).
 
----------------------------------------
-
-@allskill
+### @allskill
 
 Gives your character all skills in their current skill tree.
 
----------------------------------------
+<a name="skpoint"></a>
+### @stpoint / @skpoint
 
+```
 @stpoint <+/- amount>
 @skpoint <+/- amount>
+```
 
 Changes unused status or skill points by the specified amount.
 
----------------------------------------
+### @resetstat
 
-@resetstat
 /resetstate
-@resetskill
+
+### @resetskill
+
 /resetskill
-@reset
+
+### @reset
 
 Resets stats (@streset), skills (@skreset), or both (@reset).
 
----------------------------------------
-
-@feelreset
+### @feelreset
 
 Resets a Star Gladiator's marked maps.
 Only works on Star Gladiator and Star Emperor classes.
 
----------------------------------------
-
-@hatereset
+### @hatereset
 
 Resets a Star Gladiator's marked monsters.
 Only works on Star Gladiator and Star Emperor classes.
 
----------------------------------------
+### @jobchange
 
+```
 @jobchange <job name>
 @jobchange <job ID> {<upper>}
+```
 
 Changes your job.
 An 'upper' value can be specified with a job ID to produce its normal (0), advanced (1), or baby (2) version.
@@ -994,67 +1196,93 @@ If no job is given, a list of all available jobs will be returned.
 Note that jobs 22 (Wedding), 26 (Summer), 27 (Christmas), and 28 (Hanbok) are not available via @job.
 
 Restriction:
-	- Used from console
 
----------------------------------------
+```
+- Used from console
+```
 
+### @speed
+
+```
 @speed <0-1000>
+```
 
 Sets the speed at which the character walks and attacks.
 Default is 150 (0 is fastest, 1000 is slowest).
 
----------------------------------------
+### @spiritball
 
+```
 @spiritball <0-100>
+```
 
 Summons the specified amount of spirit spheres around you.
 
----------------------------------------
+### @soulball
 
+```
 @soulball <0-20>
+```
 
 Summons the specified amount of soul spheres around you.
 
----------------------------------------
+<a name="mount2"></a>
+### @mount / @mount2
 
+```
 @mount {<dragon color 1-5>}
 @mount {<madogear type 0-2>}
 @mount2
+```
 
 Toggles mounting/unmounting a job mount (@mount) or cash mount (@mount2).
 
----------------------------------------
+### @zeny
 
+```
 @zeny <+/- amount>
+```
 
 Changes Zeny by the specified amount.
 
----------------------------------------
+### @cash
 
+```
 @cash <+/- amount>
+```
 
 Changes Cash Points by the specified amount.
 
----------------------------------------
+### @points
 
+```
 @points <+/- amount>
+```
 
 Changes Kafra Points by the specified amount.
 
----------------------------------------
+<a name="hairstyle"></a>
+<a name="haircolor"></a>
+<a name="dye"></a>
+<a name="bodystyle"></a>
+### @model / @hairstyle / @haircolor / @dye / @bodystyle
 
+```
 @model <hair style> <hair color> <cloth color>
 @hairstyle <default: 0-27>
 @haircolor <default: 0-8>
 @dye <default: 0-4>
 @bodystyle <job ID>
+```
 
 Changes appearance based on the given parameters.
 The min/max values are set in '/conf/battle/client.conf'.
 
----------------------------------------
+### @changelook
 
+```
 @changelook {position} <view ID>
+```
 
 Changes the player's appearance to the specified view ID.
 If no position is given, the command defaults to headgear.
@@ -1066,9 +1294,11 @@ If no position is given, the command defaults to headgear.
 6: Shoes
 7: Robe
 
----------------------------------------
+### @costume
 
+```
 @costume {<costume name>}
+```
 
 Changes the player's visible appearance to that of the selected costume.
 
@@ -1082,155 +1312,197 @@ Oktoberfest
 Typing the command without a costume name will display available costumes. If the
 player is wearing a costume it will be removed.
 
----------------------------------------
-
-@changedress
+### @changedress
 
 Removes all character costumes.
 
----------------------------------------
+### @fakename
 
+```
 @fakename {<text string>}
+```
 
 Temporarily changes name to the specified string (lasts until player logs out).
 If no string is given, the character's real name will be re-applied.
 
----------------------------------------
+<a name="sizeall"></a>
+### @size / @sizeall
 
+```
 @size <0-2>
 @sizeall <0-2>
+```
 
 Changes your size (0 = Normal, 1 = Small, 2 = Large).
 Additionally, @sizeall will change the size of all online players.
 
----------------------------------------
+<a name="invite"></a>
+<a name="accept"></a>
+<a name="reject"></a>
+<a name="leave"></a>
+### @duel / @invite / @accept / @reject / @leave
 
+```
 @duel {<duel participant count>}
 @duel {<player name>}
 @invite <player name>
 @accept
 @reject
 @leave
+```
 
 Duel-organizing commands.
 When specifying the participant count accepted values are 2 ~ 65535.
 Some options can be found in '/conf/battle/misc.conf'.
 
----------------------------------------
+### @heal
 
+```
 @heal {<hp> {<sp>}}
+```
 
 Heals the specified amount of HP and SP.
 If no parameters are given, the character will be fully healed.
 
----------------------------------------
+<a name="raisemap"></a>
+<a name="raise"></a>
+### @alive / @raisemap / @raise
 
+```
 @alive
 @raisemap
 @raise
+```
 
 Resurrection commands.
+
+<a name="raisemap"></a>
+<a name="raise"></a>
+### @alive / @raisemap / @raise
+
+```
 @alive will revive the attached player.
 @raisemap will revive all players on the map.
 @raise will revive all players on the server.
+```
 
----------------------------------------
+<a name="undisguise"></a>
+<a name="disguiseall"></a>
+<a name="undisguiseall"></a>
+### @disguise / @undisguise / @disguiseall / @undisguiseall
 
+```
 @disguise <monster/npc name/ID>
 @undisguise
 @disguiseall <monster/npc name/ID>
 @undisguiseall
+```
 
 Disguises or undisguises player as a monster/NPC sprite.
 Additionally, @disguiseall/@undisguiseall will disguise all online players.
 
----------------------------------------
-
-@monsterignore
+### @monsterignore
 
 Makes you immune to attacks (monsters/players/skills cannot target/hit you).
 
----------------------------------------
+### @hide
 
-@hide
 /hide
 
 Toggles GM Hide (total invisibility to characters and monsters).
 
----------------------------------------
+### @npctalk
 
+```
 @npctalk <npc name> <message>
+```
 
 Command what other npcs say.
 Displays the message above the NPC's head (like the 'npctalk' script command).
 
----------------------------------------
+### @vip
 
+```
 @vip <+/- time> <player name>
+```
 
 Set a player in VIP mode for a limited time.
 Time could be reduced and if below now VIP mode is removed
 Time elements: y/a, m, d/j, h, mn, s
 
 Example:
+
+### @vip
+
+```
 @vip +2h mychar
+```
+
 -> set mychar's account as VIP for 2 hours.
 
----------------------------------------
+### @fullstrip
 
+```
 @fullstrip <player name>
+```
 
 Unequip all items from a player.
 
----------------------------------------
+### @cart
 
+```
 @cart <cart ID>
+```
 
 Give or remove a cart to a player and also change the cart skin based on ID:
   0: remove cart
 1-5: normal carts
 6-9: new carts (available for PACKETVER >= 20120201)
 
----------------------------------------
+### @cloneequip
 
+```
 @cloneequip <char_id>
 @cloneequip "<char name>"
+```
 
 'Clone' other player's equipments then equip them.
 
----------------------------------------
+### @clonestat
 
+```
 @clonestat <char_id>
 @clonestat "<char name>"
+```
 
 'Clone' other player's stats.
 
----------------------------------------
-
-@limitedsale
+### @limitedsale
 
 Opens the limited sale window.
 
----------------------------------------
+### @camerainfo
 
+```
 @camerainfo {<range> <rotation> <latitude>}
+```
 
 Displays/hides camera information from the client.
 If args are given, sets camera position.
 
----------------------------------------
-
-@enchantgradeui
+### @enchantgradeui
 
 Opens the enchantgrade UI.
 
----------------------------------------
+### @setcard
 
+```
 @setcard <equip position> <slot> <card_id>
+```
 
 Adds a card or enchant to the specific slot of the equipment.
 
-<equip position>:
+`<equip position>`:
 1: Lower Headgear
 2: Right Hand
 4: Garment
@@ -1242,219 +1514,325 @@ Adds a card or enchant to the specific slot of the equipment.
 256: Top Headgear
 512: Mid Headgear
 
-<slot> number: 0-3.
-<card_id>: Can actually be any existing card or enchant item. Put 0 to remove it.
+`<slot>` number: 0-3.
+`<card_id>`: Can actually be any existing card or enchant item. Put 0 to remove it.
 
----------------------------------------
+### @resetcooltime
 
-@resetcooltime
 /resetcooltime
 
 Resets the cooldown of all skills of the player and if active also of the homunculus or the mercenary.
 
-==============================
-| 5. Administrative Commands |
-==============================
+## 5. Administrative Commands
 
+### @langtype
+
+```
 @langtype <language>
+```
 
 Changes the language attached to the player's account (#langtype).
 If no parameter is given, a list of available languages is displayed.
 All languages are defined in '/src/common/msg_conf.hpp'.
 
----------------------------------------
+### @email
 
+```
 @email <current@email.tld> <new@email.tld>
+```
 
 Changes the email address attached the player's account.
 Note: This command doesn't validate the email address itself, but checks the structure of the email (xxx@xxx).
 
 Example:
+
+### @email
+
+```
 @email a@b.com b@b.com
+```
 
 Output:
 Fail message: Invalid email. If you have default e-mail, type a@a.com.
 Success message: Information sent to login-server via char-server.
 
----------------------------------------
-
-@changesex
+### @changesex
 
 Changes the gender attached to the player's account.
 
----------------------------------------
-
-@changecharsex
+### @changecharsex
 
 Changes the gender attached to the player's character.
 
----------------------------------------
+<a name="divorce"></a>
+### @marry / @divorce
 
+```
 @marry <player 1> <player 2>
 @divorce <player>
+```
 
 Marries or divorces two players.
 
----------------------------------------
+### @adopt
 
+```
 @adopt <player>
+```
 
 Adopts the specified player with the attached character as one of the parents.
 
----------------------------------------
-
-@refineui
+### @refineui
 
 Opens the refine user interface.
 
 Note: This command requires packet version 2016-10-12 or newer.
 
----------------------------------------
-
-@stylist
+### @stylist
 
 Opens the stylist user interface.
 
 Note: This command requires packet version 2015-11-04 or newer.
 
----------------------------------------
+### @request
 
+```
 @request <message>
+```
 
 Sends a message to all connected GMs (via the GM whisper system).
 
----------------------------------------
-
-@gmotd
+### @gmotd
 
 Displays the motd file to all players.
 
----------------------------------------
+### @broadcast
 
+```
 @broadcast <message>
-/b <message>
-/nb <message>
+```
+
+/b `<message>`
+/nb `<message>`
+
+### @localbroadcast
+
+```
 @localbroadcast <message>
-/lb <message>
-/nlb <message>
+```
+
+/lb `<message>`
+/nlb `<message>`
 
 Announces a message in yellow text.
 Except for /nb and /nlb, the message will be prefixed with the name of the attached character.
+
+<a name="localbroadcast"></a>
+### @broadcast / @localbroadcast
+
+```
 @broadcast will be shown to the entire server.
 @localbroadcast will be shown on the player's map only.
+```
 
----------------------------------------
+<a name="kamib"></a>
+<a name="kamic"></a>
+<a name="lkami"></a>
+### @kami / @kamib / @kamic / @lkami
 
+```
 @kami <message>
 @kamib <message>
 @kamic <color> <message>
 @lkami <message>
+```
 
 Announces a message without a name prefix.
+
+<a name="kamib"></a>
+<a name="kamic"></a>
+<a name="lkami"></a>
+### @kami / @kamib / @kamic / @lkami
+
+```
 @kami will broadcast in yellow text.
 @kamib will broadcast in blue text.
 @kamic will broadcast in the specified color (a hexadecimal value).
 @lkami will broadcast on the attached character's current map.
+```
 
 Example:
+
+### @kamic
+
+```
 @kamic FF0000 This message is in red.
+```
 
----------------------------------------
+<a name="killmonster2"></a>
+### @killmonster / @killmonster2
 
+```
 @killmonster
 @killmonster2
+```
 
 Kills all monsters on the map.
 Additionally, @killmonster2 will prevent the monsters from dropping items (except looted items).
 
----------------------------------------
+<a name="nuke"></a>
+<a name="doommap"></a>
+<a name="doom"></a>
+### @kill / @nuke / @doommap / @doom
 
+```
 @kill
 @nuke <player name>
 @doommap
 @doom
+```
 
 Kill commands.
+
+<a name="nuke"></a>
+<a name="doommap"></a>
+<a name="doom"></a>
+### @kill / @nuke / @doommap / @doom
+
+```
 @kill will kill the attached player.
 @nuke will kill the specified player and deal area splash damage.
 @doommap will kill all players on the map.
 @doom will kill all players on the server.
+```
 
----------------------------------------
+<a name="mutearea"></a>
+<a name="unmute"></a>
+### @mute / @mutearea / @unmute
 
+```
 @mute <time> <player name>
 @mutearea <time>
 @unmute <player name>
+```
 
 Mutes or unmutes a player (prevents talking, usage of skills, and commands).
+
+### @mutearea
+
+```
 @mutearea will mute every player on screen for the specified time.
+```
 
----------------------------------------
+<a name="jailfor"></a>
+<a name="unjail"></a>
+### @jail / @jailfor / @unjail
 
+```
 @jail <player name>
 @jailfor <time> <player name>
 @unjail <player name>
+```
 
 Sends the specified character to jail.
 If a time is not specified (jailfor), the player will be jailed indefinitely.
 
----------------------------------------
+### @kick
 
+```
 @kick <player name/ID>
+```
 
 Kick a player from the server.
 
 Restriction:
-	- Used from 'atcommand' or 'useatcmd' by autotrader
 
----------------------------------------
+```
+- Used from 'atcommand' or 'useatcmd' by autotrader
+```
 
-@kickall
+### @kickall
+
 /killall
 
 Disconnects a user or all users from the server.
 
----------------------------------------
+<a name="unban"></a>
+### @ban / @unban
 
+```
 @ban <+/- time> <player name>
 @unban <player name>
+```
 
 Bans or unbans a player account for a limited time.
 Time elements: y/a, m, d/j, h, mn, s
 
 Example:
+
+### @ban
+
+```
 @ban +2d Char2
+```
+
 -> bans Char2's account for 2 days.
 
----------------------------------------
+<a name="unblock"></a>
+### @block / @unblock
 
+```
 @block <player name>
 @unblock <player name>
+```
 
 Blocks or unblocks a player from logging in indefinitely.
 
----------------------------------------
+<a name="charunban"></a>
+### @charban / @charunban
 
+```
 @charban <+/- time> <player name>
 @charunban <player name>
+```
 
-Bans or unbans a player for a limited time. 
+Bans or unbans a player for a limited time.
 (Very similar to @ban and but for 1 character only)
 Time elements: y/a, m, d/j, h, mn, s
 
 Example:
+
+### @charban
+
+```
 @charban +2d Char2
+```
+
 -> bans Char2's for 2 days.
 
----------------------------------------
-
-@mapexit
+### @mapexit
 
 Sends quit signal to mapserver, saving all data and causing a graceful shutdown.
 This will also send a packet to clients causing them to close.
 
----------------------------------------
+<a name="reloadatcommand"></a>
+<a name="reloadbattleconf"></a>
+<a name="reloadinstancedb"></a>
+<a name="reloaditemdb"></a>
+<a name="reloadmobdb"></a>
+<a name="reloadmotd"></a>
+<a name="reloadmsgconf"></a>
+<a name="reloadpcdb"></a>
+<a name="reloadquestdb"></a>
+<a name="reloadscript"></a>
+<a name="reloadskilldb"></a>
+<a name="reloadstatusdb"></a>
+<a name="reloadachievementdb"></a>
+<a name="reloadattendancedb"></a>
+<a name="reloadbarterdb"></a>
+### @reload / @reloadatcommand / @reloadbattleconf / @reloadinstancedb / @reloaditemdb / @reloadmobdb / @reloadmotd / @reloadmsgconf / @reloadpcdb / @reloadquestdb / @reloadscript / @reloadskilldb / @reloadstatusdb / @reloadachievementdb / @reloadattendancedb / @reloadbarterdb
 
+```
 @reload <type>
 @reloadatcommand
 @reloadbattleconf
@@ -1471,6 +1849,7 @@ This will also send a packet to clients causing them to close.
 @reloadachievementdb
 @reloadattendancedb
 @reloadbarterdb
+```
 
 Reloads a database or configuration file.
 
@@ -1511,261 +1890,333 @@ Affected files:
 -- barterdb: /npc/barters.yml
 
 Restriction:
-	- Used from 'atcommand' or 'useatcmd'. For @reload & @reloadscript
 
----------------------------------------
+```
+- Used from 'atcommand' or 'useatcmd'. For @reload & @reloadscript
+```
 
+### @set
+
+```
 @set <variable> {<value>}
+```
 
 Changes a player or account variable to the specified value.
 If no value is given, the variable's current value will be displayed.
 Note that the value of a string variable may be typed with or without double quotes.
 
----------------------------------------
+### @setbattleflag
 
+```
 @setbattleflag <flag> <value> {<reload>}
+```
 
 Changes a battle_config flag without rebooting the server.
 If a value is given for reload, then the server will attempt to reload the mob database
 if the config being changed is EXP/drop related.
 
----------------------------------------
+### @adjgroup
 
+```
 @adjgroup <group ID>
+```
 
 Temporarily changes the group of a character (lasts until player logs out).
 The groups are defined in '/conf/groups.conf'.
 
----------------------------------------
+<a name="rmvperm"></a>
+### @addperm / @rmvperm
 
+```
 @addperm {<permission name>}
 @rmvperm {<permission name>}
+```
 
 Temporarily changes the permissions of a character (lasts until player logs out).
 If no permission is given, a list of available permissions will be returned.
 
----------------------------------------
+### @npcmove
 
+```
 @npcmove <x> <y> <npc name>
+```
 
 Moves an NPC to a specified coordinate on its map.
 
----------------------------------------
+<a name="shownpc"></a>
+### @hidenpc / @shownpc
 
+```
 @hidenpc <npc name>
 @shownpc <npc name>
+```
 
 Toggles the visibility of an NPC's sprite.
 
----------------------------------------
+### @loadnpc
 
+```
 @loadnpc <path>
+```
 
 Loads an NPC script by path.
 
 Example:
+
+### @loadnpc
+
+```
 @loadnpc npc/custom/jobmaster.txt
+```
 
----------------------------------------
+### @unloadnpc
 
+```
 @unloadnpc <npc name>
+```
 
 Unloads an NPC.
 
 Example:
+
+### @unloadnpc
+
+```
 @unloadnpc Job Master
+```
 
----------------------------------------
+### @unloadnpcfile
 
+```
 @unloadnpcfile <path>
+```
 
 Unloads all NPCs in a file.
 
 Example:
+
+### @unloadnpcfile
+
+```
 @unloadnpcfile npc/custom/jobmaster.txt
+```
 
----------------------------------------
+### @reloadnpcfile
 
+```
 @reloadnpcfile <path>
+```
 
 Unloads and loads an NPC.
 Same as @unloadnpcfile and @loadnpc but ran as one command.
 
 Example:
+
+### @reloadnpcfile
+
+```
 @reloadnpcfile npc/custom/jobmaster.txt
+```
 
----------------------------------------
+## 6. Party Commands
 
-=====================
-| 6. Party Commands |
-=====================
+### @party
 
+```
 @party <party_name>
+```
 
 Organizes a new party, with the attached character as leader.
- 
----------------------------------------
 
+### @partyoption
+
+```
 @partyoption <pickup share: yes/no> <item distribution: yes/no>
+```
 
 Changes party options for experience sharing and item sharing.
 
----------------------------------------
+### @changeleader
 
+```
 @changeleader <party_member_name>
+```
 
 Changes the leader of your party to another member.
 You must be the party leader to use this command.
 
----------------------------------------
+### @partyrecall
 
+```
 @partyrecall <party name>
+```
 
 Warps all online characters of a party to your location.
 
----------------------------------------
+### @partyspy
 
+```
 @partyspy <party name>
+```
 
 Allows you to spy on any party's Party Chat.
 At least one member of that party must be online.
 NOTE: map server needs to be configured to enable spying to use this command (enable_spy: yes)
 
----------------------------------------
+### @partysharelvl
 
+```
 @partysharelvl <value>
+```
 
 Temporarily adjusts the party share level range (lasts until character server restarts).
 The permanent value is defined by 'party_share_level' in '/conf/inter_athena.conf'.
 
----------------------------------------
+## 7. Guild Commands
 
-=====================
-| 7. Guild Commands |
-=====================
+### @guild
 
+```
 @guild <guild name>
+```
 
 Creates a new guild, with the attached character as guildmaster.
 
----------------------------------------
-
-@breakguild
+### @breakguild
 
 Breaks the guild of the attached character.
 You must be the guildmaster to use this command.
 
----------------------------------------
+### @changegm
 
+```
 @changegm <guild_member_name>
+```
 
 Changes the guildmaster of your guild to another member.
 You must be the guildmaster to use this command.
 
----------------------------------------
-
-@guildstorage
+### @guildstorage
 
 Opens your guild storage.
 
----------------------------------------
+### @glvl
 
+```
 @glvl <+/- amount>
+```
 
 Changes guild level by the specified amount.
 
----------------------------------------
+<a name="undisguiseguild"></a>
+### @disguiseguild / @undisguiseguild
 
+```
 @disguiseguild <monster/npc name/ID> <guild name/ID>
 @undisguiseguild
+```
 
 Disguises or undisguises all online characters of a guild.
- 
----------------------------------------
 
+### @sizeguild
+
+```
 @sizeguild <size> <guild name>
+```
 
 Changes the size of all online characters of a guild.
 
----------------------------------------
+### @guildrecall
 
+```
 @guildrecall <guild name>
+```
 
 Warps all online characters of a guild to your location.
 
----------------------------------------
+### @guildspy
 
+```
 @guildspy <guild name>
+```
 
-Allows you to spy on any guild's Guild Chat. 
+Allows you to spy on any guild's Guild Chat.
 At least one member of that guild must be online.
 NOTE: map server needs to be configured to enable spying to use this command (enable_spy: yes)
 
----------------------------------------
+## 8. Pet Commands
 
-===================
-| 8. Pet Commands |
-===================
+### @makeegg
 
+```
 @makeegg <egg ID>
+```
 
 Creates a Pet Egg based on the given ID.
 
----------------------------------------
-
-@hatch
+### @hatch
 
 Opens the Hatch window (like using a Pet Incubator).
 
----------------------------------------
+### @pettalk
 
+```
 @pettalk <message>
+```
 
 Command what the player's pet will say.
 
----------------------------------------
-
-@petrename
+### @petrename
 
 If you have not already renamed your pet, you can do this on the Pet window.
 If you have renamed your pet, this command will allow you to use the
 the rename option on the window again.
 
----------------------------------------
+### @petfriendly
 
+```
 @petfriendly <0-1000>
+```
 
 Sets the intimacy level of your pet, with 1000 being "Loyal".
 
----------------------------------------
+### @pethungry
 
+```
 @pethungry <0-100>
+```
 
 Sets the hunger level of your pet, with 100 being "Stuffed".
 
----------------------------------------
+## 9. Homunculus Commands
 
-==========================
-| 9. Homunculus Commands |
-==========================
+### @makehomun
 
+```
 @makehomun <Homunculus ID>
+```
 
 Creates the specified homunculus.
 
----------------------------------------
+<a name="hommutate"></a>
+### @homevolution / @hommutate
 
+```
 @homevolution
 @hommutate {<Homunculus ID>}
+```
 
 Evolves or mutates your homunculus, if possible.
 If no Homunculus ID is specified for @hommutate, a random ID is chosen.
 If it doesn't work, the /swt emotion is shown.
 
----------------------------------------
+<a name="homstats"></a>
+### @hominfo / @homstats
 
+```
 @hominfo
 @homstats
+```
 
 Displays homunculus stats in different formats.
 
@@ -1787,142 +2238,170 @@ Int: 40 (39~45)
 Dex: 29 (25~34)
 Luk: 14 (13~15)
 
----------------------------------------
-
-@homshuffle
+### @homshuffle
 
 Re-calculates homunculus stats, as if the homunculus was re-leveled from level 1.
 
----------------------------------------
+### @homtalk
 
+```
 @homtalk <message>
+```
 
 Command what the player's homunculus will say.
 
----------------------------------------
+### @homlevel
 
+```
 @homlevel <+/- amount>
+```
 
 Changes homunculus level by the specified amount.
 
----------------------------------------
+### @homfriendly
 
+```
 @homfriendly <0-1000>
+```
 
 Sets the intimacy level of your homunculus, with 1000 being "Loyal".
 
----------------------------------------
+### @homhungry
 
+```
 @homhungry <0-100>
+```
 
 Sets the hunger level of your homunculus, with 100 being "Stuffed".
 
----------------------------------------
+## 10. Channel Commands
 
-========================
-| 10. Channel Commands |
-========================
+<a name="channel"></a>
+### @join / @channel
 
+```
 @join <#channel_name> {<password>}
 @channel join <#channel_name> {<password>}
+```
 
 Joins the specified channel.
 
----------------------------------------
+### @channel
 
+```
 @channel leave <#channel_name>
+```
 
 Leaves the specified channel.
 
----------------------------------------
+### @channel
 
+```
 @channel create <#channel_name> <channel_password>
+```
 
 Creates a new channel.
 'allow_user_channel_creation' must be enabled in '/conf/channels.conf'.
 
----------------------------------------
+### @channel
 
+```
 @channel delete <#channel_name>
+```
 
 Destroys the specified channel.
 
----------------------------------------
+### @channel
 
+```
 @channel list
 @channel list mine
 @channel list colors
+```
 
 'list' displays a list of all public channels.
 'list mine' displays a list of channels you have joined.
 'list colors' displays a list of all available colors for custom channels.
 
----------------------------------------
+### @fontcolor
 
+```
 @fontcolor <color_name>
+```
 
 Sets channel chat font color for the invoking character only.
 Typing "Normal" returns text to the normal channel color.
 If no parameter is given, a list of available colors is displayed.
 Option 'ColorOverride' must be enabled for this to take effect.
 
----------------------------------------
+### @channel
 
+```
 @channel setcolor <#channel_name> <color_name>
+```
 
 Changes the text color of the specified channel.
 You must either be the channel's owner or have the channel_admin permission.
 All colors are defined in '/conf/channels.conf'.
 
----------------------------------------
+### @channel
 
+```
 @channel setopt <#channel_name> <option> <value>
+```
 
 Sets an option and value for the specified channel.
 You must either be the channel's owner or have the channel_admin permission.
 
 Available options:
--- 'JoinAnnounce <1|0>' : Toggles channel announcement when a new player enters.
--- 'MessageDelay <0-10>' : Sets the delay (in seconds) for messages sent to the channel.
--- 'ColorOverride <1|0>' : Toggles the permission for players to change their color through @fontcolor.
+-- 'JoinAnnounce `<1|0>`' : Toggles channel announcement when a new player enters.
+-- 'MessageDelay `<0-10>`' : Sets the delay (in seconds) for messages sent to the channel.
+-- 'ColorOverride `<1|0>`' : Toggles the permission for players to change their color through @fontcolor.
 
----------------------------------------
+### @channel
 
+```
 @channel ban <#channel_name> <player>
 @channel unban <#channel_name> <player>
 @channel unbanall <#channel_name>
 @channel banlist <#channel_name>
+```
 
 Bans or unbans a player from the specified channel.
 'unbanall' clears all bans from the channel.
 'banlist' displays a list of all players banned from the channel.
 
----------------------------------------
+### @channel
 
+```
 @channel bindto <#channel_name>
 @channel unbind
+```
 
 Binds or unbinds your global chat with the specified channel, which sends all global messages to the specified channel.
 
----------------------------------------
+<a name="erasequest"></a>
+<a name="completequest"></a>
+<a name="checkquest"></a>
+### @setquest / @erasequest / @completequest / @checkquest
 
+```
 @setquest <quest ID>
 @erasequest <quest ID>
 @completequest <quest ID>
 @checkquest <quest ID>
+```
 
 Changes/checks the status of the specified quest ID.
 
----------------------------------------
+## 11. Clan Commands
 
-=====================
-| 11. Clan Commands |
-=====================
+### @clanspy
 
+```
 @clanspy <clan name>
+```
 
 Allows you to spy on any clan's Clan Chat.
 At least one member of that clan must be online.
 NOTE: map server needs to be configured to enable spying to use this command (enable_spy: yes)
-
----------------------------------------

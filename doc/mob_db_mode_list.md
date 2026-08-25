@@ -1,15 +1,10 @@
-//===== rAthena Documentation ================================
-//= rAthena Monster Modes Reference
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20160402
-//===== Description: =========================================
-//= A reference description of rAthena's mob_db 'mode' field.
-//============================================================
+# rAthena Monster Modes Reference
 
-Bit Legend
--------------------------------------------------------------------------------
+A reference description of rAthena's mob_db 'mode' field.
+
+*Last updated 20160402 by rAthena Dev Team (upstream `doc/` header)*
+
+### Bit Legend
 
 MD_CANMOVE            | 0x0000001 |         1
 MD_LOOTER             | 0x0000002 |         2
@@ -26,8 +21,9 @@ MD_ANGRY              | 0x0000800 |      2048
 MD_CHANGETARGETMELEE  | 0x0001000 |      4096
 MD_CHANGETARGETCHASE  | 0x0002000 |      8192
 MD_TARGETWEAK         | 0x0004000 |     16384
-MD_RANDOMTARGET       | 0x0008000 |     32768
----------------------------------------------
+
+### MD_RANDOMTARGET       | 0x0008000 |     32768
+
 MD_IGNOREMELEE        | 0x0010000 |     65536
 MD_IGNOREMAGIC        | 0x0020000 |    131072
 MD_IGNORERANGED       | 0x0040000 |    262144
@@ -35,15 +31,15 @@ MD_MVP                | 0x0080000 |    524288
 MD_IGNOREMISC         | 0x0100000 |   1048576
 MD_KNOCKBACKIMMUNE    | 0x0200000 |   2097152
 MD_TELEPORTBLOCK      | 0x0400000 |   4194304
-FREE                  | 0x0800000 |   8388608
----------------------------------------------
+
+### FREE                  | 0x0800000 |   8388608
+
 MD_FIXEDITEMDROP      | 0x1000000 |  16777216
 MD_DETECTOR           | 0x2000000 |  33554432
 MD_STATUSIMMUNE       | 0x4000000 |  67108864
 MD_SKILLIMMUNE        | 0x8000000 | 134217728
 
-Explanation for modes
--------------------------------------------------------------------------------
+### Explanation for modes
 
 Can Move: Enables the mob to move/chase characters.
 
@@ -54,38 +50,65 @@ Aggressive: normal aggressive mob, will look for a close-by player to attack.
 Assist: When a nearby mob of the same class attacks, assist types will join them.
 
 Cast Sensor Idle: Will go after characters who start casting on them if idle
-	or walking (without a target).
+
+```
+or walking (without a target).
+```
 
 No Random Walk: The mob will not randomly walk around while in the
-	idle state.
+
+```
+idle state.
+```
 
 No Cast Skill: The mob will be unable to cast skills.
 
 Can Attack: Enables the mob to attack/retaliate when you are within attack
-	range. Note that this only enables them to use normal attacks, skills are
-	always allowed.
+
+```
+range. Note that this only enables them to use normal attacks, skills are
+always allowed.
+```
 
 Cast Sensor Chase: Will go after characters who start casting on them if idle
-	or chasing other players (they switch chase targets)
+
+```
+or chasing other players (they switch chase targets)
+```
 
 Change Chase: Allows chasing mobs to switch targets if another player happens
-	to be within attack range (handy on ranged attackers, for example)
+
+```
+to be within attack range (handy on ranged attackers, for example)
+```
 
 Angry: These mobs are "hyper-active". Apart from "chase"/"attack", they have
-	the states "follow"/"angry". Once hit, they stop using these states and use
-	the normal ones. The new states are used to determine a different skill-set
-	for their "before attacked" and "after attacked" states. Also, when
-	"following", they automatically switch to whoever character is closest.
+
+```
+the states "follow"/"angry". Once hit, they stop using these states and use
+the normal ones. The new states are used to determine a different skill-set
+for their "before attacked" and "after attacked" states. Also, when
+"following", they automatically switch to whoever character is closest.
+```
 
 Change Target Melee: Enables a mob to switch targets when hit by a normal attack
-	while attacking someone else.
+
+```
+while attacking someone else.
+```
 
 Change Target Chase: Enables a mob to switch targets when hit by any attack
-	while chasing another character.
 
-Target Weak: Allows aggressive monsters to only be aggressive against 
-	characters that are five levels below it's own level.
-	For example, a monster of level 104 will not pick fights with a level 99.
+```
+while chasing another character.
+```
+
+Target Weak: Allows aggressive monsters to only be aggressive against
+
+```
+characters that are five levels below it's own level.
+For example, a monster of level 104 will not pick fights with a level 99.
+```
 
 Random Target: Picks a new random target in range for each normal attack.
 
@@ -96,7 +119,10 @@ Ignore Magic: The mob will take 1 HP damage from magic attacks.
 Ignore Range: The mob will take 1 HP damage from ranged attacks.
 
 MVP: Flagged as MVP which makes mobs resistant to Coma. Also displays the
-	MVP sign and gives players MVP EXP or MVP items.
+
+```
+MVP sign and gives players MVP EXP or MVP items.
+```
 
 Ignore Misc: The mob will take 1 HP damage from "none" attack type.
 
@@ -112,8 +138,7 @@ Status Immune: Immune to being affected by statuses.
 
 Skill Immune: Immune to being affected by skills.
 
-Aegis Mob Types
--------------------------------------------------------------------------------
+### Aegis Mob Types
 
 What Aegis has are mob-types, where each type represents an AI behavior that
 is mimicked by a group of rA mode bits. This is the table to convert from one
@@ -147,8 +172,7 @@ Special AI:
 ABR_PASSIVE: 0x0021 (passive, does not walk randomly, can't attack)
 ABR_OFFENSIVE: 0x00A5 (aggressive, does not walk randomly)
 
-Aegis Class Types
--------------------------------------------------------------------------------
+### Aegis Class Types
 
 Aegis has different class types that can't be combined but can be reflected by
 a combination of rA mode bits.
@@ -164,10 +188,9 @@ Aegis/rA
 - Note that the detector bit for Insect/Demon monsters need to be added
   independently.
 
-Aegis Attr Types
--------------------------------------------------------------------------------
+### Aegis Attr Types
 
-The Aegis attr types are a bitmask just like the rA mode bits and can be 
+The Aegis attr types are a bitmask just like the rA mode bits and can be
 directly converted. Plant mode is a combination of various of these modes.
 Add the mode listed here to the resulting mode above.
 

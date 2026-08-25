@@ -10,18 +10,18 @@
 SkillTetraVortex::SkillTetraVortex() : SkillImpl(WL_TETRAVORTEX) {
 }
 
-void SkillTetraVortex::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	status_change *sc = status_get_sc(src);
+void SkillTetraVortex::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	status_change* sc = status_get_sc(src);
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
 	if (sd == nullptr) { // Monster usage
 		uint8 i = 0;
-		const static std::vector<std::vector<uint16>> tetra_skills = { { WL_TETRAVORTEX_FIRE, 1 },
-																	   { WL_TETRAVORTEX_WIND, 4 },
-																	   { WL_TETRAVORTEX_WATER, 2 },
-																	   { WL_TETRAVORTEX_GROUND, 8 } };
+		const static std::vector<std::vector<uint16>> tetra_skills = {{WL_TETRAVORTEX_FIRE, 1},
+		    {WL_TETRAVORTEX_WIND, 4},
+		    {WL_TETRAVORTEX_WATER, 2},
+		    {WL_TETRAVORTEX_GROUND, 8}};
 
-		for (const auto &skill : tetra_skills) {
+		for (const auto& skill : tetra_skills) {
 			if (skill_lv > 5) {
 				skill_area_temp[0] = i;
 				skill_area_temp[1] = skill[1];
@@ -72,54 +72,50 @@ void SkillTetraVortex::castendDamageId(block_list *src, block_list *target, uint
 	}
 }
 
-
 // WL_TETRAVORTEX_GROUND
 SkillTetraVortexEarth::SkillTetraVortexEarth() : SkillImpl(WL_TETRAVORTEX_GROUND) {
 }
 
-void SkillTetraVortexEarth::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillTetraVortexEarth::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += -100 + 800 + 400 * skill_lv;
 }
 
-void SkillTetraVortexEarth::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillTetraVortexEarth::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_addtimerskill(src, tick + skill_area_temp[0] * 200, target->id, skill_area_temp[1], 0, getSkillId(), skill_lv, 0, flag);
 }
-
 
 // WL_TETRAVORTEX_FIRE
 SkillTetraVortexFire::SkillTetraVortexFire() : SkillImpl(WL_TETRAVORTEX_FIRE) {
 }
 
-void SkillTetraVortexFire::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillTetraVortexFire::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += -100 + 800 + 400 * skill_lv;
 }
 
-void SkillTetraVortexFire::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillTetraVortexFire::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_addtimerskill(src, tick + skill_area_temp[0] * 200, target->id, skill_area_temp[1], 0, getSkillId(), skill_lv, 0, flag);
 }
-
 
 // WL_TETRAVORTEX_WATER
 SkillTetraVortexWater::SkillTetraVortexWater() : SkillImpl(WL_TETRAVORTEX_WATER) {
 }
 
-void SkillTetraVortexWater::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillTetraVortexWater::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += -100 + 800 + 400 * skill_lv;
 }
 
-void SkillTetraVortexWater::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillTetraVortexWater::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_addtimerskill(src, tick + skill_area_temp[0] * 200, target->id, skill_area_temp[1], 0, getSkillId(), skill_lv, 0, flag);
 }
-
 
 // WL_TETRAVORTEX_WIND
 SkillTetraVortexWind::SkillTetraVortexWind() : SkillImpl(WL_TETRAVORTEX_WIND) {
 }
 
-void SkillTetraVortexWind::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillTetraVortexWind::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	base_skillratio += -100 + 800 + 400 * skill_lv;
 }
 
-void SkillTetraVortexWind::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillTetraVortexWind::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	skill_addtimerskill(src, tick + skill_area_temp[0] * 200, target->id, skill_area_temp[1], 0, getSkillId(), skill_lv, 0, flag);
 }

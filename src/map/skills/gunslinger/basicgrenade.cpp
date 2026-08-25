@@ -14,7 +14,7 @@ SkillBasicGrenade::SkillBasicGrenade() : WeaponSkillImpl(NW_BASIC_GRENADE) {
 void SkillBasicGrenade::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
 	int32 i = skill_get_splash(getSkillId(), skill_lv);
 	map_foreachinallarea(skill_area_sub, src->m, x - i, y - i, x + i, y + i, BL_CHAR,
-		src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
+	    src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
 }
 
 void SkillBasicGrenade::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
@@ -31,18 +31,18 @@ void SkillBasicGrenade::modifyElement(const Damage& dmg, const block_list& src, 
 	const status_change* sc = status_get_sc(&src);
 
 	// Night Watch Grenade Fragment elementals
-	if( sc != nullptr ){
-		if( sc->hasSCE( SC_GRENADE_FRAGMENT_1 ) ){
+	if (sc != nullptr) {
+		if (sc->hasSCE(SC_GRENADE_FRAGMENT_1)) {
 			element = ELE_WATER;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_2 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_2)) {
 			element = ELE_WIND;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_3 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_3)) {
 			element = ELE_EARTH;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_4 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_4)) {
 			element = ELE_FIRE;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_5 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_5)) {
 			element = ELE_DARK;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_6 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_6)) {
 			element = ELE_HOLY;
 		}
 	}

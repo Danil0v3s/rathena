@@ -28,7 +28,7 @@
 
 using namespace rathena;
 
-static int32 split_exact_quest_time(char* modif_p, int32* week, int32* day, int32* hour, int32* minute, int32 *second);
+static int32 split_exact_quest_time(char* modif_p, int32* week, int32* day, int32* hour, int32* minute, int32* second);
 
 const std::string QuestDatabase::getDefaultLocation() {
 	return std::string(db_path) + "/quest_db.yml";
@@ -49,7 +49,7 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 	bool exists = quest != nullptr;
 
 	if (!exists) {
-		if (!this->nodesExist(node, { "Title" }))
+		if (!this->nodesExist(node, {"Title"}))
 			return 0;
 
 		quest = std::make_shared<s_quest_db>();
@@ -72,18 +72,17 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 			return 0;
 
 		if (time.find("+") != std::string::npos) {
-			double timediff = solve_time(const_cast<char *>(time.c_str()));
+			double timediff = solve_time(const_cast<char*>(time.c_str()));
 
 			if (timediff <= 0) {
 				this->invalidWarning(node["TimeLimit"], "Incorrect TimeLimit format %s given, skipping.\n", time.c_str());
 				return 0;
 			}
 			quest->time = static_cast<time_t>(timediff);
-		}
-		else {// '+' not found, set to specific time
+		} else { // '+' not found, set to specific time
 			int32 day, hour, minute, second, week;
 
-			if (split_exact_quest_time(const_cast<char *>(time.c_str()), &week, &day, &hour, &minute, &second) == 0) {
+			if (split_exact_quest_time(const_cast<char*>(time.c_str()), &week, &day, &hour, &minute, &second) == 0) {
 				this->invalidWarning(node["TimeLimit"], "Incorrect TimeLimit format %s given, skipping.\n", time.c_str());
 				return 0;
 			}
@@ -122,7 +121,6 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 			uint16 index = 0, mob_id = 0;
 
 			if (this->nodeExists(targetNode, "Mob")) {
-
 				std::string mob_name;
 
 				if (!this->asString(targetNode, "Mob", mob_name))
@@ -137,11 +135,10 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 
 				mob_id = mob->id;
 
-				it = std::find_if(quest->objectives.begin(), quest->objectives.end(), [&](std::shared_ptr<s_quest_objective> const &v) {
+				it = std::find_if(quest->objectives.begin(), quest->objectives.end(), [&](std::shared_ptr<s_quest_objective> const& v) {
 					return (*v).mob_id == mob_id;
 				});
-			}
-			else {
+			} else {
 				if (!this->asUInt16(targetNode, "Id", index)) {
 					this->invalidWarning(targetNode, "Missing 'Id', skipping.\n");
 					return 0;
@@ -151,7 +148,7 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 					return 0;
 				}
 
-				it = std::find_if(quest->objectives.begin(), quest->objectives.end(), [&](std::shared_ptr<s_quest_objective> const &v) {
+				it = std::find_if(quest->objectives.begin(), quest->objectives.end(), [&](std::shared_ptr<s_quest_objective> const& v) {
 					return (*v).index == index;
 				});
 			}
@@ -320,7 +317,7 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 							continue;
 						}
 
-						if (!util::vector_exists( target->mobs_allowed, mob->id ))
+						if (!util::vector_exists(target->mobs_allowed, mob->id))
 							target->mobs_allowed.push_back(mob->id);
 					}
 				}
@@ -367,7 +364,7 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 
 			//std::shared_ptr<s_quest_dropitem> target = util::vector_find(quest->dropitem, mob_id);
 			std::shared_ptr<s_quest_dropitem> target;
-			std::vector<std::shared_ptr<s_quest_dropitem>>::iterator it = std::find_if(quest->dropitem.begin(), quest->dropitem.end(), [&](std::shared_ptr<s_quest_dropitem> const &v) {
+			std::vector<std::shared_ptr<s_quest_dropitem>>::iterator it = std::find_if(quest->dropitem.begin(), quest->dropitem.end(), [&](std::shared_ptr<s_quest_dropitem> const& v) {
 				return (*v).mob_id == mob_id;
 			});
 
@@ -399,7 +396,7 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 				if (!this->asString(dropNode, "Item", item_name))
 					return 0;
 
-				std::shared_ptr<item_data> item = item_db.search_aegisname( item_name.c_str() );
+				std::shared_ptr<item_data> item = item_db.search_aegisname(item_name.c_str());
 
 				if (!item) {
 					this->invalidWarning(dropNode["Item"], "Item %s does not exist, skipping.\n", item_name.c_str());
@@ -445,8 +442,7 @@ uint64 QuestDatabase::parseBodyNode(const ryml::NodeRef& node) {
 	return 1;
 }
 
-
-static int32 split_exact_quest_time(char* modif_p, int32* week, int32* day, int32* hour, int32* minute, int32 *second) {
+static int32 split_exact_quest_time(char* modif_p, int32* week, int32* day, int32* hour, int32* minute, int32* second) {
 	int32 w = -1, d = -1, h = -1, mn = -1, s = -1;
 
 	nullpo_retr(0, modif_p);
@@ -496,14 +492,14 @@ static int32 split_exact_quest_time(char* modif_p, int32* week, int32* day, int3
 		}
 	}
 
-	if (h < 0 || h > 23 || mn > 59 || s > 59)	// hour is required
+	if (h < 0 || h > 23 || mn > 59 || s > 59) // hour is required
 		return 0;
 
 	*week = w;
-	*day = max(0,d);
+	*day = max(0, d);
 	*hour = h;
-	*minute = max(0,mn);
-	*second = max(0,s);
+	*minute = max(0, mn);
+	*second = max(0, s);
 
 	return 1;
 }
@@ -513,8 +509,7 @@ static int32 split_exact_quest_time(char* modif_p, int32* week, int32* day, int3
  * @param quest_id : ID to lookup
  * @return Quest entry or nullptr on failure
  */
-std::shared_ptr<s_quest_db> quest_search(int32 quest_id)
-{
+std::shared_ptr<s_quest_db> quest_search(int32 quest_id) {
 	auto quest = quest_db.find(quest_id);
 
 	if (!quest)
@@ -528,8 +523,7 @@ std::shared_ptr<s_quest_db> quest_search(int32 quest_id)
  * @param sd : Player's data
  * @return 0 in case of success, nonzero otherwise (i.e. the player has no quests)
  */
-int32 quest_pc_login(map_session_data *sd)
-{
+int32 quest_pc_login(map_session_data* sd) {
 	if (!sd->avail_quests)
 		return 1;
 
@@ -551,8 +545,7 @@ int32 quest_pc_login(map_session_data *sd)
  * @param qi: Quest data
  * @return Time limit value
  */
-static time_t quest_time(std::shared_ptr<s_quest_db> qi)
-{
+static time_t quest_time(std::shared_ptr<s_quest_db> qi) {
 	if (!qi || qi->time < 0)
 		return 0;
 
@@ -560,7 +553,7 @@ static time_t quest_time(std::shared_ptr<s_quest_db> qi)
 		return time(nullptr) + qi->time;
 	else if (qi->time_at) {
 		time_t t = time(nullptr);
-		struct tm *lt = localtime(&t);
+		struct tm* lt = localtime(&t);
 		uint32 time_today = lt->tm_hour * 3600 + lt->tm_min * 60 + lt->tm_sec;
 
 		int32 day_shift = 0;
@@ -587,8 +580,7 @@ static time_t quest_time(std::shared_ptr<s_quest_db> qi)
  * @param quest_id : ID of the quest to add.
  * @return 0 in case of success, nonzero otherwise
  */
-int32 quest_add(map_session_data *sd, int32 quest_id)
-{
+int32 quest_add(map_session_data* sd, int32 quest_id) {
 	std::shared_ptr<s_quest_db> qi = quest_search(quest_id);
 
 	if (!qi) {
@@ -609,7 +601,7 @@ int32 quest_add(map_session_data *sd, int32 quest_id)
 
 	//The character has some completed quests, make room before them so that they will stay at the end of the array
 	if (sd->avail_quests != sd->num_quests)
-		memmove(&sd->quest_log[n + 1], &sd->quest_log[n], sizeof(struct quest) * (sd->num_quests-sd->avail_quests));
+		memmove(&sd->quest_log[n + 1], &sd->quest_log[n], sizeof(struct quest) * (sd->num_quests - sd->avail_quests));
 
 	sd->quest_log[n] = {};
 	sd->quest_log[n].quest_id = qi->id;
@@ -620,7 +612,7 @@ int32 quest_add(map_session_data *sd, int32 quest_id)
 	clif_quest_add(sd, &sd->quest_log[n]);
 	clif_quest_update_objective(sd, &sd->quest_log[n]);
 
-	if( save_settings&CHARSAVE_QUEST )
+	if (save_settings & CHARSAVE_QUEST)
 		chrif_save(sd, CSAVE_NORMAL);
 
 	return 0;
@@ -633,8 +625,7 @@ int32 quest_add(map_session_data *sd, int32 quest_id)
  * @param qid2 : New quest to add
  * @return 0 in case of success, nonzero otherwise
  */
-int32 quest_change(map_session_data *sd, int32 qid1, int32 qid2)
-{
+int32 quest_change(map_session_data* sd, int32 qid1, int32 qid2) {
 	std::shared_ptr<s_quest_db> qi = quest_search(qid2);
 
 	if (!qi) {
@@ -670,7 +661,7 @@ int32 quest_change(map_session_data *sd, int32 qid1, int32 qid2)
 	clif_quest_add(sd, &sd->quest_log[i]);
 	clif_quest_update_objective(sd, &sd->quest_log[i]);
 
-	if( save_settings&CHARSAVE_QUEST )
+	if (save_settings & CHARSAVE_QUEST)
 		chrif_save(sd, CSAVE_NORMAL);
 
 	return 0;
@@ -682,8 +673,7 @@ int32 quest_change(map_session_data *sd, int32 qid1, int32 qid2)
  * @param quest_id : ID of the quest to remove
  * @return 0 in case of success, nonzero otherwise
  */
-int32 quest_delete(map_session_data *sd, int32 quest_id)
-{
+int32 quest_delete(map_session_data* sd, int32 quest_id) {
 	int32 i;
 
 	//Search for quest
@@ -709,7 +699,7 @@ int32 quest_delete(map_session_data *sd, int32 quest_id)
 
 	clif_quest_delete(sd, quest_id);
 
-	if( save_settings&CHARSAVE_QUEST )
+	if (save_settings & CHARSAVE_QUEST)
 		chrif_save(sd, CSAVE_NORMAL);
 
 	return 0;
@@ -726,18 +716,17 @@ int32 quest_delete(map_session_data *sd, int32 quest_id)
  *   int32 Mob Size
  *   int32 Mob Element
  */
-int32 quest_update_objective_sub(block_list *bl, va_list ap)
-{
+int32 quest_update_objective_sub(block_list* bl, va_list ap) {
 	nullpo_ret(bl);
 
-	map_session_data *sd = BL_CAST(BL_PC, bl);
+	map_session_data* sd = BL_CAST(BL_PC, bl);
 
 	nullpo_ret(sd);
 
-	if( !sd->avail_quests )
+	if (!sd->avail_quests)
 		return 0;
-	
-	if( sd->status.party_id != va_arg(ap, int32))
+
+	if (sd->status.party_id != va_arg(ap, int32))
 		return 0;
 
 	quest_update_objective(sd, va_arg(ap, mob_data*));
@@ -754,8 +743,7 @@ int32 quest_update_objective_sub(block_list *bl, va_list ap)
  * @param mob_size: Monster Size
  * @param mob_element: Monster Element
  */
-void quest_update_objective(map_session_data *sd, mob_data* md)
-{
+void quest_update_objective(map_session_data* sd, mob_data* md) {
 	nullpo_retv(sd);
 
 	for (int32 i = 0; i < sd->avail_quests; i++) {
@@ -790,16 +778,16 @@ void quest_update_objective(map_session_data *sd, mob_data* md)
 				else if (qi->objectives[j]->mapid == sd->m)
 					objective_check++;
 				else {
-					struct map_data *mapdata = map_getmapdata(sd->m);
+					struct map_data* mapdata = map_getmapdata(sd->m);
 
 					if (mapdata->instance_id && mapdata->instance_src_map == qi->objectives[j]->mapid)
 						objective_check++;
 				}
-				if (qi->objectives[j]->mobs_allowed.empty() || util::vector_exists( qi->objectives[j]->mobs_allowed, md->mob_id ))
+				if (qi->objectives[j]->mobs_allowed.empty() || util::vector_exists(qi->objectives[j]->mobs_allowed, md->mob_id))
 					objective_check++;
 			}
 
-			if (objective_check == total_check && sd->quest_log[i].count[j] < qi->objectives[j]->count)  {
+			if (objective_check == total_check && sd->quest_log[i].count[j] < qi->objectives[j]->count) {
 				sd->quest_log[i].count[j]++;
 				sd->save_quest = true;
 				clif_quest_update_objective(sd, &sd->quest_log[i]);
@@ -807,7 +795,7 @@ void quest_update_objective(map_session_data *sd, mob_data* md)
 		}
 
 		// Process quest-granted extra drop bonuses
-		for (const auto &it : qi->dropitem) {
+		for (const auto& it : qi->dropitem) {
 			if (it->mob_id != 0 && it->mob_id != md->mob_id)
 				continue;
 			if (it->rate < 10000 && !rnd_chance<uint16>(it->rate, 10000))
@@ -820,18 +808,18 @@ void quest_update_objective(map_session_data *sd, mob_data* md)
 			entry.nameid = it->nameid;
 			entry.identify = itemdb_isidentified(it->nameid);
 			entry.amount = it->count;
-//#ifdef BOUND_ITEMS
-//			entry.bound = it->bound;
-//#endif
-//			if (it.isGUID)
-//				item.unique_id = pc_generate_unique_id(sd);
-			
+			//#ifdef BOUND_ITEMS
+			//			entry.bound = it->bound;
+			//#endif
+			//			if (it.isGUID)
+			//				item.unique_id = pc_generate_unique_id(sd);
+
 			e_additem_result result;
 
 			if ((result = pc_additem(sd, &entry, 1, LOG_TYPE_QUEST)) != ADDITEM_SUCCESS) // Failed to obtain the item
 				clif_additem(sd, 0, 0, result);
-//			else if (it.isAnnounced || item_db.find(it.nameid)->flag.broadcast)
-//				intif_broadcast_obtain_special_item(sd, it.nameid, it.mob_id, ITEMOBTAIN_TYPE_MONSTER_ITEM);
+			//			else if (it.isAnnounced || item_db.find(it.nameid)->flag.broadcast)
+			//				intif_broadcast_obtain_special_item(sd, it.nameid, it.mob_id, ITEMOBTAIN_TYPE_MONSTER_ITEM);
 		}
 	}
 	pc_show_questinfo(sd);
@@ -846,8 +834,7 @@ void quest_update_objective(map_session_data *sd, mob_data* md)
  * @return 0 in case of success, nonzero otherwise
  * @author [Inkfish]
  */
-int32 quest_update_status(map_session_data *sd, int32 quest_id, e_quest_state status)
-{
+int32 quest_update_status(map_session_data* sd, int32 quest_id, e_quest_state status) {
 	int32 i;
 
 	ARR_FIND(0, sd->avail_quests, i, sd->quest_log[i].quest_id == quest_id);
@@ -875,7 +862,7 @@ int32 quest_update_status(map_session_data *sd, int32 quest_id, e_quest_state st
 
 	clif_quest_delete(sd, quest_id);
 
-	if (save_settings&CHARSAVE_QUEST)
+	if (save_settings & CHARSAVE_QUEST)
 		chrif_save(sd, CSAVE_NORMAL);
 
 	return 0;
@@ -895,8 +882,7 @@ int32 quest_update_status(map_session_data *sd, int32 quest_id, e_quest_state st
  *              1 if the quest's timeout has expired
  *              0 otherwise
  */
-int32 quest_check( const map_session_data* sd, int32 quest_id, e_quest_check_type type )
-{
+int32 quest_check(const map_session_data* sd, int32 quest_id, e_quest_check_type type) {
 	int32 i;
 
 	ARR_FIND(0, sd->num_quests, i, sd->quest_log[i].quest_id == quest_id);
@@ -909,7 +895,8 @@ int32 quest_check( const map_session_data* sd, int32 quest_id, e_quest_check_typ
 				return 1;
 			return sd->quest_log[i].state;
 		case PLAYTIME:
-			return (sd->quest_log[i].time < (uint32)time(nullptr) ? 2 : sd->quest_log[i].state == Q_COMPLETE ? 1 : 0);
+			return (sd->quest_log[i].time < (uint32)time(nullptr) ? 2 : sd->quest_log[i].state == Q_COMPLETE ? 1
+			                                                                                                 : 0);
 		case HUNTING:
 			if (sd->quest_log[i].state == Q_INACTIVE || sd->quest_log[i].state == Q_ACTIVE) {
 				int32 j;
@@ -923,7 +910,7 @@ int32 quest_check( const map_session_data* sd, int32 quest_id, e_quest_check_typ
 			}
 			return 0;
 		default:
-			ShowError("quest_check_quest: Unknown parameter %d",type);
+			ShowError("quest_check_quest: Unknown parameter %d", type);
 			break;
 	}
 
@@ -937,8 +924,7 @@ int32 quest_check( const map_session_data* sd, int32 quest_id, e_quest_check_typ
  * @param sd : Character's data
  * @param ap : Ignored
  */
-static int32 quest_reload_check_sub(map_session_data *sd, va_list ap)
-{
+static int32 quest_reload_check_sub(map_session_data* sd, va_list ap) {
 	nullpo_ret(sd);
 
 	int32 i, j = 0;
@@ -946,7 +932,7 @@ static int32 quest_reload_check_sub(map_session_data *sd, va_list ap)
 	for (i = 0; i < sd->num_quests; i++) {
 		std::shared_ptr<s_quest_db> qi = quest_search(sd->quest_log[i].quest_id);
 
-		if (!qi) { //Remove no longer existing entries
+		if (!qi) {                                    //Remove no longer existing entries
 			if (sd->quest_log[i].state != Q_COMPLETE) //And inform the client if necessary
 				clif_quest_delete(sd, sd->quest_log[i].quest_id);
 			continue;
@@ -981,15 +967,13 @@ QuestDatabase quest_db;
 /**
  * Initializes the quest interface.
  */
-void do_init_quest(void)
-{
+void do_init_quest(void) {
 	quest_db.load();
 }
 
 /**
  * Finalizes the quest interface before shutdown.
  */
-void do_final_quest(void)
-{
+void do_final_quest(void) {
 	quest_db.clear();
 }

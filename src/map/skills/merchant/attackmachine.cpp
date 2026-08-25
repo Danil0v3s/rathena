@@ -14,7 +14,7 @@ void SkillAttackMachine::calculateSkillRatio(const Damage* wd, const block_list*
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 150 + 700 * skill_lv;
-	skillratio += 5 * sstatus->pow;	// TODO : unknown pow ratio
+	skillratio += 5 * sstatus->pow; // TODO : unknown pow ratio
 
 	RE_LVL_DMOD(100);
 }

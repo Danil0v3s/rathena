@@ -11,7 +11,7 @@
 SkillFlameRock::SkillFlameRock() : SkillImplRecursiveDamageSplash(EM_EL_FLAMEROCK) {
 }
 
-void SkillFlameRock::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &base_skillratio, int32 mflag) const {
+void SkillFlameRock::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& base_skillratio, int32 mflag) const {
 	const s_elemental_data* ed = BL_CAST(BL_ELEM, src);
 
 	base_skillratio += -100 + 2400;

@@ -19,29 +19,29 @@ void SkillStarBurst::castendDamageId(block_list* src, block_list* target, uint16
 	if (flag & 1) {
 		skill_attack(skill_get_type(getSkillId()), src, src, target, getSkillId(), skill_lv, tick, flag);
 	} else {
-		unit_data* ud = unit_bl2ud( src );
+		unit_data* ud = unit_bl2ud(src);
 
-		if( ud != nullptr ){
-			for( const std::shared_ptr<s_skill_unit_group>& sug : ud->skillunits ){
-				if( sug->skill_id != SKE_TWINKLING_GALAXY ){
+		if (ud != nullptr) {
+			for (const std::shared_ptr<s_skill_unit_group>& sug : ud->skillunits) {
+				if (sug->skill_id != SKE_TWINKLING_GALAXY) {
 					continue;
 				}
 
 				skill_unit* su = sug->unit;
 
 				// Check if it is too far away
-				if( distance_xy( target->x, target->y, su->x, su->y ) > skill_get_unit_range( sug->skill_id, sug->skill_lv ) ){
+				if (distance_xy(target->x, target->y, su->x, su->y) > skill_get_unit_range(sug->skill_id, sug->skill_lv)) {
 					continue;
 				}
 
 				std::shared_ptr<s_skill_unit_group> sg = su->group;
 
-				for( int32 i = 0; i < MAX_SKILLTIMERSKILL; i++ ){
-					if( ud->skilltimerskill[i] == nullptr ){
+				for (int32 i = 0; i < MAX_SKILLTIMERSKILL; i++) {
+					if (ud->skilltimerskill[i] == nullptr) {
 						continue;
 					}
 
-					if( ud->skilltimerskill[i]->skill_id != sug->skill_id ){
+					if (ud->skilltimerskill[i]->skill_id != sug->skill_id) {
 						continue;
 					}
 
@@ -58,7 +58,7 @@ void SkillStarBurst::castendDamageId(block_list* src, block_list* target, uint16
 			}
 		}
 
-		if( sd != nullptr ){
+		if (sd != nullptr) {
 			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL_LEVEL);
 		}
 

@@ -17,9 +17,9 @@ void SkillSilentBreeze::castendNoDamageId(block_list* src, block_list* target, u
 	int32 i = 0;
 	int32 heal = 5 * status_get_lv(hd) +
 #ifdef RENEWAL
-		status_base_matk_min(target, &hd->battle_status, status_get_lv(hd));
+	    status_base_matk_min(target, &hd->battle_status, status_get_lv(hd));
 #else
-		status_base_matk_min(&hd->battle_status);
+	    status_base_matk_min(&hd->battle_status);
 #endif
 	//Silences the homunculus and target
 	status_change_start(src, src, SC_SILENCE, 10000, skill_lv, 0, 0, 0, skill_get_time(getSkillId(), skill_lv), SCSTART_NONE);
@@ -31,8 +31,7 @@ void SkillSilentBreeze::castendNoDamageId(block_list* src, block_list* target, u
 	//Removes these SC from target
 	if (tsc) {
 		const enum sc_type scs[] = {
-			SC_MANDRAGORA, SC_HARMONIZE, SC_DEEPSLEEP, SC_VOICEOFSIREN, SC_SLEEP, SC_CONFUSION, SC_HALLUCINATION
-		};
+		    SC_MANDRAGORA, SC_HARMONIZE, SC_DEEPSLEEP, SC_VOICEOFSIREN, SC_SLEEP, SC_CONFUSION, SC_HALLUCINATION};
 		for (i = 0; i < ARRAYLENGTH(scs); i++) {
 			if (tsc->getSCE(scs[i])) {
 				status_change_end(target, scs[i]);

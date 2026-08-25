@@ -15,7 +15,7 @@ void SkillSecondJudgement::calculateSkillRatio(const Damage* wd, const block_lis
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 2000 + 500 * skill_lv;
-	skillratio += 7 * sstatus->pow;	// TODO : pow ratio has changed ?
+	skillratio += 7 * sstatus->pow; // TODO : pow ratio has changed ?
 
 	RE_LVL_DMOD(100);
 }

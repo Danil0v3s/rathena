@@ -10,17 +10,17 @@
 
 namespace rathena::scripting {
 
-class NpcRegistry;
+	class NpcRegistry;
 
-// Bind `globalThis.registerNpc(...registrations)` into `context`.
-// All registrations land in `registry`.
-//
-// The function accepts varargs; each argument must be an object with
-// at minimum { name, map, x, y, sprite } and may carry an `onClick`
-// async function. Missing fields throw a JS exception that surfaces
-// in the bundle's evaluation TryCatch and aborts boot.
-void bind_registrars(v8::Isolate* isolate, v8::Local<v8::Context> context,
-                     NpcRegistry& registry);
+	// Bind `globalThis.registerNpc(...registrations)` into `context`.
+	// All registrations land in `registry`.
+	//
+	// The function accepts varargs; each argument must be an object with
+	// at minimum { name, map, x, y, sprite } and may carry an `onClick`
+	// async function. Missing fields throw a JS exception that surfaces
+	// in the bundle's evaluation TryCatch and aborts boot.
+	void bind_registrars(v8::Isolate* isolate, v8::Local<v8::Context> context,
+	    NpcRegistry& registry);
 
 } // namespace rathena::scripting
 

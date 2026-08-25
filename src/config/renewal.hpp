@@ -12,7 +12,6 @@
  * For detailed guidance on these check http://rathena.org/wiki/SRC/config/
  **/
 
-
 /**
  * @INFO: This file holds general-purpose renewal settings, for class-specific ones check /src/config/classes folder
  **/

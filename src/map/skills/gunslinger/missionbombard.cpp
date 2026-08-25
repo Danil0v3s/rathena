@@ -29,8 +29,7 @@ void SkillMissionBombard::calculateSkillRatio(const Damage* wd, const block_list
 	if (wd->miscflag & SKILL_ALTDMG_FLAG) {
 		skillratio += -100 + 5000 + 1800 * skill_lv;
 		skillratio += pc_checkskill(sd, NW_GRENADE_MASTERY) * 100;
-	}
-	else {
+	} else {
 		skillratio += -100 + 800 + 200 * skill_lv;
 		skillratio += pc_checkskill(sd, NW_GRENADE_MASTERY) * 30;
 	}
@@ -42,18 +41,18 @@ void SkillMissionBombard::modifyElement(const Damage& dmg, const block_list& src
 	const status_change* sc = status_get_sc(&src);
 
 	// Night Watch Grenade Fragment elementals
-	if( sc != nullptr ){
-		if( sc->hasSCE( SC_GRENADE_FRAGMENT_1 ) ){
+	if (sc != nullptr) {
+		if (sc->hasSCE(SC_GRENADE_FRAGMENT_1)) {
 			element = ELE_WATER;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_2 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_2)) {
 			element = ELE_WIND;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_3 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_3)) {
 			element = ELE_EARTH;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_4 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_4)) {
 			element = ELE_FIRE;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_5 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_5)) {
 			element = ELE_DARK;
-		}else if( sc->hasSCE( SC_GRENADE_FRAGMENT_6 ) ){
+		} else if (sc->hasSCE(SC_GRENADE_FRAGMENT_6)) {
 			element = ELE_HOLY;
 		}
 	}

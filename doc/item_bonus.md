@@ -1,98 +1,122 @@
-//===== rAthena Documentation ================================
-//= rAthena Item Bonuses List
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20151029
-//===== Description: =========================================
-//= List of script instructions used in item bonuses.
-//============================================================
+# rAthena Item Bonuses List
 
-Constants
----------
+List of script instructions used in item bonuses.
+
+*Last updated 20151029 by rAthena Dev Team (upstream `doc/` header)*
+
+### Constants
+
 This list contains all available constants referenced in the 'bonus' commands.
 
-* Status effect (eff)
-	Eff_Bleeding, Eff_Blind, Eff_Burning, Eff_Confusion, Eff_Crystalize, Eff_Curse, Eff_DPoison,
-	Eff_Fear, Eff_Freeze, Eff_Poison, Eff_Silence, Eff_Sleep, Eff_Stone, Eff_Stun, Eff_Freezing,
-	Eff_Heat, Eff_Deepsleep, Eff_WhiteImprison, Eff_Hallucination
+### Status effect (eff)
 
-* Element (e)
-	Ele_Dark, Ele_Earth, Ele_Fire, Ele_Ghost, Ele_Holy, Ele_Neutral, Ele_Poison,
-	Ele_Undead, Ele_Water, Ele_Wind, Ele_All
+```
+Eff_Bleeding, Eff_Blind, Eff_Burning, Eff_Confusion, Eff_Crystalize, Eff_Curse, Eff_DPoison,
+Eff_Fear, Eff_Freeze, Eff_Poison, Eff_Silence, Eff_Sleep, Eff_Stone, Eff_Stun, Eff_Freezing,
+Eff_Heat, Eff_Deepsleep, Eff_WhiteImprison, Eff_Hallucination
+```
 
-* Race (r)
-	RC_Angel, RC_Brute, RC_DemiHuman, RC_Demon, RC_Dragon, RC_Fish, RC_Formless,
-	RC_Insect, RC_Plant, RC_Player_Human (RC_Player deprecated), RC_Player_Doram, RC_Undead, RC_All
+### Element (e)
 
-* Monster Race (mr)
-	RC2_Goblin, RC2_Kobold, RC2_Orc, RC2_Golem, RC2_Guardian, RC2_Ninja, RC2_GVG, RC2_Battlefield,
-	RC2_Treasure, RC2_BioLab, RC2_Manuk, RC2_Splendide, RC2_Scaraba, RC2_OGH_ATK_DEF, RC2_OGH_Hidden,
-	RC2_Bio5_Swordman_Thief, RC2_Bio5_Acolyte_Merchant, RC2_Bio5_Mage_Archer, RC2_Bio5_MVP,
-	RC2_Clocktower, RC2_Thanatos, RC2_Faceworm, RC2_Hearthunter, RC2_Rockridge, RC2_Werner_Lab,
-	RC2_Temple_Demon, RC2_Illusion_Vampire, RC2_Malangdo, RC2_EP172ALPHA, RC2_EP172BETA, RC2_EP172BATH,
-	RC2_Illusion_Turtle, RC2_Rachel_Sanctuary, RC2_Illusion_Luanda, RC2_Illusion_Frozen, RC2_Illusion_Moonlight,
-	RC2_Ep16_def, RC2_Edda_Arunafeltz, RC2_Lasagna, RC2_Glast_Heim_Abyss, RC2_Destroyed_Valkyrie_Realm, RC2_Encroached_Gephenia
+```
+Ele_Dark, Ele_Earth, Ele_Fire, Ele_Ghost, Ele_Holy, Ele_Neutral, Ele_Poison,
+Ele_Undead, Ele_Water, Ele_Wind, Ele_All
+```
 
-* Class (c)
-	Class_Normal, Class_Boss, Class_Guardian, Class_All
+### Race (r)
 
-* Size (s)
-	Size_Small, Size_Medium, Size_Large, Size_All
+```
+RC_Angel, RC_Brute, RC_DemiHuman, RC_Demon, RC_Dragon, RC_Fish, RC_Formless,
+RC_Insect, RC_Plant, RC_Player_Human (RC_Player deprecated), RC_Player_Doram, RC_Undead, RC_All
+```
 
-* Trigger criteria (bf)
-	BF_SHORT	= Trigger on melee attacks
-	BF_LONG		= Trigger on ranged attacks
-	(Default: BF_SHORT+BF_LONG)
-   
-	BF_WEAPON	= Trigger on weapon skills 
-	BF_MAGIC	= Trigger on magic skills 
-	BF_MISC		= Trigger on misc skills
-	(Default: BF_WEAPON)
-   
-	BF_NORMAL	= Trigger on normal attacks
-	BF_SKILL	= Trigger on skills
-	(Default: BF_SKILL if type is BF_MISC or BF_MAGIC, BF_NORMAL if type is BF_WEAPON)
+### Monster Race (mr)
 
-* Trigger criteria (atf)
-	Effect target: (Default: Attacked target)
-	ATF_SELF	= Trigger effect on self
-	ATF_TARGET	= Trigger effect on target
-	
-	Attack range criteria: (Default: All attacks)
-	ATF_SHORT	= Trigger on melee attacks
-	ATF_LONG	= Trigger on ranged attacks
-	
-	Skill/attack type criteria: (Default: Physical/weapon)
-	ATF_SKILL	= Trigger on magic/misc skills
-	ATF_WEAPON	= Trigger on weapon skill / physical attacks
-	ATF_MAGIC	= Trigger on magic skills
-	ATF_MISC	= Trigger on misc skills
+```
+RC2_Goblin, RC2_Kobold, RC2_Orc, RC2_Golem, RC2_Guardian, RC2_Ninja, RC2_GVG, RC2_Battlefield,
+RC2_Treasure, RC2_BioLab, RC2_Manuk, RC2_Splendide, RC2_Scaraba, RC2_OGH_ATK_DEF, RC2_OGH_Hidden,
+RC2_Bio5_Swordman_Thief, RC2_Bio5_Acolyte_Merchant, RC2_Bio5_Mage_Archer, RC2_Bio5_MVP,
+RC2_Clocktower, RC2_Thanatos, RC2_Faceworm, RC2_Hearthunter, RC2_Rockridge, RC2_Werner_Lab,
+RC2_Temple_Demon, RC2_Illusion_Vampire, RC2_Malangdo, RC2_EP172ALPHA, RC2_EP172BETA, RC2_EP172BATH,
+RC2_Illusion_Turtle, RC2_Rachel_Sanctuary, RC2_Illusion_Luanda, RC2_Illusion_Frozen, RC2_Illusion_Moonlight,
+RC2_Ep16_def, RC2_Edda_Arunafeltz, RC2_Lasagna, RC2_Glast_Heim_Abyss, RC2_Destroyed_Valkyrie_Realm, RC2_Encroached_Gephenia
+```
 
-* Other values:
-	Skill (sk): see 'db/(pre-)re/skill_db.yml' (NOTE: Both skill IDs and names, in quotes, are supported.)
-	Monster id (mid): see 'db/(pre-)re/mob_db.yml'
-	Item id (iid): see 'db/item_db.yml'
-	Item group (ig): see 'db/(pre-)re/item_group_db.yml' and the constants in 'src/map/script_constants.hpp', prefixed with IG_*
-	Weapon type (w): see 'doc/item_db.txt' -> SubType
+### Class (c)
 
+```
+Class_Normal, Class_Boss, Class_Guardian, Class_All
+```
 
-Bonuses
--------
+### Size (s)
+
+```
+Size_Small, Size_Medium, Size_Large, Size_All
+```
+
+### Trigger criteria (bf)
+
+```
+BF_SHORT	= Trigger on melee attacks
+BF_LONG		= Trigger on ranged attacks
+(Default: BF_SHORT+BF_LONG)
+
+BF_WEAPON	= Trigger on weapon skills
+BF_MAGIC	= Trigger on magic skills
+BF_MISC		= Trigger on misc skills
+(Default: BF_WEAPON)
+
+BF_NORMAL	= Trigger on normal attacks
+BF_SKILL	= Trigger on skills
+(Default: BF_SKILL if type is BF_MISC or BF_MAGIC, BF_NORMAL if type is BF_WEAPON)
+```
+
+### Trigger criteria (atf)
+
+```
+Effect target: (Default: Attacked target)
+ATF_SELF	= Trigger effect on self
+ATF_TARGET	= Trigger effect on target
+
+Attack range criteria: (Default: All attacks)
+ATF_SHORT	= Trigger on melee attacks
+ATF_LONG	= Trigger on ranged attacks
+
+Skill/attack type criteria: (Default: Physical/weapon)
+ATF_SKILL	= Trigger on magic/misc skills
+ATF_WEAPON	= Trigger on weapon skill / physical attacks
+ATF_MAGIC	= Trigger on magic skills
+ATF_MISC	= Trigger on misc skills
+```
+
+### Other values
+
+```
+Skill (sk): see 'db/(pre-)re/skill_db.yml' (NOTE: Both skill IDs and names, in quotes, are supported.)
+Monster id (mid): see 'db/(pre-)re/mob_db.yml'
+Item id (iid): see 'db/item_db.yml'
+Item group (ig): see 'db/(pre-)re/item_group_db.yml' and the constants in 'src/map/script_constants.hpp', prefixed with IG_*
+Weapon type (w): see 'doc/item_db.md' -> SubType
+```
+
+### Bonuses
+
 The format of bonuses listed in this file is as follows:
-	1. Basic Bonuses
-	2. Extended Bonuses
-	3. Group-specific Bonuses
-	4. Status-related Bonuses
-	5. AutoSpell Bonuses
-	6. Misc Bonuses
 
-====================
-| 1. Basic Bonuses |
-====================
+```
+1. Basic Bonuses
+2. Extended Bonuses
+3. Group-specific Bonuses
+4. Status-related Bonuses
+5. AutoSpell Bonuses
+6. Misc Bonuses
+```
 
-Base stats
-----------
+## 1. Basic Bonuses
+
+### Base stats
+
+```
 bonus bStr,n;      			STR + n
 bonus bAgi,n;      			AGI + n
 bonus bVit,n;      			VIT + n
@@ -102,9 +126,11 @@ bonus bLuk,n;      			LUK + n
 bonus bAllStats,n; 			STR + n, AGI + n, VIT + n, INT + n, DEX + n, LUK + n
 bonus bAgiVit,n;   			AGI + n, VIT + n
 bonus bAgiDexStr,n;			STR + n, AGI + n, DEX + n
+```
 
-Trait Stats
------------
+### Trait Stats
+
+```
 bonus bPow,n;      			POW + n
 bonus bSta,n;      			STA + n
 bonus bWis,n;      			WIS + n
@@ -112,18 +138,22 @@ bonus bSpl,n;      			SPL + n
 bonus bCon,n;      			CON + n
 bonus bCrt,n;      			CRT + n
 bonus bAllTraitStats,n; 		POW + n, STA + n, WIS + n, SPL + n, CON + n, CRT + n
+```
 
-HP/SP/AP
------
+### HP/SP/AP
+
+```
 bonus bMaxHP,n;    			MaxHP + n
-bonus bMaxHPrate,n;			MaxHP + n% 
+bonus bMaxHPrate,n;			MaxHP + n%
 bonus bMaxSP,n;    			MaxSP + n
 bonus bMaxSPrate,n;			MaxSP + n%
 bonus bMaxAP,n;    			MaxAP + n
 bonus bMaxAPrate,n;			MaxAP + n%
+```
 
-Atk/Def
--------
+### Atk/Def
+
+```
 bonus bBaseAtk,n;  			Basic attack power + n
 bonus bAtk,n;      			ATK + n (unofficial)
 bonus bAtk2,n;     			ATK2 + n
@@ -141,9 +171,11 @@ bonus bMdef,n;     			Equipment MDEF + n
 bonus bMdefRate,n; 			Equipment MDEF + n%
 bonus bMdef2,n;    			INT based MDEF + n
 bonus bMdef2Rate,n;			INT based MDEF + n%
+```
 
-Additional stats
-----------------
+### Additional stats
+
+```
 bonus bHit,n;         			Hit + n
 bonus bHitRate,n;     			Hit + n%
 bonus bCritical,n;    			Critical + n
@@ -174,13 +206,13 @@ bonus bHPlus,n;         		HPlus + n
 bonus bHPlusRate,n;     		HPlus + n%
 bonus bCRate,n;         		CRate + n
 bonus bCRateRate,n;     		CRate + n%
+```
 
-=======================
-| 2. Extended Bonuses |
-=======================
+## 2. Extended Bonuses
 
-HP/SP
------
+### HP/SP
+
+```
 bonus bHPrecovRate,n;   		Natural HP recovery ratio + n%
 bonus bSPrecovRate,n;   		Natural SP recovery ratio + n%
 bonus2 bHPRegenRate,n,t;		Gain n HP every t milliseconds
@@ -194,9 +226,11 @@ bonus bNoRegen,x;       		Stops HP or SP regeneration (x: 1=HP, 2=SP)
 bonus bUseSPrate,n;         		SP consumption + n%
 bonus2 bSkillUseSP,sk,n;    		Decreases SP consumption of skill sk by n
 bonus2 bSkillUseSPrate,sk,n;		Decreases SP consumption of skill sk by n%
+```
 
-Atk/Def
--------
+### Atk/Def
+
+```
 bonus2 bSkillAtk,sk,n;    		Increases damage of skill sk by n%
 bonus bSkillRatio,n;			Adds n to the skillratio of all attacks/skills that use it
 bonus bShortAtkRate,n;			Increases damage of short ranged attacks by n%
@@ -216,9 +250,11 @@ bonus bMiscAtkDef,n; 			Adds n% damage reduction against MISC attacks (traps, fa
 bonus bNoWeaponDamage,n;		Adds n% reduction to received physical damage
 bonus bNoMagicDamage,n; 		Adds n% reduction to received magical effect (attack, healing, support spells are all blocked)
 bonus bNoMiscDamage,n;  		Adds n% reduction to received misc damage
+```
 
-Healing
--------
+### Healing
+
+```
 bonus bHealPower,n;						Increases heal amount of all heal skills by n%
 bonus bHealPower2,n;					Increases heal amount if you are healed by any skills by n%
 bonus2 bSkillHeal,sk,n;					Increases heal amount of skill sk by n%
@@ -229,9 +265,11 @@ bonus2 bAddItemGroupHealRate,ig,n;		Increases HP recovered by n% for items of it
 bonus bAddItemSPHealRate,n;				Increases SP recovered by n% for healing items
 bonus2 bAddItemSPHealRate,iid,n;		Increases SP recovered by n% for item iid
 bonus2 bAddItemGroupSPHealRate,ig,n;	Increases SP recovered by n% for items of item group ig
+```
 
-Cast time/delay
----------------
+### Cast time/delay
+
+```
 bonus bCastrate,n;             		Skill cast time rate + n%. (If RENEWAL_CAST is defined, this bonus is equal to bVariableCastrate)
 bonus2 bCastrate,sk,n;         		Adjust casting time of skill sk by n%.(If RENEWAL_CAST is defined, this bonus is equal to bVariableCastrate)
 
@@ -251,13 +289,13 @@ bonus bNoCastCancel2;			Prevents casting from being interrupted when hit (works 
 bonus bDelayrate,n;        		Increases skill delay by n%
 bonus2 bSkillDelay,sk,t;		Increases delay of skill sk by t milliseconds
 bonus2 bSkillCooldown,sk,t;		Increases cooldown of skill sk by t milliseconds
+```
 
-=============================
-| 3. Group-specific Bonuses |
-=============================
+## 3. Group-specific Bonuses
 
-Damage modifiers
-----------------
+### Damage modifiers
+
+```
 bonus2 bAddEle,e,x;       		+x% physical damage against element e
 bonus3 bAddEle,e,x,bf;    		+x% physical damage against element e with trigger criteria bf
 bonus2 bMagicAddEle,e,x;  		+x% magical damage against element e
@@ -269,7 +307,7 @@ bonus2 bMagicSubDefEle,e,x;		+x% magic damage reduction from enemy with defense 
 bonus2 bAddRace,r,x;      		+x% physical damage against race r
 bonus2 bMagicAddRace,r,x; 		+x% magical damage against race r
 bonus2 bSubRace,r,x;      		+x% damage reduction against race r
-bonus3 bSubRace,r,x,bf;    		+x% damage reduction against race r with trigger criteria bf 
+bonus3 bSubRace,r,x,bf;    		+x% damage reduction against race r with trigger criteria bf
 
 bonus2 bAddClass,c,x;     		+x% physical damage against class c
 bonus2 bMagicAddClass,c,x;		+x% magical damage against class c
@@ -299,9 +337,11 @@ bonus2 bSubSkill,sk,n;  		Reduces n% damage received from skill sk
 
 bonus bAbsorbDmgMaxHP,n;		If the damage received is more than n% of Max HP, the damage received is [TotalDamage] - [n% of MaxHP] (Doesn't stack, will use the highest value) (Legacy rAthena behavior)
 bonus bAbsorbDmgMaxHP2,n;		If the damage received is more than n% of Max HP, the damage received is reduced to n% of MaxHP (Doesn't stack, will use the highest value) (Official behavior)
+```
 
-Atk/Def
--------
+### Atk/Def
+
+```
 bonus bAtkEle,e;          		Gives the player's attacks element e
 bonus bDefEle,e;          		Gives the player's defense element e
 
@@ -313,9 +353,11 @@ bonus bDefRatioAtkClass,c;		Deals more damage to enemies of class c with higher 
 
 bonus4 bSetDefRace,r,n,t,y; 	Set DEF to y of an enemy of race r at n% for t milliseconds with normal attack
 bonus4 bSetMDefRace,r,n,t,y;	Set MDEF to y of an enemy of race r at n% for t milliseconds with normal attack
+```
 
-Ignore Def
-----------
+### Ignore Def
+
+```
 bonus bIgnoreDefEle,e;  		Disregard DEF against enemies of element e
 bonus bIgnoreDefRace,r; 		Disregard DEF against enemies of race r
 bonus bIgnoreDefClass,c;		Disregard DEF against enemies of class c
@@ -326,21 +368,25 @@ bonus2 bIgnoreMdefRace2Rate,mr,n; 	Disregard n% of the target's MDEF if the targ
 bonus bIgnoreMDefEle,e; 		Disregard MDEF against enemies of element e
 bonus2 bIgnoreDefClassRate,c,n;	Disregard n% of the target's DEF if the target belongs to class c
 bonus2 bIgnoreMdefClassRate,c,n;	Disregard n% of the target's MDEF if the target belongs to class c
+```
 
-Ignore Res
-----------
+### Ignore Res
+
+```
 bonus2 bIgnoreResRaceRate,r,n;		Disregard n% of the target's Res if the target belongs to race r
 bonus2 bIgnoreMResRaceRate,r,n; 	Disregard n% of the target's MRes if the target belongs to race r
+```
 
-Experience
-----------
+### Experience
+
+```
 bonus2 bExpAddRace,r,x; 		Increase exp gained by x% against enemies of race r
 bonus2 bExpAddClass,c,x;		Increase exp gained by x% against enemies of class c
+```
 
-=============================
-| 4. Status-related Bonuses |
-=============================
+## 4. Status-related Bonuses
 
+```
 bonus2 bAddEff,eff,n;       		Adds a n/100% chance to cause status eff on the target when attacking
 bonus2 bAddEff2,eff,n;      		Adds a n/100% chance to cause status eff on self when attacking
 bonus2 bAddEffWhenHit,eff,n;		Adds a n/100% chance to cause status eff on the enemy when being hit by physical damage
@@ -376,15 +422,16 @@ bonus2 bComaRace,r,n;       		Adds a n/100% chance to cause Coma when attacking 
 bonus2 bWeaponComaEle,e,n;  		Adds a n/100% chance to cause Coma when attacking a target of element e with a normal attack
 bonus2 bWeaponComaClass,c,n;		Adds a n/100% chance to cause Coma when attacking a target of class c with a normal attack
 bonus2 bWeaponComaRace,r,n; 		Adds a n/100% chance to cause Coma when attacking a target of race r with a normal attack
+```
 
-========================
-| 5. AutoSpell Bonuses |
-========================
+## 5. AutoSpell Bonuses
+
 NOTES:
   - For all AutoSpell bonuses, target does not have be within the spell's range to go off.
   -- Enable conf/battle/battle.conf::autospell_check_range to force a range check.
   - By default, AutoSpell skills are casted on target unless it is a self or support skill (inf = 4/16).
 
+```
 bonus3 bAutoSpell,sk,y,n;       	Adds a n/10% chance to cast skill sk of level y when attacking
 bonus3 bAutoSpellWhenHit,sk,y,n;	Adds a n/10% chance to cast skill sk of level y when being hit by a direct attack
 
@@ -403,13 +450,13 @@ bonus5 bAutoSpellOnSkill,sk,x,y,n,i;	Adds a n/10% chance to autospell skill x at
                                     	i provides additional options (bitfield):
                                     	  &1 = forces the skill to be casted on self, rather than on the target of skill sk
                                     	  &2 = random skill level in [1..y] is chosen
+```
 
-===================
-| 6. Misc Bonuses |
-===================
+## 6. Misc Bonuses
 
-HP/SP drain
------------
+### HP/SP drain
+
+```
 bonus bHPDrainValue,n;        		Heals +n HP with a normal attack
 bonus2 bHPDrainValueRace,r,n; 		Heals +n HP when attacking a monster of race r with normal attack
 bonus2 bHpDrainValueClass,c,n;		Heals +n HP when attacking a monster of class c with normal attack
@@ -420,9 +467,11 @@ bonus2 bSpDrainValueClass,c,n;		Heals +n SP when attacking a monster of class c 
 
 bonus2 bHPDrainRate,x,n;		Adds a x/10% chance to drain n% HP from inflicted damage when attacking
 bonus2 bSPDrainRate,x,n;		Adds a x/10% chance to drain n% SP from inflicted damage when attacking
+```
 
-HP/SP vanish
-------------
+### HP/SP vanish
+
+```
 bonus2 bHPVanishRate,x,n;		Add a x/10% chance of decreasing enemy's HP amount by n% with a normal attack
 bonus3 bHPVanishRaceRate,r,x,n;		Add a x/10% chance of decreasing enemy's HP amount by n% when attacking, depends on enemy race r
 bonus3 bHPVanishRate,x,n,bf;	Add a x/10% chance of decreasing enemy's HP amount by n% when attacking with trigger criteria bf
@@ -432,9 +481,11 @@ bonus3 bSPVanishRaceRate,r,x,n;		Add a x/10% chance of decreasing enemy's SP amo
 bonus3 bSPVanishRate,x,n,bf;	Add a x/10% chance of decreasing enemy's SP amount by n% when attacking with trigger criteria bf
 
 bonus3 bStateNoRecoverRace,r,x,t;	Set a no recovery state of an enemy of race r at x/100% for t milliseconds with normal attack.
+```
 
-HP/SP gain
-------------
+### HP/SP gain
+
+```
 bonus bHPGainValue,n;     		Heals +n HP when killing an enemy with a melee-physical attack
 bonus bSPGainValue,n;     		Heals +n SP when killing an enemy with a melee-physical attack
 bonus2 bSPGainRace,r,n;   		Heals +n SP when killing an enemy of race r with a melee-physical attack
@@ -442,16 +493,20 @@ bonus bLongHPGainValue,n;     		Heals +n HP when killing an enemy with a range-p
 bonus bLongSPGainValue,n;     		Heals +n SP when killing an enemy with a range-physical attack
 bonus bMagicHPGainValue,n;		Heals +n HP when killing an enemy with a magical attack
 bonus bMagicSPGainValue,n;		Heals +n SP when killing an enemy with a magical attack
+```
 
-Damage return
--------------
+### Damage return
+
+```
 bonus bShortWeaponDamageReturn,n;	Reflects n% of received melee damage back to the enemy that caused it
 bonus bLongWeaponDamageReturn,n; 	Reflects n% of received ranged damage back to the enemy that caused it
 bonus bMagicDamageReturn,n;      	Adds a n% chance to reflect targetted magic spells back to the enemy that caused it
 bonus bReduceDamageReturn,n;		Reduces reflected damage (melee/ranged/magic) by n%
+```
 
-Strip/Break equipment
----------------------
+### Strip/Break equipment
+
+```
 bonus bUnstripableWeapon;		Weapon cannot be taken off via Strip skills
 bonus bUnstripableArmor; 		Armor cannot be taken off via Strip skills
 bonus bUnstripableHelm;  		Helm cannot be taken off via Strip skills
@@ -468,9 +523,11 @@ bonus bUnbreakable,n;       		Reduces the break chance of all equipped equipment
 
 bonus bBreakWeaponRate,n;		Adds a n/100% chance to break enemy's weapon while attacking (stacks with other break chances)
 bonus bBreakArmorRate,n; 		Adds a n/100% chance to break enemy's armor while attacking (stacks with other break chances)
+```
 
-Monster drops
--------------
+### Monster drops
+
+```
 bonus2 bDropAddRace,r,x;	Adds x% to player's drop rate when killing a monster with race r.
 bonus2 bDropAddClass,c,x;	Adds x% to player's drop rate when killing a monster with class c.
 
@@ -492,9 +549,11 @@ bonus3 bAddClassDropItemGroup,ig,c,n;	Adds a n/100% chance to get an item of gro
 bonus2 bGetZenyNum,x,n;   		Adds a n% chance of gaining 1~x zeny when killing a monster (only the highest among all is applied)
 bonus2 bAddGetZenyNum,x,n;		Adds a n% chance of gaining 1~x zeny when killing a monster
                           		NOTE: If n < 0, the max zeny to gain is -x*monster level.
+```
 
-Misc effects
-------------
+### Misc effects
+
+```
 bonus bDoubleRate,n;      		Double Attack probability n% (works with all weapons | only the highest among all is applied)
 bonus bDoubleAddRate,n;   		Double Attack probability + n% (works with all weapons)
 bonus bSplashRange,n;     		Splash attack radius + n (only the highest among all is applied)
@@ -511,3 +570,4 @@ bonus bClassChange,n;     		Gives a n/100% chance to change the attacked monster
 bonus bAddStealRate,n;    		Increases success rate of Steal skill by n/100%
 bonus bNoMadoFuel;			Nullify Magic Gear Fuel requirement for skills.
 bonus bNoWalkDelay;				Give infinite Endure.
+```

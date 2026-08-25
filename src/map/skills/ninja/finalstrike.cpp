@@ -13,7 +13,7 @@
 SkillFinalStrike::SkillFinalStrike() : WeaponSkillImpl(NJ_ISSEN) {
 }
 
-void SkillFinalStrike::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32 &flag) const {
+void SkillFinalStrike::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	int16 x, y;
 	int16 dir = map_calc_dir(src, target->x, target->y);
 

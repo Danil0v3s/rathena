@@ -13,11 +13,9 @@ SkillHomunculusResurrection::SkillHomunculusResurrection() : SkillImpl(AM_RESURR
 void SkillHomunculusResurrection::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_lv, t_tick tick, int32& flag) const {
 	map_session_data* sd = BL_CAST(BL_PC, src);
 
-	if (sd)
-	{
-		if (!hom_ressurect(sd, 20*skill_lv, x, y))
-		{
-			clif_skill_fail( *sd, getSkillId() );
+	if (sd) {
+		if (!hom_ressurect(sd, 20 * skill_lv, x, y)) {
+			clif_skill_fail(*sd, getSkillId());
 			return;
 		}
 	}

@@ -11,7 +11,7 @@
 SkillFlashKick::SkillFlashKick() : SkillImpl(SJ_FLASHKICK) {
 }
 
-void SkillFlashKick::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillFlashKick::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	mob_data* md = BL_CAST(BL_MOB, src);
 	mob_data* tmd = BL_CAST(BL_MOB, target);
 	map_session_data* sd = BL_CAST(BL_PC, src);
@@ -21,7 +21,7 @@ void SkillFlashKick::castendDamageId(block_list *src, block_list *target, uint16
 	// Lets only allow players and monsters to use this skill for safety reasons.
 	if ((!tsd && !tmd) || !sd && !md) {
 		if (sd)
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 		return;
 	}
 
@@ -29,7 +29,7 @@ void SkillFlashKick::castendDamageId(block_list *src, block_list *target, uint16
 	if ((tsd && tsd->sc.getSCE(SC_FLASHKICK) && tsd->sc.getSCE(SC_FLASHKICK)->val1 != src->id) || (tmd && tmd->sc.getSCE(SC_FLASHKICK) && tmd->sc.getSCE(SC_FLASHKICK)->val1 != src->id)) { // Same as the above check, but for monsters.
 		// Can't tag a player that was already tagged from another source.
 		if (sd)
-			clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+			clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 		flag |= SKILL_NOCONSUME_REQ;
 		return;
 	}
@@ -41,7 +41,7 @@ void SkillFlashKick::castendDamageId(block_list *src, block_list *target, uint16
 		if (i == MAX_STELLAR_MARKS) {
 			ARR_FIND(0, MAX_STELLAR_MARKS, i, sd->stellar_mark[i] == 0);
 			if (i == MAX_STELLAR_MARKS) { // Max number of targets tagged. Fail the skill.
-				clif_skill_fail( *sd, getSkillId(), USESKILL_FAIL );
+				clif_skill_fail(*sd, getSkillId(), USESKILL_FAIL);
 				flag |= SKILL_NOCONSUME_REQ;
 				return;
 			}

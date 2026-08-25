@@ -16,7 +16,7 @@ void SkillArbitrium::calculateSkillRatio(const Damage* wd, const block_list* src
 	const status_data* sstatus = status_get_status_data(*src);
 
 	skillratio += -100 + 1200 * skill_lv;
-	skillratio += 10 * sstatus->spl;	// TODO : spl ratio has changed ?
+	skillratio += 10 * sstatus->spl; // TODO : spl ratio has changed ?
 	skillratio += 35 * pc_checkskill(sd, CD_FIDUS_ANIMUS) * skill_lv;
 
 	RE_LVL_DMOD(100);

@@ -18,7 +18,7 @@ void SkillTheOneFighterRises::castendNoDamageId(block_list* src, block_list* tar
 		hom_addspiritball(hd, MAX_SPIRITBALL);
 	}
 
-	clif_skill_nodamage(src,*target,getSkillId(),skill_lv);
+	clif_skill_nodamage(src, *target, getSkillId(), skill_lv);
 	skill_castend_damage_id(src, target, getSkillId(), skill_lv, tick, flag);
 }
 

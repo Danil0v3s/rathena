@@ -48,14 +48,8 @@ HANDLER_FUNC(emblem_download) {
 	SQLLock sl(WEB_SQL_LOCK);
 	sl.lock();
 	auto handle = sl.getHandle();
-	SqlStmt stmt{ *handle };
-	if (SQL_SUCCESS != stmt.Prepare(
-			"SELECT `version`, `file_type`, `file_data` FROM `%s` WHERE (`guild_id` = ? AND `world_name` = ?)",
-			guild_emblems_table)
-		|| SQL_SUCCESS != stmt.BindParam( 0, SQLDT_INT32, &guild_id, sizeof(guild_id))
-		|| SQL_SUCCESS != stmt.BindParam( 1, SQLDT_STRING, (void *)world_name, strlen(world_name))
-		|| SQL_SUCCESS != stmt.Execute()
-	) {
+	SqlStmt stmt{*handle};
+	if (SQL_SUCCESS != stmt.Prepare("SELECT `version`, `file_type`, `file_data` FROM `%s` WHERE (`guild_id` = ? AND `world_name` = ?)", guild_emblems_table) || SQL_SUCCESS != stmt.BindParam(0, SQLDT_INT32, &guild_id, sizeof(guild_id)) || SQL_SUCCESS != stmt.BindParam(1, SQLDT_STRING, (void*)world_name, strlen(world_name)) || SQL_SUCCESS != stmt.Execute()) {
 		SqlStmt_ShowDebug(stmt);
 		sl.unlock();
 		res.status = HTTP_BAD_REQUEST;
@@ -76,12 +70,7 @@ HANDLER_FUNC(emblem_download) {
 		return;
 	}
 
-
-	if (SQL_SUCCESS != stmt.BindColumn( 0, SQLDT_UINT32, &version, sizeof(version))
-		|| SQL_SUCCESS != stmt.BindColumn( 1, SQLDT_STRING, &filetype, sizeof(filetype))
-		|| SQL_SUCCESS != stmt.BindColumn( 2, SQLDT_BLOB, &blob, MAX_EMBLEM_SIZE, &emblem_size)
-		|| SQL_SUCCESS != stmt.NextRow()
-	) {
+	if (SQL_SUCCESS != stmt.BindColumn(0, SQLDT_UINT32, &version, sizeof(version)) || SQL_SUCCESS != stmt.BindColumn(1, SQLDT_STRING, &filetype, sizeof(filetype)) || SQL_SUCCESS != stmt.BindColumn(2, SQLDT_BLOB, &blob, MAX_EMBLEM_SIZE, &emblem_size) || SQL_SUCCESS != stmt.NextRow()) {
 		SqlStmt_ShowDebug(stmt);
 		sl.unlock();
 		res.status = HTTP_BAD_REQUEST;
@@ -97,7 +86,7 @@ HANDLER_FUNC(emblem_download) {
 		res.set_content("Error", "text/plain");
 		return;
 	}
-	const char * content_type;
+	const char* content_type;
 	if (!strcmp(filetype, "BMP"))
 		content_type = "image/bmp";
 	else if (!strcmp(filetype, "GIF"))
@@ -112,7 +101,6 @@ HANDLER_FUNC(emblem_download) {
 	res.body.assign(blob, emblem_size);
 	res.set_header("Content-Type", content_type);
 }
-
 
 HANDLER_FUNC(emblem_upload) {
 	if (!isAuthorized(req, true)) {
@@ -151,7 +139,7 @@ HANDLER_FUNC(emblem_upload) {
 	auto imgtype = imgtype_str.c_str();
 	auto img = req.get_file_value("Img").content;
 	auto img_cstr = img.c_str();
-	
+
 	if (imgtype_str != "BMP" && imgtype_str != "GIF") {
 		ShowError("Invalid image type %s, rejecting!\n", imgtype);
 		res.status = HTTP_BAD_REQUEST;
@@ -181,8 +169,7 @@ HANDLER_FUNC(emblem_upload) {
 			return;
 		}
 		// TODO: transparency check for GIF emblems
-	}
-	else if (imgtype_str == "BMP") {
+	} else if (imgtype_str == "BMP") {
 		if (length < 14) {
 			ShowDebug("File size is too short\n");
 			res.status = HTTP_BAD_REQUEST;
@@ -223,14 +210,8 @@ HANDLER_FUNC(emblem_upload) {
 	SQLLock sl(WEB_SQL_LOCK);
 	sl.lock();
 	auto handle = sl.getHandle();
-	SqlStmt stmt{ *handle };
-	if (SQL_SUCCESS != stmt.Prepare(
-			"SELECT `version` FROM `%s` WHERE (`guild_id` = ? AND `world_name` = ?)",
-			guild_emblems_table)
-		|| SQL_SUCCESS != stmt.BindParam(0, SQLDT_INT32, &guild_id, sizeof(guild_id))
-		|| SQL_SUCCESS != stmt.BindParam(1, SQLDT_STRING, (void *)world_name, strlen(world_name))
-		|| SQL_SUCCESS != stmt.Execute()
-	) {
+	SqlStmt stmt{*handle};
+	if (SQL_SUCCESS != stmt.Prepare("SELECT `version` FROM `%s` WHERE (`guild_id` = ? AND `world_name` = ?)", guild_emblems_table) || SQL_SUCCESS != stmt.BindParam(0, SQLDT_INT32, &guild_id, sizeof(guild_id)) || SQL_SUCCESS != stmt.BindParam(1, SQLDT_STRING, (void*)world_name, strlen(world_name)) || SQL_SUCCESS != stmt.Execute()) {
 		SqlStmt_ShowDebug(stmt);
 		sl.unlock();
 		res.status = HTTP_BAD_REQUEST;
@@ -241,9 +222,7 @@ HANDLER_FUNC(emblem_upload) {
 	uint32 version = START_VERSION;
 
 	if (stmt.NumRows() > 0) {
-		if (SQL_SUCCESS != stmt.BindColumn(0, SQLDT_UINT32, &version, sizeof(version))
-			|| SQL_SUCCESS != stmt.NextRow()
-		) {
+		if (SQL_SUCCESS != stmt.BindColumn(0, SQLDT_UINT32, &version, sizeof(version)) || SQL_SUCCESS != stmt.NextRow()) {
 			SqlStmt_ShowDebug(stmt);
 			sl.unlock();
 			res.status = HTTP_BAD_REQUEST;
@@ -254,16 +233,7 @@ HANDLER_FUNC(emblem_upload) {
 	}
 
 	// insert new
-	if (SQL_SUCCESS != stmt.Prepare(
-		"REPLACE INTO `%s` (`version`, `file_type`, `guild_id`, `world_name`, `file_data`) VALUES (?, ?, ?, ?, ?)",
-		guild_emblems_table)
-		|| SQL_SUCCESS != stmt.BindParam(0, SQLDT_UINT32, &version, sizeof(version))
-		|| SQL_SUCCESS != stmt.BindParam(1, SQLDT_STRING, (void *)imgtype, strlen(imgtype))
-		|| SQL_SUCCESS != stmt.BindParam(2, SQLDT_INT32, &guild_id, sizeof(guild_id))
-		|| SQL_SUCCESS != stmt.BindParam(3, SQLDT_STRING, (void *)world_name, strlen(world_name))
-		|| SQL_SUCCESS != stmt.BindParam(4, SQLDT_BLOB, (void *)img.c_str(), length)
-		|| SQL_SUCCESS != stmt.Execute()
-	) {
+	if (SQL_SUCCESS != stmt.Prepare("REPLACE INTO `%s` (`version`, `file_type`, `guild_id`, `world_name`, `file_data`) VALUES (?, ?, ?, ?, ?)", guild_emblems_table) || SQL_SUCCESS != stmt.BindParam(0, SQLDT_UINT32, &version, sizeof(version)) || SQL_SUCCESS != stmt.BindParam(1, SQLDT_STRING, (void*)imgtype, strlen(imgtype)) || SQL_SUCCESS != stmt.BindParam(2, SQLDT_INT32, &guild_id, sizeof(guild_id)) || SQL_SUCCESS != stmt.BindParam(3, SQLDT_STRING, (void*)world_name, strlen(world_name)) || SQL_SUCCESS != stmt.BindParam(4, SQLDT_BLOB, (void*)img.c_str(), length) || SQL_SUCCESS != stmt.Execute()) {
 		SqlStmt_ShowDebug(stmt);
 		sl.unlock();
 		res.status = HTTP_BAD_REQUEST;

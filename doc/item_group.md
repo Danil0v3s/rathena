@@ -1,12 +1,8 @@
-//===== rAthena Documentation ================================
-//= Item Database
-//===== By: ==================================================
-//= rAthena Dev Team
-//===== Last Updated: ========================================
-//= 20210624
-//===== Description: =========================================
-//= Explanation of the item_group.yml file and structure.
-//============================================================
+# Item Database
+
+Explanation of the item_group.yml file and structure.
+
+*Last updated 20210624 by rAthena Dev Team (upstream `doc/` header)*
 
 Items within an item group can be retrieved through the 'groupranditem',
 'getrandgroupitem', and 'getgroupitem' script commands.
@@ -36,66 +32,62 @@ The table below explains which fields are accessed in each.
 | Named         |       no        |        no          |      YES       |
 +===============+=================+====================+================+
 
----------------------------------------
-
 GroupID: See the "Item Group ID" section in 'src/map/itemdb.hpp' and the "item groups" section in 'src/map/script_constants.hpp'.
-         Supports IG_* constants. 'IG_' is appended to the name when the file is read.
 
----------------------------------------
+```
+         Supports IG_* constants. 'IG_' is appended to the name when the file is read.
+```
 
 Index: Unique number that can be used to add the same Item with different data in the list.
 
----------------------------------------
-
 Item: Available item that will be obtained from this item group.
-      Requires the AegisName of the item.
 
----------------------------------------
+```
+      Requires the AegisName of the item.
+```
 
 Rate: Probability to get the item. Not a percentage value!
 
 Examples:
   - Group: MyItemGroup
-    SubGroups:
-      - SubGroup: 1
-        List:
-          - Index: 0
-            Item: Knife
-            Rate: 5
-          - Index: 1
-            Item: Dagger
-            Rate: 1
+  SubGroups:
+  - SubGroup: 1
+  List:
+  - Index: 0
+  Item: Knife
+  Rate: 5
+  - Index: 1
+  Item: Dagger
+  Rate: 1
 
-	- Knife has chance 5/6 (83.3%) to be obtained
-	- Dagger has chance 1/6 (16.7%) to be obtained
-
----------------------------------------
+```
+- Knife has chance 5/6 (83.3%) to be obtained
+- Dagger has chance 1/6 (16.7%) to be obtained
+```
 
 Amount: Amount of item that will be obtained.
 
----------------------------------------
-
 SubGroup: Unique number to create a list of item.
-
----------------------------------------
 
 Algorithm: Type of algorithm associated with SubGroup.
 
-Random            - A random item is picked from the sub group using rate as chance for an item being picked.
-                    The chance remains the same every time.
-All               - All items in this sub group shall be picked.
-                    If you use a command that is supposed to return only one item with such a sub group, then a random item is returned instead, with each
-                    item having the same chance to be picked.
-                    When using this algorithm, the rate must remain unspecified (0).
-SharedPool        - Rate is the amount of items of this item ID in the sub group. A random item is picked from all the items in the group and then removed
-                    from the sub group. That means each time an item is returned from the sub group, it will have a lower chance to be returned again and if
-                    no more items of this item ID remain in the sub group, it cannot be returned at all anymore. This also means that if the server requests
-                    an item from this sub group as often as there are total items in this sub group, it will get exactly the amounts specified under "rate".
-                    Only when the group is completely empty or the server restarts, the group refills.
+- `Random` - A random item is picked from the sub group using rate as chance for an item being picked.
+  The chance remains the same every time.
+- `All` - All items in this sub group shall be picked.
+  If you use a command that is supposed to return only one item with such a sub group, then a random item is returned instead, with each
+  item having the same chance to be picked.
+  When using this algorithm, the rate must remain unspecified (0).
+- `SharedPool` - Rate is the amount of items of this item ID in the sub group. A random item is picked from all the items in the group and then removed
+  from the sub group. That means each time an item is returned from the sub group, it will have a lower chance to be returned again and if
+  no more items of this item ID remain in the sub group, it cannot be returned at all anymore. This also means that if the server requests
+  an item from this sub group as often as there are total items in this sub group, it will get exactly the amounts specified under "rate".
+  Only when the group is completely empty or the server restarts, the group refills.
 
 Default: SharedPool
 
 Example:
+
+```
 	Item Group:
       - Group: MyItemGroup
         SubGroups:
@@ -171,26 +163,29 @@ Example:
 		- Returns Item ID of Knife by chance 5/7 from 'must' SubGroup
 		- Returns Item ID of Dagger by chance 2/7 from 'must' SubGroup
 		- 'SubGroup 1' and 'SubGroup 2' are ignored
+```
 
 Example #2:
 
-	Item Group:
-	  - Group: MyItemGroup2
-	    SubGroups:
-	      - SubGroup: 1
-	        Algorithm: SharedPool
-	        List:
-	          - Index: 0
-	            Item: Milk
-	            Rate: 10
-	            Amount: 3
-	          - Index: 1
-	            Item: Well_Baked_Cookie
-	            Rate: 5
-	            Amount: 2
-	          - Index: 2
-	            Item: Gift_Box
-	            Rate: 1
+```
+Item Group:
+  - Group: MyItemGroup2
+    SubGroups:
+      - SubGroup: 1
+        Algorithm: SharedPool
+        List:
+          - Index: 0
+            Item: Milk
+            Rate: 10
+            Amount: 3
+          - Index: 1
+            Item: Well_Baked_Cookie
+            Rate: 5
+            Amount: 2
+          - Index: 2
+            Item: Gift_Box
+            Rate: 1
+```
 
 (Note: Specifying the "SharedPool" algorithm is optional, as it defaults to SharedPool if not specified.)
 
@@ -201,120 +196,147 @@ Usages:
 'getrandgroupitem(IG_MyItemGroup2);'
 
 The first time one of the two commands above are called:
-	- Player has chance to get 3x Milk by chance 10/16
-	- Player has chance to get 2x Well_Baked_Cookie by chance 5/16
-	- Player has chance to get 1x Gift_Box by chance 1/16
+
+```
+- Player has chance to get 3x Milk by chance 10/16
+- Player has chance to get 2x Well_Baked_Cookie by chance 5/16
+- Player has chance to get 1x Gift_Box by chance 1/16
+```
 
 Let's say a pack of Well_Baked_Cookie was received from the group. That means only 4 packs of Well_Baked_Cookie remain in the group.
 
 The second time one of the two commands above are called:
-	- Player has chance to get 3x Milk by chance 10/15
-	- Player has chance to get 2x Well_Baked_Cookie by chance 4/15
-	- Player has chance to get 1x Gift_Box by chance 1/15
+
+```
+- Player has chance to get 3x Milk by chance 10/15
+- Player has chance to get 2x Well_Baked_Cookie by chance 4/15
+- Player has chance to get 1x Gift_Box by chance 1/15
+```
 
 Now a Gift_Box is received from the group. That means no more Gift_Box are remaining in the group.
 
 The third time one of the two commands above are called:
-	- Player has chance to get 3x Milk by chance 10/14
-	- Player has chance to get 2x Well_Baked_Cookie by chance 4/14
+
+```
+- Player has chance to get 3x Milk by chance 10/14
+- Player has chance to get 2x Well_Baked_Cookie by chance 4/14
+```
 
 After the two commands were called 16 times, the server will always have given out exactly:
-	- 30 Milk (10 packs of 3x Milk)
-	- 10 Well_Baked_Cookie (5 packs of 2x Well_Baked_Cookie)
-	- 1 Gift_Box
+
+```
+- 30 Milk (10 packs of 3x Milk)
+- 10 Well_Baked_Cookie (5 packs of 2x Well_Baked_Cookie)
+- 1 Gift_Box
+```
 
 Now the group is refilled and the next time the command is called, it will behave similar to the first time.
 
----------------------------------------
-
 Announced: If player obtained this item, it will be broadcast to the server.
-           "[Player] has won [Item] from 'Box'"
 
----------------------------------------
+```
+           "[Player] has won [Item] from 'Box'"
+```
 
 Duration: Makes the item a rental item, which will be expire in the given amount
-          of minutes. Not intended for use with stackable items.
 
----------------------------------------
+```
+          of minutes. Not intended for use with stackable items.
+```
 
 UniqueId: Makes the given item(s) with Unique ID. Item will be stacked ONLY each group
+
+```
       when it obtained. Cannot be stacked with same item, even it's stackable item.
 	  Example, there is Box (just call it Apple_Box) that contains 3x Apples with
 	  UniqueId = 1. When Apples appear it will stack for each 3 even another 3x Apples
 	  are appeared by same box. So it will be filled in inventory as:
 	        3x Apples | 3x Apples | so on... | nx Apples (normal)
-
----------------------------------------
+```
 
 Bound: Binds the obtained item.
-       See 'getitembound' in 'doc/script_commands.txt' for valid bound types.
 
----------------------------------------
+```
+       See 'getitembound' in 'doc/script_commands.md' for valid bound types.
+```
 
 Named: Inscribes the item with the obtainer's name.
 
----------------------------------------
-
 Stacked: Whether stackable items are given stacked or not.
-
----------------------------------------
 
 RandomOptionGroup: Applies random options of this group to all equipable items.
 
----------------------------------------
-
 RefineMinimum: Applies at least this refine level to all equipable items.
+
+```
        When RefineMaximum also has a value, the refine level of the equipment will be between RefineMinimum and RefineMaximum.
        When RefineMaximum hasn't a value, the refine level of the equipment will be between RefineMinimum and MAX_REFINE.
-
----------------------------------------
+```
 
 RefineMaximum: Applies at most this refine level to all equipable items.
+
+```
        When RefineMinimum also has a value, the refine level of the equipment will be between RefineMinimum and RefineMaximum.
        When RefineMinimum hasn't a value, the refine level of the equipment will be between 1 and RefineMaximum.
+```
 
 Example 1:
+
+```
        (Supposing MAX_REFINE = 20)
        RefineMinimum: 17
 
        Possible refine level of the equipment : 17, 18, 19, 20
+```
 
 Example 2:
+
+```
        RefineMaximum: 5
 
        Possible refine level of the equipment : 1, 2, 3, 4, 5
+```
 
 Example 3:
+
+```
        RefineMinimum: 7
        RefineMaximum: 10
 
        Possible refine level of the equipment : 7, 8, 9, 10
-
----------------------------------------
+```
 
 GradeMinimum: Applies at least this level of grade to all equipable items.
+
+```
        When GradeMaximum also has a value, the level of grade of the equipment will be between GradeMinimum and GradeMaximum.
        When GradeMaximum hasn't a value, the level of grade of the equipment will be between GradeMinimum and the highest possible grade (A).
 
        Accepted value, written in ascending order of level : None, D, C, B, A
-
----------------------------------------
+```
 
 GradeMaximum: Applies at most this level of grade to all equipable items.
+
+```
        When GradeMinimum also has a value, the level of grade of the equipment will be between GradeMinimum and GradeMaximum.
        When GradeMinimum hasn't a value, the level of grade of the equipment will be between None and GradeMaximum.
 
        Accepted value, written in ascending order of level : None, D, C, B, A
+```
 
 Example 1:
+
+```
        GradeMaximum: C
 
        Possible grade level of the equipment : None, D or C
+```
 
 Example 2:
+
+```
        GradeMinimum: D
        GradeMaximum: C
 
        Possible grade level of the equipment : D or C
-
----------------------------------------
+```

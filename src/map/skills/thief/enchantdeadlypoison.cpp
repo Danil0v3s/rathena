@@ -10,7 +10,7 @@
 SkillEnchantDeadlyPoison::SkillEnchantDeadlyPoison() : StatusSkillImpl(ASC_EDP) {
 }
 
-void SkillEnchantDeadlyPoison::castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
+void SkillEnchantDeadlyPoison::castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
 	// EDP also give +25% WATK poison pseudo element to user.
 	StatusSkillImpl::castendNoDamageId(src, target, skill_lv, tick, flag);
 

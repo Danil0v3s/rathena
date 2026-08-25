@@ -56,20 +56,19 @@ public:
 	 * Allows modifying the element type of attack.
 	 */
 	virtual void modifyElement(const Damage& dmg, const block_list& src, const block_list& target, uint16 skill_lv, int32& element, int32 flag) const;
- 
+
 protected:
 	e_skill skill_id_;
 };
 
-class StatusSkillImpl : public SkillImpl
-{
+class StatusSkillImpl : public SkillImpl {
 private:
 	bool end_if_running;
 
 public:
 	StatusSkillImpl(e_skill skillId, bool end_if_running = false);
 
-	virtual void castendNoDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const override;
+	virtual void castendNoDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const override;
 };
 
 class WeaponSkillImpl : public SkillImpl {
@@ -79,7 +78,7 @@ public:
 	virtual void castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const override;
 };
 
-class SkillImplRecursiveDamageSplash : public SkillImpl{
+class SkillImplRecursiveDamageSplash : public SkillImpl {
 public:
 	explicit SkillImplRecursiveDamageSplash(e_skill skill_id);
 

@@ -20,25 +20,25 @@ void SkillFatalMenace::modifyDamageData(Damage& dmg, const block_list& src, cons
 		dmg.div_++;
 }
 
-void SkillFatalMenace::calculateSkillRatio(const Damage *wd, const block_list *src, const block_list *target, uint16 skill_lv, int32 &skillratio, int32 mflag) const {
+void SkillFatalMenace::calculateSkillRatio(const Damage* wd, const block_list* src, const block_list* target, uint16 skill_lv, int32& skillratio, int32 mflag) const {
 	const status_data* sstatus = status_get_status_data(*src);
-	const status_change *sc = status_get_sc(src);
+	const status_change* sc = status_get_sc(src);
 
 	skillratio += 120 * skill_lv + sstatus->agi; // !TODO: What's the AGI bonus?
 
-	if( sc != nullptr && sc->getSCE( SC_ABYSS_DAGGER ) ){
+	if (sc != nullptr && sc->getSCE(SC_ABYSS_DAGGER)) {
 		skillratio += 30 * skill_lv;
 	}
 
 	RE_LVL_DMOD(100);
 }
 
-void SkillFatalMenace::castendDamageId(block_list *src, block_list *target, uint16 skill_lv, t_tick tick, int32& flag) const {
-	if( flag&1 )
+void SkillFatalMenace::castendDamageId(block_list* src, block_list* target, uint16 skill_lv, t_tick tick, int32& flag) const {
+	if (flag & 1)
 		WeaponSkillImpl::castendDamageId(src, target, skill_lv, tick, flag);
 	else {
-		map_foreachinrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), splash_target(src), src, getSkillId(), skill_lv, tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
-		clif_skill_damage( *src, *src, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE );
+		map_foreachinrange(skill_area_sub, target, skill_get_splash(getSkillId(), skill_lv), splash_target(src), src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1, skill_castend_damage_id);
+		clif_skill_damage(*src, *src, tick, status_get_amotion(src), 0, DMGVAL_IGNORE, 1, getSkillId(), skill_lv, DMG_SINGLE);
 	}
 }
 

@@ -20,9 +20,9 @@ void SkillWildFire::castendPos2(block_list* src, int32 x, int32 y, uint16 skill_
 	if (sd && sd->status.weapon == W_GRENADE)
 		i += 2;
 	map_foreachinallarea(skill_area_sub,
-		src->m, x - i, y - i, x + i, y + i, BL_CHAR,
-		src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1,
-		skill_castend_damage_id);
+	    src->m, x - i, y - i, x + i, y + i, BL_CHAR,
+	    src, getSkillId(), skill_lv, tick, flag | BCT_ENEMY | 1,
+	    skill_castend_damage_id);
 	if (sc && sc->getSCE(SC_INTENSIVE_AIM_COUNT))
 		status_change_end(src, SC_INTENSIVE_AIM_COUNT);
 }
