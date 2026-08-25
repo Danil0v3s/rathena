@@ -6,6 +6,7 @@ name: Generate Visual Studio solution
 # The files embed the runner's absolute path (D:\a\rathena\rathena). They open as-is
 # only if the repository is checked out at that same path; otherwise treat them as
 # reference and run 'cmake --preset msvs' locally (a few minutes, see README).
+# The output is committed under build-msvs/ and build-msvs-2026/; refresh those from the artifacts.
 
 on:
   # Manual dispatch only works once the workflow exists on the default branch;
@@ -60,21 +61,22 @@ jobs:
             echo "source path baked into the projects: $(cygpath -w "$PWD")"
             echo
             echo "To use as-is, check the repository out at exactly that path, run 'cmake --preset ${{ matrix.preset }}' once"
-            echo "so vcpkg installs the dependencies into build-msvs/vcpkg_installed, then open the solution."
-          } > build-msvs/README-generated.txt
-          cat build-msvs/README-generated.txt
-          echo; echo "generated:"; ls build-msvs
+            echo "so vcpkg installs the dependencies into build-${{ matrix.preset }}/vcpkg_installed, then open the solution."
+          } > build-${{ matrix.preset }}/README-generated.txt
+          cat build-${{ matrix.preset }}/README-generated.txt
+          echo; echo "generated:"; ls build-${{ matrix.preset }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: rathena-${{ matrix.preset }}-solution
           if-no-files-found: error
           path: |
-            build-msvs/README-generated.txt
-            build-msvs/CMakeCache.txt
-            build-msvs/*.sln
-            build-msvs/*.slnx
-            build-msvs/**/*.vcxproj
-            build-msvs/**/*.vcxproj.filters
+            build-${{ matrix.preset }}/README-generated.txt
+            build-${{ matrix.preset }}/*.sln
+            build-${{ matrix.preset }}/*.slnx
+            build-${{ matrix.preset }}/**/*.vcxproj
+            build-${{ matrix.preset }}/**/*.vcxproj.filters
+            !build-${{ matrix.preset }}/vcpkg_installed/**
+            !build-${{ matrix.preset }}/CMakeFiles/**
             !build-msvs/vcpkg_installed/**
             !build-msvs/CMakeFiles/**

@@ -88,11 +88,11 @@ If vcpkg is already installed on your machine, set `VCPKG_ROOT` and it is used i
 #### Visual Studio
 
 ```powershell
-cmake --preset msvs                                  # generates build-msvs/rAthena.sln
+cmake --preset msvs                                  # generates build-msvs/rAthena.sln (msvs-2026: build-msvs-2026/rAthena.slnx)
 cmake --build --preset msvs --config Debug           # or open the solution / the folder in Visual Studio
 ```
 
-The solution is generated, not committed: it embeds absolute paths and has to be regenerated whenever source files are added. Visual Studio 2022 also opens the repository folder directly and picks the presets up from `CMakePresets.json`.
+Pre-generated solutions are committed in `build-msvs/` (VS 2022) and `build-msvs-2026/` (VS 2026) by the *Generate Visual Studio solution* workflow. They embed the CI path `D:\a\rathena\rathena`, so they open as-is only from a checkout at that path; anywhere else, run the preset once (a few minutes) to regenerate. Visual Studio also opens the repository folder directly and picks the presets up from `CMakePresets.json`.
 
 ## 3. Troubleshooting
 
