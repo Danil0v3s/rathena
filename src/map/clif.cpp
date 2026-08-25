@@ -9397,7 +9397,7 @@ void clif_soundeffect(const block_list& bl, const char* name, int32 type, enum s
 /// Displays special effects (npcs, weather, etc) [Valaris] (ZC_NOTIFY_EFFECT2).
 /// 01f3 <id>.L <effect id>.L
 /// effect id:
-///     @see doc/effect_list.txt
+///     @see doc/effect_list.md
 void clif_specialeffect(const block_list* bl, int32 type, enum send_target target) {
 	unsigned char buf[24];
 
@@ -9428,7 +9428,7 @@ void clif_specialeffect_single(const block_list* bl, int32 type, int32 fd) {
 /// Notifies clients of an special/visual effect that accepts an value (ZC_NOTIFY_EFFECT3).
 /// 0284 <id>.L <effect id>.L <num data>.L
 /// effect id:
-///     @see doc/effect_list.txt
+///     @see doc/effect_list.md
 /// num data:
 ///     effect-dependent value
 void clif_specialeffect_value(const block_list* bl, int32 effect_id, int32 num, send_target target) {

@@ -9594,7 +9594,7 @@ BUILDIN_FUNC(traitstatusup2) {
 	return SCRIPT_CMD_SUCCESS;
 }
 
-/// See 'doc/item_bonus.txt'
+/// See 'doc/item_bonus.md'
 ///
 /// bonus <bonus type>,<val1>;
 /// bonus2 <bonus type>,<val1>,<val2>;
