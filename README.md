@@ -38,7 +38,7 @@ Disk Space | 300 MB | 500 MB
 Operating System | Compiler
 ------|------
 Linux / macOS | gcc 11+ or clang 14+, [CMake 3.21+](https://cmake.org/download/), [Ninja](https://ninja-build.org/) or Make
-Windows | [MS Visual Studio 2022](https://www.visualstudio.com/downloads/) with the "C++ CMake tools" component
+Windows | [MS Visual Studio 2022 or 2026](https://www.visualstudio.com/downloads/) with the "C++ CMake tools" component
 
 All platforms build with CMake. Dependencies (MariaDB client, PCRE, zlib, yaml-cpp, rapidyaml, libconfig, cpp-httplib, nlohmann-json) are declared in `vcpkg.json` and fetched/built by [vcpkg](https://vcpkg.io) automatically on first configure; `git`, `curl`, `zip`, `unzip`, `tar` and `pkg-config` must be installed for that.
 
@@ -69,7 +69,7 @@ cmake --build --preset dev    # build everything; add --target map-server etc. t
 ```
 
 Other presets (`cmake --list-presets`): `debug` (Ninja, Debug), `make` (Unix Makefiles, for machines without Ninja),
-`msvs` (Visual Studio 2022, Windows only). Binaries land in the repository root as before.
+`msvs` / `msvs-2026` (Visual Studio 2022 / 2026, Windows only). Binaries land in the repository root as before.
 
 Common configure options, passed as `-D<option>=<value>` after the preset:
 
