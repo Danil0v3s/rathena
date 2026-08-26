@@ -174,8 +174,8 @@ export interface FloatingNpcRegistration {
 export type ShopRegistration =
     | ({ kind: "shop"   } & ShopBase & { items: ShopItem[] })
     | ({ kind: "cash"   } & ShopBase & { items: ShopItem[] })
-    | ({ kind: "item"   } & ShopBase & { costItem: number;     items: ShopItem[] })
-    | ({ kind: "point"  } & ShopBase & { costVariable: string; items: ShopItem[] })
+    | ({ kind: "item"   } & ShopBase & { costItem: number;     discount?: boolean; items: ShopItem[] })
+    | ({ kind: "point"  } & ShopBase & { costVariable: string; discount?: boolean; items: ShopItem[] })
     | ({ kind: "market" } & ShopBase & { items: MarketShopItem[] });
 
 interface ShopBase {
@@ -192,8 +192,6 @@ export interface ShopItem {
     itemId: number;
     /** Price in the shop's currency (zeny / cash points / costItem / costVariable). */
     price: number;
-    /** Per-item discount percentage. Valid only for `kind: "item"` / `"point"`. */
-    discount?: number;
 }
 
 export interface MarketShopItem {

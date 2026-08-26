@@ -18,6 +18,9 @@
 #include "npc_registry.hpp"
 #include "npc_spawner.hpp"
 #include "registrar_bindings.hpp"
+#include "registrar_shop.hpp"
+#include "registrar_spawn.hpp"
+#include "registrar_warp.hpp"
 #include "../clif.hpp"
 #include "../map.hpp"
 #include "../npc.hpp"
@@ -106,6 +109,9 @@ namespace rathena::scripting {
 
 			v8::Context::Scope ctx_scope(context);
 			bind_registrars(isolate_, context, global_npc_registry());
+			bind_warp_registrars(isolate_, context);   // registerWarp + registerMapFlag
+			bind_shop_registrar(isolate_, context);    // registerShop
+			bind_spawn_registrars(isolate_, context);  // registerSpawn + registerFloatingNpc
 		}
 
 		initialized_ = true;
@@ -136,7 +142,13 @@ namespace rathena::scripting {
 		auto context = context_.Get(isolate_);
 		v8::Context::Scope ctx_scope(context);
 
+		// Every registrar's pending list has to be reset together — a reload
+		// that cleared only the NPC registry would re-materialize a second
+		// copy of every warp / shop / spawn on the next spawn pass.
 		global_npc_registry().clear();
+		clear_warp_registrations();
+		clear_shop_registrations();
+		clear_spawn_registrations();
 
 		v8::TryCatch try_catch(isolate_);
 		auto js_src = v8::String::NewFromUtf8(isolate_, source.c_str(),
@@ -384,6 +396,9 @@ namespace rathena::scripting {
 			return;
 		sessions_.clear();
 		global_npc_registry().clear();
+		clear_warp_registrations();
+		clear_shop_registrations();
+		clear_spawn_registrations();
 		context_.Reset();
 		if (isolate_) {
 			isolate_->Dispose();
@@ -475,8 +490,21 @@ void script_host_shutdown() {
 }
 
 void script_host_spawn_npcs() {
-	int n = rathena::scripting::spawn_registered_npcs(rathena::scripting::global_npc_registry());
-	ShowStatus("[ts-scripting] spawned %d TS NPCs into the world.\n", n);
+	using namespace rathena::scripting;
+
+	// Mapflags first: several of them (pvp, gvg, nocommand, restricted)
+	// change how a map treats the units placed on it, so they have to be
+	// in effect before anything is spawned onto that map.
+	int flags  = apply_registered_mapflags();
+	int npcs   = spawn_registered_npcs(global_npc_registry());
+	int shops  = spawn_registered_shops();
+	int warps  = spawn_registered_warps();
+	int spawns = spawn_registered_spawns();
+	int floating = registered_floating_npc_count();
+
+	ShowStatus("[ts-scripting] materialized: %d NPC(s), %d shop(s), %d warp(s), "
+	           "%d mob spawn(s), %d mapflag(s), %d floating NPC(s).\n",
+	    npcs, shops, warps, spawns, flags, floating);
 }
 
 bool script_host_dispatch_npc_click(map_session_data* sd, npc_data* nd) {

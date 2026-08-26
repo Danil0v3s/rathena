@@ -24,6 +24,16 @@ namespace rathena::scripting {
 				return;
 			}
 
+			// Check for a name collision BEFORE allocating. npc_create_npc
+			// registers nd nowhere, so bailing out after it has run would
+			// leak the whole npc_data — and a duplicate exname is the one
+			// install failure we can see coming.
+			if (npc_name2id(reg.name.c_str()) != nullptr) {
+				ShowWarning("[ts-scripting] cannot spawn NPC '%s': that name is already taken.\n",
+				    reg.name.c_str());
+				return;
+			}
+
 			npc_data* nd = npc_create_npc(mapid, static_cast<int16>(reg.x), static_cast<int16>(reg.y));
 			if (!nd) {
 				ShowWarning("[ts-scripting] npc_create_npc returned null for '%s'\n", reg.name.c_str());

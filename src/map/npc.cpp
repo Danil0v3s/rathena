@@ -3745,6 +3745,77 @@ bool npc_install_script_npc(struct npc_data* nd, int16 m, int16 dir) {
 	npc_script++;
 	return true;
 }
+
+// Spawn a shop-type NPC built from TS-registered metadata. The caller
+// must fully populate nd->subtype, nd->class_ and nd->u.shop.* (shop_item /
+// count / discount / itemshop_nameid / pointshop_str, as appropriate for
+// the subtype) before calling; this helper only runs the generic "put the
+// NPC into the world" steps.
+//
+// Mirrors the m>=0 install fragment of npc_parse_shop() in this file.
+bool npc_install_shop_npc(struct npc_data* nd, int16 m, int16 dir) {
+	if (!nd || m < 0)
+		return false;
+	if (npc_name2id(nd->exname) != nullptr) {
+		ShowWarning("npc_install_shop_npc: duplicate exname '%s' — TS shop not spawned.\n",
+		    nd->exname);
+		return false;
+	}
+	nd->speed = DEFAULT_NPC_WALK_SPEED;
+	nd->type = BL_NPC;
+
+#if PACKETVER >= 20131223
+	// Insert market data to table
+	if (nd->subtype == NPCTYPE_MARKETSHOP) {
+		uint16 i;
+		for (i = 0; i < nd->u.shop.count; i++)
+			npc_market_tosql(nd->exname, &nd->u.shop.shop_item[i]);
+	}
+#endif
+
+	map_addnpc(m, nd);
+	if (map_addblock(nd))
+		return false;
+	unit_dataset(nd);
+	nd->ud.dir = (uint8)dir;
+	if (nd->class_ != JT_FAKENPC) {
+		status_set_viewdata(nd, nd->class_);
+		if (map_getmapdata(nd->m)->users)
+			clif_spawn(nd);
+	}
+	strdb_put(npcname_db, nd->exname, nd);
+	npc_shop++;
+	return true;
+}
+
+// Hand a fully-populated spawn_data to the mob subsystem, mirroring the
+// tail of npc_parse_mob(). Takes ownership of `data`: it is never freed —
+// mob_data keeps a raw back-pointer into it for respawns, and under
+// dynamic_mobs it also lives in the map's moblist[].
+//
+// This lives here rather than in the TS registrar so the npc_mob /
+// npc_cache_mob / npc_delay_mob counters (file-static) stay accurate;
+// otherwise TS spawns are invisible in the boot summary.
+void npc_install_mob_spawn(struct spawn_data* data) {
+	if (!data)
+		return;
+
+	if (battle_config.dynamic_mobs && map_addmobtolist(data->m, data) >= 0) {
+		data->state.dynamic = true;
+		npc_cache_mob += data->num;
+
+		// Only spawn right away if the map already has players on it —
+		// otherwise the cached entry spawns on first entry.
+		if (map_getmapdata(data->m)->users > 0)
+			npc_parse_mob2(data);
+	} else {
+		data->state.dynamic = false;
+		npc_parse_mob2(data);
+		npc_delay_mob += data->num;
+	}
+
+	npc_mob++;
+}
 #endif // HAVE_TS_SCRIPTING
 
 npc_data* npc_create_npc(int16 m, int16 x, int16 y) {
