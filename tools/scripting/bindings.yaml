@@ -101,13 +101,13 @@ structures:
 manual:
   player:
     - js: mapName
-      cpp: map_mapid2mapname(sd.bl.m)
+      cpp: map_mapid2mapname(sd.m)
       ts_type: string
     - js: x
-      cpp: sd.bl.x
+      cpp: sd.x
       ts_type: number
     - js: 'y'
-      cpp: sd.bl.y
+      cpp: sd.y
       ts_type: number
     - js: dir
       cpp: sd.ud.dir

@@ -18,6 +18,7 @@
 #include "../storage.hpp"
 #include "../unit.hpp"
 #include "../chrif.hpp"
+#include "../../common/utilities.hpp"
 #include "../../common/utils.hpp"
 #include "../../common/mapindex.hpp"
 #include "../../common/showmsg.hpp"
@@ -1054,10 +1055,19 @@ namespace rathena::scripting {
 	}
 	void PlayerHost::hatEffect_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
 		UNWRAP;
-		int effect = int_arg(info, 0);
+		int16 effect = static_cast<int16>(int_arg(info, 0));
 		bool state = bool_arg(info, 1);
-		if (state)
-			sd.hatEffects.push_back(static_cast<uint32>(effect));
+		if (effect <= HAT_EF_MIN || effect >= HAT_EF_MAX)
+			return;
+		// hatEffects lives on unit_data upstream; enabling dedups and
+		// disabling is a no-op when the effect was not applied.
+		if (state) {
+			if (rathena::util::vector_exists(sd.ud.hatEffects, effect))
+				return;
+			sd.ud.hatEffects.push_back(effect);
+		} else if (!rathena::util::vector_erase_if_exists(sd.ud.hatEffects, effect)) {
+			return;
+		}
 		clif_hat_effect_single(sd, effect, state);
 	}
 
@@ -1208,7 +1218,7 @@ namespace rathena::scripting {
 	}
 	void PlayerHost::getFameRank_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {
 		UNWRAP;
-		ret_int(info, pc_famerank(sd.status.char_id, sd.class_ & MAPID_UPPERMASK));
+		ret_int(info, pc_famerank(sd.status.char_id, sd.class_ & MAPID_SECONDMASK));
 	}
 
 	void PlayerHost::marry_cb(const v8::FunctionCallbackInfo<v8::Value>& info) {

@@ -371,8 +371,8 @@ namespace rathena::scripting {
 			case MOB_MAXHP: ret_int(info, mob->status.max_hp); return;
 			case MOB_BASEEXP: ret_int(info, mob->base_exp); return;
 			case MOB_JOBEXP: ret_int(info, mob->job_exp); return;
-			case MOB_ATK1: ret_int(info, mob->status.rhw.atk); return;
-			case MOB_ATK2: ret_int(info, mob->status.rhw.atk2); return;
+			case MOB_ATKMIN: ret_int(info, mob->status.rhw.atk); return;
+			case MOB_ATKMAX: ret_int(info, mob->status.rhw.atk2); return;
 			case MOB_DEF: ret_int(info, mob->status.def); return;
 			case MOB_MDEF: ret_int(info, mob->status.mdef); return;
 			case MOB_RACE: ret_int(info, mob->status.race); return;
@@ -396,17 +396,18 @@ namespace rathena::scripting {
 			info.GetReturnValue().Set(out);
 			return;
 		}
+		// dropitem is a vector of shared_ptr upstream — iterate it directly.
 		uint32 idx_out = 0;
-		for (int i = 0; i < MAX_MOB_DROP_TOTAL; ++i) {
-			if (mob->dropitem[i].nameid == 0)
+		for (const auto& drop : mob->dropitem) {
+			if (!drop || drop->nameid == 0)
 				continue;
-			if (!item_db.exists(mob->dropitem[i].nameid))
+			if (!item_db.exists(drop->nameid))
 				continue;
 			auto row = v8::Object::New(iso_);
 			(void)row->Set(cx, v8::String::NewFromUtf8(iso_, "itemId").ToLocalChecked(),
-			    v8::Integer::NewFromUnsigned(iso_, mob->dropitem[i].nameid));
+			    v8::Integer::NewFromUnsigned(iso_, drop->nameid));
 			(void)row->Set(cx, v8::String::NewFromUtf8(iso_, "rate").ToLocalChecked(),
-			    v8::Integer::New(iso_, mob->dropitem[i].rate));
+			    v8::Integer::New(iso_, drop->rate));
 			(void)out->Set(cx, idx_out++, row);
 		}
 		info.GetReturnValue().Set(out);

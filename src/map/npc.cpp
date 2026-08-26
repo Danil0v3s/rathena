@@ -3731,7 +3731,6 @@ bool npc_install_script_npc(struct npc_data* nd, int16 m, int16 dir) {
 	nd->subtype = NPCTYPE_SCRIPT;
 
 	map_addnpc(m, nd);
-	status_change_init(nd);
 	unit_dataset(nd);
 	nd->ud.dir = (uint8)dir;
 	npc_setcells(nd);
