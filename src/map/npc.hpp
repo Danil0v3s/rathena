@@ -1647,6 +1647,12 @@ int32 npc_isnear_sub(block_list* bl, va_list args);
 bool npc_isnear(block_list* bl);
 
 int32 npc_get_new_npc_id(void);
+struct npc_data* npc_create_npc(int16 m, int16 x, int16 y);
+#ifdef HAVE_TS_SCRIPTING
+bool npc_install_script_npc(struct npc_data* nd, int16 m, int16 dir);
+bool npc_install_shop_npc(struct npc_data* nd, int16 m, int16 dir);
+void npc_install_mob_spawn(struct spawn_data* data);
+#endif
 
 int32 npc_addsrcfile(const char* name, bool loadscript);
 void npc_delsrcfile(const char* name);

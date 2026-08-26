@@ -1,0 +1,163 @@
+# Binding manifest for tools/scripting/gen_bindings.py.
+#
+# Each entry describes ONE C++ struct to scan + how its fields land
+# in JS. The tool reads the actual struct definition via libclang —
+# field names, types, and the field set are pulled straight from the
+# rAthena source, so renames upstream surface as a generator error
+# rather than a silent runtime drift.
+
+structures:
+  # Most player-facing data lives on mmo_charstatus (sd.status).
+  - struct: mmo_charstatus
+    header: src/common/mmo.hpp
+    js_object: player
+    source: sd.status
+
+    # By default we expose every primitive/integral/char[N] field and
+    # rename snake_case → camelCase. Hand-curate around that:
+    rename:
+      int_:    int           # `int` is a C++ keyword, so the struct uses int_
+      class_:  classId
+      base_exp: baseExp
+      job_exp:  jobExp
+      base_level: baseLevel
+      job_level:  jobLevel
+      status_point: statusPoint
+      skill_point:  skillPoint
+      trait_point:  traitPoint
+      char_id:     charId
+      account_id:  accountId
+      party_id:    partyId
+      guild_id:    guildId
+      partner_id:  partnerId
+      max_hp:      maxHp
+      max_sp:      maxSp
+      max_ap:      maxAp
+      head_top:    headTop
+      head_mid:    headMid
+      head_bottom: headBottom
+      body_direction: bodyDirection
+      manner: manner
+      hair: hair
+      hair_color: hairColor
+      clothes_color: clothesColor
+
+    # Drop noisy / non-primitive members and stuff we don't want
+    # to leak into scripts.
+    exclude:
+      - friends           # struct array
+      - skill             # struct array
+      - memo_point        # struct array
+      - last_point        # struct
+      - save_point        # struct
+      - last_point_instanceid
+      - mapip
+      - mapport
+      - inventorySize
+      - inventory_slots
+      - weapon
+      - shield
+      - robe
+      - mother
+      - father
+      - child
+      - karma
+      - rename
+      - delete_date
+      - unban_time
+      - font
+      - uniqueitem_counter
+      - title_id
+      - inventory_slots
+      - show_equip
+      - allow_party
+      - bank_vault
+      - mod_exp
+      - mod_drop
+      - mod_death
+      - attendance_count
+      - attendance_timer
+      - last_login
+      - hotkey_rowshift
+      - hotkey_rowshift_v2
+
+  # A few extra primitives live on map_session_data itself
+  # (weight, group_id, …). Pull just those.
+  - struct: map_session_data
+    header: src/map/pc.hpp
+    js_object: player
+    source: sd
+    include_only:
+      - weight
+      - max_weight
+      - group_id
+    rename:
+      max_weight: maxWeight
+      group_id: groupId
+
+# Hand-written fields that the codegen can't express (computed
+# values, helper calls). Spliced in verbatim after the auto-generated
+# entries.
+manual:
+  player:
+    - js: mapName
+      cpp: map_mapid2mapname(sd.m)
+      ts_type: string
+    - js: x
+      cpp: sd.x
+      ts_type: number
+    - js: 'y'
+      cpp: sd.y
+      ts_type: number
+    - js: dir
+      cpp: sd.ud.dir
+      ts_type: number
+
+# Parse the hand-written npc-ts/types/api.d.ts as the SINGLE SOURCE
+# OF TRUTH for the host API surface. Every interface reachable from
+# `NpcContext` becomes a JS object (ctx.npc, ctx.player, ctx.world,
+# ctx.party, …) with stub methods auto-installed on the V8 template.
+# Graduate a stub to a real impl by:
+#   1. Adding "Interface.method" to `hand_impl` below
+#   2. Re-running the codegen (or just `make`)
+#   3. Writing the real method in dialog_context.cpp + binding it
+#      manually in DialogContext::to_js's bind() calls
+#
+# This deliberately does NOT scan src/map/script.cpp's BUILDIN_DEF
+# table — the TS engine is the eventual replacement, not a façade over
+# the legacy engine. The .d.ts is the contract.
+api_surface:
+  # Directory containing the themed .d.ts files. The codegen walks
+  # every .d.ts here (not recursively) and merges the interfaces it
+  # finds before traversing from `root_interface`.
+  source: npc-ts/types
+  root_interface: NpcContext
+
+  # "InterfaceName.methodName" — these have hand-written impls; the
+  # codegen MUST NOT shadow them with stubs.
+  # "InterfaceName.*" wildcards every method on that interface (used
+  # when a whole host class takes over the surface).
+  hand_impl:
+    # Every interface reachable from NpcContext is now backed by a host
+    # class in src/map/scripting/host_*.cpp. The codegen-emitted stub
+    # tree is dead code — no method falls through to stub_callback at
+    # runtime. The `Interface.*` wildcard skips method stubs while
+    # still letting the surface_stubs codegen install the nested
+    # sub-object ObjectTemplates (which the host classes attach onto).
+    - NpcContext.*
+    - NpcInfo.*
+    - PlayerContext.*
+    - WorldOps.*
+    - PartyOps.*
+    - GuildOps.*
+    - InstanceOps.*
+    - BattlegroundOps.*
+    - ChannelOps.*
+    - QuestOps.*
+    - AchievementOps.*
+    - StorageOps.*
+    - CartOps.*
+    - MailOps.*
+    - PetOps.*
+    - HomOps.*
+    - MercOps.*

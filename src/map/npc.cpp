@@ -34,6 +34,9 @@
 #include "pc.hpp"
 #include "pet.hpp"
 #include "script.hpp" // script_config
+#ifdef HAVE_TS_SCRIPTING
+#include "scripting/script_host.hpp"
+#endif
 
 using namespace rathena;
 
@@ -119,7 +122,7 @@ struct script_event_s {
 std::map<enum npce_event, std::vector<struct script_event_s>> script_event;
 
 // Static functions
-static npc_data* npc_create_npc(int16 m, int16 x, int16 y);
+npc_data* npc_create_npc(int16 m, int16 x, int16 y);
 static void npc_parsename(npc_data* nd, const char* name, const char* start, const char* buffer, const char* filepath);
 
 const std::string StylistDatabase::getDefaultLocation() {
@@ -2203,6 +2206,14 @@ int32 npc_click(map_session_data* sd, npc_data* nd) {
 #endif
 		break;
 		case NPCTYPE_SCRIPT:
+#ifdef HAVE_TS_SCRIPTING
+			// Give the TS engine first refusal. If a TS handler is
+			// registered under this NPC's name, fire it and skip the
+			// legacy run_script() — the two engines must not both
+			// drive a dialog for the same NPC.
+			if (script_host_dispatch_npc_click(sd, nd))
+				break;
+#endif
 			run_script(nd->u.scr.script, 0, sd->id, nd->id);
 			break;
 		case NPCTYPE_TOMB:
@@ -2229,6 +2240,15 @@ bool npc_scriptcont(map_session_data* sd, int32 id, bool closing) {
 	npc_data* nd = BL_CAST(BL_NPC, target);
 
 	nullpo_retr(true, sd);
+
+#ifdef HAVE_TS_SCRIPTING
+	// A TS dialog has no legacy script_state (sd->st is null) — route
+	// the resume into the V8 host before the legacy state machine
+	// rejects us. dispatch_npc_resume returns false if the player isn't
+	// in a TS dialog, falling through to the existing flow.
+	if (script_host_dispatch_npc_resume(sd, id, closing))
+		return true;
+#endif
 
 #ifdef SECURE_NPCTIMEOUT
 	if (!closing && sd->npc_idle_timer == INVALID_TIMER && !sd->state.ignoretimeout)
@@ -3686,6 +3706,118 @@ int32 npc_parseview(const char* w4, const char* start, const char* buffer, const
  * @param y: Y location
  * @return npc_data
  */
+#ifdef HAVE_TS_SCRIPTING
+// Spawn a script-type NPC built from TS-registered metadata. The
+// caller fills in name/exname/class_/dir before calling; this helper
+// runs the standard NPCTYPE_SCRIPT install steps (map_addnpc, view
+// data, cell trigger setup, clif_spawn, npcname_db entry). Returns
+// true on success.
+//
+// Mirrors the install fragment of npc_parse_script() in this file.
+bool npc_install_script_npc(struct npc_data* nd, int16 m, int16 dir) {
+	if (!nd || m < 0)
+		return false;
+	if (npc_name2id(nd->exname) != nullptr) {
+		ShowWarning("npc_install_script_npc: duplicate exname '%s' — TS NPC not spawned.\n",
+		    nd->exname);
+		return false;
+	}
+	nd->speed = DEFAULT_NPC_WALK_SPEED;
+	nd->u.scr.script = nullptr;
+	nd->u.scr.label_list = nullptr;
+	nd->u.scr.label_list_num = 0;
+	nd->u.scr.timerid = INVALID_TIMER;
+	nd->type = BL_NPC;
+	nd->subtype = NPCTYPE_SCRIPT;
+
+	map_addnpc(m, nd);
+	unit_dataset(nd);
+	nd->ud.dir = (uint8)dir;
+	npc_setcells(nd);
+	if (map_addblock(nd))
+		return false;
+	if (nd->class_ != JT_FAKENPC) {
+		status_set_viewdata(nd, nd->class_);
+		if (map_getmapdata(nd->m)->users)
+			clif_spawn(nd);
+	}
+	strdb_put(npcname_db, nd->exname, nd);
+	npc_script++;
+	return true;
+}
+
+// Spawn a shop-type NPC built from TS-registered metadata. The caller
+// must fully populate nd->subtype, nd->class_ and nd->u.shop.* (shop_item /
+// count / discount / itemshop_nameid / pointshop_str, as appropriate for
+// the subtype) before calling; this helper only runs the generic "put the
+// NPC into the world" steps.
+//
+// Mirrors the m>=0 install fragment of npc_parse_shop() in this file.
+bool npc_install_shop_npc(struct npc_data* nd, int16 m, int16 dir) {
+	if (!nd || m < 0)
+		return false;
+	if (npc_name2id(nd->exname) != nullptr) {
+		ShowWarning("npc_install_shop_npc: duplicate exname '%s' — TS shop not spawned.\n",
+		    nd->exname);
+		return false;
+	}
+	nd->speed = DEFAULT_NPC_WALK_SPEED;
+	nd->type = BL_NPC;
+
+#if PACKETVER >= 20131223
+	// Insert market data to table
+	if (nd->subtype == NPCTYPE_MARKETSHOP) {
+		uint16 i;
+		for (i = 0; i < nd->u.shop.count; i++)
+			npc_market_tosql(nd->exname, &nd->u.shop.shop_item[i]);
+	}
+#endif
+
+	map_addnpc(m, nd);
+	if (map_addblock(nd))
+		return false;
+	unit_dataset(nd);
+	nd->ud.dir = (uint8)dir;
+	if (nd->class_ != JT_FAKENPC) {
+		status_set_viewdata(nd, nd->class_);
+		if (map_getmapdata(nd->m)->users)
+			clif_spawn(nd);
+	}
+	strdb_put(npcname_db, nd->exname, nd);
+	npc_shop++;
+	return true;
+}
+
+// Hand a fully-populated spawn_data to the mob subsystem, mirroring the
+// tail of npc_parse_mob(). Takes ownership of `data`: it is never freed —
+// mob_data keeps a raw back-pointer into it for respawns, and under
+// dynamic_mobs it also lives in the map's moblist[].
+//
+// This lives here rather than in the TS registrar so the npc_mob /
+// npc_cache_mob / npc_delay_mob counters (file-static) stay accurate;
+// otherwise TS spawns are invisible in the boot summary.
+void npc_install_mob_spawn(struct spawn_data* data) {
+	if (!data)
+		return;
+
+	if (battle_config.dynamic_mobs && map_addmobtolist(data->m, data) >= 0) {
+		data->state.dynamic = true;
+		npc_cache_mob += data->num;
+
+		// Only spawn right away if the map already has players on it —
+		// otherwise the cached entry spawns on first entry.
+		if (map_getmapdata(data->m)->users > 0)
+			npc_parse_mob2(data);
+	} else {
+		data->state.dynamic = false;
+		npc_parse_mob2(data);
+		npc_delay_mob += data->num;
+	}
+
+	npc_mob++;
+}
+#endif // HAVE_TS_SCRIPTING
+
 npc_data* npc_create_npc(int16 m, int16 x, int16 y) {
 	npc_data* nd = nullptr;
 
