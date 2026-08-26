@@ -28,9 +28,8 @@ generalizes cleanly.
 
 The host is **off by default**; see the *TypeScript scripting host* section of the
 repository [README](../../../README.md#typescript-scripting-host-optional) for the
-requirements (system V8, the v8pp submodule, Node.js, Python 3 + libclang). In short:
+requirements (system V8, Node.js, Python 3 + libclang). In short:
 
-    git submodule update --init 3rdparty/v8pp/src
     cmake --preset dev -DENABLE_TS_SCRIPTING=ON     # -DV8_ROOT=/path if V8 is not where FindV8.cmake looks
     cmake --build --preset dev --target map-server
     cd npc-ts && npm install && npm run build       # -> npc-ts/dist/main.js

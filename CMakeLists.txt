@@ -310,7 +310,6 @@ option( ENABLE_WEB_SERVER "Build web-server (default=ON)" ON )
 #
 # Requires:
 #   - libv8 + libv8_libplatform on the system (e.g. `brew install v8`)
-#   - the v8pp headers (3rdparty/v8pp/src, see 3rdparty/v8pp/README.md)
 #
 option( ENABLE_TS_SCRIPTING "Build the V8 TypeScript scripting host (default=OFF)" OFF )
 if( ENABLE_TS_SCRIPTING )
@@ -345,7 +344,7 @@ if( ENABLE_TS_SCRIPTING )
         set( _TS_DEFS "${_TS_DEFS} -DV8_31BIT_SMIS_ON_64BIT_ARCH" )
     endif()
     set_property( CACHE GLOBAL_DEFINITIONS  PROPERTY VALUE "${_TS_DEFS}" )
-    message( STATUS "Enabled TS scripting host (V8 ${V8_LIBRARY}, v8pp ${V8PP_INCLUDE_DIR_RESOLVED})" )
+    message( STATUS "Enabled TS scripting host (V8 ${V8_LIBRARY})" )
     message( STATUS "  → bumped CMAKE_CXX_STANDARD to 20 for V8 headers" )
     message( STATUS "  → V8 build flags: COMPRESS_POINTERS=${V8_COMPRESS_POINTERS} ENABLE_SANDBOX=${V8_ENABLE_SANDBOX} 31BIT_SMIS=${V8_31BIT_SMIS_ON_64BIT_ARCH}" )
 endif()
